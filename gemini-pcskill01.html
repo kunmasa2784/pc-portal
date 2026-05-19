@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geminiを活用するためのPC基礎スキルガイド</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.8;
+        }
+        h1, h2, h3, .serif-font {
+            font-family: 'Noto Serif JP', serif;
+        }
+        /* Custom Checkbox Styling */
+        .custom-checkbox {
+            appearance: none;
+            background-color: #fff;
+            margin: 0;
+            font: inherit;
+            color: currentColor;
+            width: 1.25em;
+            height: 1.25em;
+            border: 2px solid #cbd5e1;
+            border-radius: 0.25em;
+            display: grid;
+            place-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            margin-top: 0.25rem;
+            flex-shrink: 0;
+        }
+        .custom-checkbox::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em white;
+            background-color: transform;
+            transform-origin: center;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        .custom-checkbox:checked {
+            background-color: currentColor;
+            border-color: currentColor;
+        }
+        .custom-checkbox:checked::before {
+            transform: scale(1);
+        }
+        
+        /* Keyboard shortcut styling */
+        kbd {
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.25rem;
+            box-shadow: 0 2px 0 #cbd5e1;
+            color: #475569;
+            font-family: monospace;
+            font-size: 0.875em;
+            padding: 0.15rem 0.4rem;
+            margin: 0 0.1rem;
+            font-weight: 600;
+        }
+
+        /* Abstract Journal Style Lines */
+        .journal-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #cbd5e1, transparent);
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body class="py-10 px-4 sm:px-6 lg:px-8 selection:bg-blue-200 selection:text-blue-900">
+
+    <article class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
+        
+        <!-- Top decorative bar -->
+        <div class="h-2 w-full bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600"></div>
+
+        <div class="p-8 sm:p-12 md:p-16">
+            
+            <header class="mb-12 text-center">
+                <span class="text-sm font-bold tracking-widest text-slate-400 uppercase mb-3 block">Foundation Skills</span>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-800 leading-tight mb-6">
+                    Geminiを活用するための<br class="hidden sm:block"><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">PC基礎スキルガイド</span>
+                </h1>
+                <div class="w-24 h-1 bg-indigo-500 mx-auto rounded-full mt-6 mb-8"></div>
+            </header>
+
+            <section class="text-lg text-slate-700 space-y-5 mb-12 bg-slate-50 p-6 rounded-xl border border-slate-100">
+                <p>Googleの生成AI「Gemini」は非常に優秀なアシスタントですが、その力を最大限に引き出すには「人間側からの的確な指示（プロンプト）」が必要です。<br>Geminiは単なる検索ツールではなく、対話を重ねて結果を磨き上げていくパートナーです。</p>
+                <p>スムーズに対話を進め、結果を仕事で活用するためには、以下の4つのPCスキルが土台となります。</p>
+                <ul class="list-none space-y-2 pl-2">
+                    <li class="flex items-center text-slate-800"><span class="text-indigo-500 mr-2">✦</span> 思考を止めない「タイピングとショートカット操作」</li>
+                    <li class="flex items-center text-slate-800"><span class="text-indigo-500 mr-2">✦</span> 意図を正確に伝えるための「文章編集力」</li>
+                    <li class="flex items-center text-slate-800"><span class="text-indigo-500 mr-2">✦</span> AIツールにアクセスするための「ブラウザ・クラウドの理解」</li>
+                    <li class="flex items-center text-slate-800"><span class="text-indigo-500 mr-2">✦</span> 安全に利用するための「セキュリティ意識」</li>
+                </ul>
+                <p>このガイドでは、Geminiを本格的に操作する前に確認しておきたい基礎知識を6つのステップで解説します。<br>操作ができるようになったら、各項目のチェックボックスにチェックを入れて進んでいきましょう！</p>
+            </section>
+
+            <div class="journal-line"></div>
+
+            <section class="mb-16">
+                <h2 class="text-2xl font-bold mb-6 flex items-center text-teal-800 border-b-2 border-teal-100 pb-2">
+                    <span class="bg-teal-100 text-teal-700 py-1 px-3 rounded-lg text-sm mr-3 font-sans shadow-sm">STEP 1</span>
+                    文字入力とキーボードの基本（プロンプト入力の土台）
+                </h2>
+                <p class="mb-6 text-slate-600">AIへの指示は主にテキストで行います。ここをスムーズに行えるかが、AI活用の第一歩です。</p>
+
+                <div class="space-y-6">
+                    <label class="flex items-start group cursor-pointer p-4 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" class="custom-checkbox text-teal-600 mt-1">
+                        <div class="ml-4">
+                            <span class="block font-bold text-slate-800 group-hover:text-teal-700 transition-colors">ブラインドタッチを意識する（推奨）</span>
+                            <span class="text-slate-600 text-sm mt-1 block">手元を見ずにキーボードを打てると、画面上のAIの返答を見ながら次の質問を考えることができます。<br>完璧でなくても構いません。ホームポジションを意識しましょう。</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start group cursor-pointer p-4 rounded-xl hover:bg-rose-50 transition-colors border border-transparent hover:border-rose-100">
+                        <input type="checkbox" class="custom-checkbox text-rose-600 mt-1">
+                        <div class="ml-4">
+                            <span class="block font-bold text-slate-800 group-hover:text-rose-700 transition-colors">「改行」と「送信」の違いを理解する <span class="text-rose-600 text-sm font-normal bg-rose-100 px-2 py-0.5 rounded-full ml-2">超重要！</span></span>
+                            <span class="text-slate-600 text-sm mt-1 block">Geminiでは、<kbd>Enter</kbd> キーを1回押すとそのまま指示が<strong>「送信」</strong>されてしまいます。<br>誤って途中で送信すると、的外れな回答が返ってきてやり直しの手間がかかります。<br>文の途中で改行したい場合は、必ず <kbd>Shift</kbd> + <kbd>Enter</kbd> を押しましょう。</span>
+                        </div>
+                    </label>
+
+                    <div class="p-4">
+                        <label class="flex items-start group cursor-pointer mb-4">
+                            <input type="checkbox" class="custom-checkbox text-teal-600 mt-1">
+                            <div class="ml-4">
+                                <span class="block font-bold text-slate-800 group-hover:text-teal-700 transition-colors">必須ショートカットキーを使えるようにする</span>
+                                <span class="text-slate-600 text-sm mt-1 block">マウス操作よりも圧倒的に素早く処理できるため、以下のキーボード操作は必ずマスターしましょう。</span>
+                            </div>
+                        </label>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pl-10 mt-4">
+                            <label class="flex items-center p-2 rounded hover:bg-slate-50 cursor-pointer border border-transparent hover:border-slate-200">
+                                <input type="checkbox" class="custom-checkbox text-teal-600 !w-4 !h-4 text-sm mr-3">
+                                <span class="text-sm">コピー: <kbd>Ctrl</kbd> + <kbd>C</kbd></span>
+                            </label>
+                            <label class="flex items-center p-2 rounded hover:bg-slate-50 cursor-pointer border border-transparent hover:border-slate-200">
+                                <input type="checkbox" class="custom-checkbox text-teal-600 !w-4 !h-4 text-sm mr-3">
+                                <span class="text-sm">貼り付け（ペースト）: <kbd>Ctrl</kbd> + <kbd>V</kbd></span>
+                            </label>
+                            <label class="flex items-start p-2 rounded hover:bg-slate-50 cursor-pointer border border-transparent hover:border-slate-200">
+                                <input type="checkbox" class="custom-checkbox text-teal-600 !w-4 !h-4 text-sm mr-3 mt-1">
+                                <span class="text-sm leading-tight">元に戻す: <kbd>Ctrl</kbd> + <kbd>Z</kbd><br><span class="text-xs text-slate-400">（※間違えて文章を消してしまった時の命綱です）</span></span>
+                            </label>
+                            <label class="flex items-center p-2 rounded hover:bg-slate-50 cursor-pointer border border-transparent hover:border-slate-200">
+                                <input type="checkbox" class="custom-checkbox text-teal-600 !w-4 !h-4 text-sm mr-3">
+                                <span class="text-sm">すべて選択: <kbd>Ctrl</kbd> + <kbd>A</kbd></span>
+                            </label>
+                            <label class="flex items-start p-2 rounded hover:bg-slate-50 cursor-pointer border border-transparent hover:border-slate-200">
+                                <input type="checkbox" class="custom-checkbox text-teal-600 !w-4 !h-4 text-sm mr-3 mt-1">
+                                <span class="text-sm leading-tight">ページ内検索: <kbd>Ctrl</kbd> + <kbd>F</kbd><br><span class="text-xs text-slate-400">（※長い回答から特定のキーワードを探すのに便利です）</span></span>
+                            </label>
+                            <label class="flex items-start p-2 rounded hover:bg-slate-50 cursor-pointer border border-transparent hover:border-slate-200">
+                                <input type="checkbox" class="custom-checkbox text-teal-600 !w-4 !h-4 text-sm mr-3 mt-1">
+                                <span class="text-sm leading-tight">クリップボード履歴: <kbd>Win</kbd> + <kbd>V</kbd><br><span class="text-xs text-slate-400">（※過去にコピーした複数のテキストを遡って貼り付けられます）</span></span>
+                            </label>
+                            <label class="flex items-start p-2 rounded hover:bg-slate-50 cursor-pointer border border-transparent hover:border-slate-200">
+                                <input type="checkbox" class="custom-checkbox text-teal-600 !w-4 !h-4 text-sm mr-3 mt-1">
+                                <span class="text-sm leading-tight">画面分割（スナップ）: <kbd>Win</kbd> + <kbd>←</kbd>・<kbd>→</kbd><br><span class="text-xs text-slate-400">（※左にGemini、右に参考資料を並べる際に必須です）</span></span>
+                            </label>
+                            <label class="flex items-start p-2 rounded hover:bg-slate-50 cursor-pointer border border-transparent hover:border-slate-200">
+                                <input type="checkbox" class="custom-checkbox text-teal-600 !w-4 !h-4 text-sm mr-3 mt-1">
+                                <span class="text-sm leading-tight">スクリーンショット: <kbd>Win</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd><br><span class="text-xs text-slate-400">（※画面の一部を切り取ってGeminiに貼り付け、「この画像を説明して」と聞くことができます）</span></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-16">
+                <h2 class="text-2xl font-bold mb-6 flex items-center text-blue-800 border-b-2 border-blue-100 pb-2">
+                    <span class="bg-blue-100 text-blue-700 py-1 px-3 rounded-lg text-sm mr-3 font-sans shadow-sm">STEP 2</span>
+                    文章を編集する力（AIとの対話と活用）
+                </h2>
+                <p class="mb-6 text-slate-600">AIから良い回答を引き出し、それを実務で使える形に整えるスキルです。</p>
+
+                <div class="space-y-6">
+                    <label class="flex items-start group cursor-pointer p-4 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" class="custom-checkbox text-blue-600 mt-1">
+                        <div class="ml-4">
+                            <span class="block font-bold text-slate-800 group-hover:text-blue-700 transition-colors">プロンプトを分かりやすく整理する</span>
+                            <span class="text-slate-600 text-sm mt-1 block">思いついたことをダラダラと長く書くのは避けましょう。<br>箇条書きや見出し（「テーマ」「条件」「目的」など）を使って、AIが読みやすい構造に整理します。</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start group cursor-pointer p-4 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" class="custom-checkbox text-blue-600 mt-1">
+                        <div class="ml-4">
+                            <span class="block font-bold text-slate-800 group-hover:text-blue-700 transition-colors">AIの回答を整形し、手直しする</span>
+                            <span class="text-slate-600 text-sm mt-1 block">AIの文章をWordやメールにコピーした際、不要な改行や記号（太字や#見出しなど）が含まれることがあります。<br>そのまま使わず、相手に合わせて表現を調整し、人間の目で必ず確認・修正（手直し）を行いましょう。誤情報の拡散を防ぐためにも重要です。</span>
+                        </div>
+                    </label>
+                </div>
+            </section>
+
+            <section class="mb-16">
+                <h2 class="text-2xl font-bold mb-6 flex items-center text-indigo-800 border-b-2 border-indigo-100 pb-2">
+                    <span class="bg-indigo-100 text-indigo-700 py-1 px-3 rounded-lg text-sm mr-3 font-sans shadow-sm">STEP 3</span>
+                    ブラウザとインターネットの基本操作
+                </h2>
+                <p class="mb-6 text-slate-600">Geminiは専用ソフトではなく、Webブラウザ（Google ChromeやEdgeなど）上で動きます。</p>
+
+                <div class="space-y-6">
+                    <label class="flex items-start group cursor-pointer p-4 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" class="custom-checkbox text-indigo-600 mt-1">
+                        <div class="ml-4">
+                            <span class="block font-bold text-slate-800 group-hover:text-indigo-700 transition-colors">タブとウィンドウを使い分ける</span>
+                            <span class="text-slate-600 text-sm mt-1 block">「新しいタブ」を開き、Geminiの画面とGoogle検索の画面を並行して使えるようにしましょう。<br>AIが文章を作っている間に、別のタブで事実確認（ファクトチェック）ができます。</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start group cursor-pointer p-4 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" class="custom-checkbox text-indigo-600 mt-1">
+                        <div class="ml-4">
+                            <span class="block font-bold text-slate-800 group-hover:text-indigo-700 transition-colors">ブックマーク（お気に入り）に登録する</span>
+                            <span class="text-slate-600 text-sm mt-1 block">Geminiのページをブックマークバーに登録し、ワンクリックですぐに開けるようにしておきましょう。</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start group cursor-pointer p-4 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" class="custom-checkbox text-indigo-600 mt-1">
+                        <div class="ml-4">
+                            <span class="block font-bold text-slate-800 group-hover:text-indigo-700 transition-colors">ページの再読み込み（リロード）ができる</span>
+                            <span class="text-slate-600 text-sm mt-1 block">応答が急に止まったり、画面が固まったりした時は、<kbd>F5</kbd> キーや更新ボタンで画面をリフレッシュしましょう。<br>パニックにならず、落ち着いて再読み込みを行えば、多くの場合チャットの続きから再開できます。</span>
+                        </div>
+                    </label>
+                </div>
+            </section>
+
+            <section class="mb-16">
+                <h2 class="text-2xl font-bold mb-6 flex items-center text-purple-800 border-b-2 border-purple-100 pb-2">
+                    <span class="bg-purple-100 text-purple-700 py-1 px-3 rounded-lg text-sm mr-3 font-sans shadow-sm">STEP 4</span>
+                    クラウドの理解とファイル操作（データを活用する）
+                </h2>
+                <p class="mb-6 text-slate-600">手元のPCとインターネット上（クラウド）の違いを理解し、データを適切に扱えるようにします。</p>
+
+                <div class="space-y-6">
+                    <label class="flex items-start group cursor-pointer p-4 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" class="custom-checkbox text-purple-600 mt-1">
+                        <div class="ml-4">
+                            <span class="block font-bold text-slate-800 group-hover:text-purple-700 transition-colors">「クラウド」と「ローカル」の違いを理解する</span>
+                            <span class="text-slate-600 text-sm mt-1 block">Geminiの高度な処理はインターネット上のサーバー（クラウド）で行われます。常にインターネット接続が必要です。<br>データはクラウドに保存されるため、PCの電源を切っても、後からスマホで同じアカウントにログインすれば続きから再開できます。</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start group cursor-pointer p-4 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" class="custom-checkbox text-purple-600 mt-1">
+                        <div class="ml-4">
+                            <span class="block font-bold text-slate-800 group-hover:text-purple-700 transition-colors">ファイルのダウンロードと保存場所を把握する</span>
+                            <span class="text-slate-600 text-sm mt-1 block">AIが作成した画像などをダウンロードした際、「エクスプローラー」を使って「ダウンロード」フォルダから確実に見つけ出せるようにしましょう。<br>ブラウザのダウンロード履歴（<kbd>Ctrl</kbd> + <kbd>J</kbd>）から直接開く方法も便利です。</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start group cursor-pointer p-4 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" class="custom-checkbox text-purple-600 mt-1">
+                        <div class="ml-4">
+                            <span class="block font-bold text-slate-800 group-hover:text-purple-700 transition-colors">ドラッグ＆ドロップでファイルをアップロードする</span>
+                            <span class="text-slate-600 text-sm mt-1 block">エクスプローラーからPDFやExcelファイルなどをつかみ、そのままGeminiのチャット入力欄に落とす（ドラッグ＆ドロップ）操作を習得しましょう。</span>
+                        </div>
+                    </label>
+                </div>
+            </section>
+
+            <section class="mb-16">
+                <h2 class="text-2xl font-bold mb-6 flex items-center text-rose-800 border-b-2 border-rose-100 pb-2">
+                    <span class="bg-rose-100 text-rose-700 py-1 px-3 rounded-lg text-sm mr-3 font-sans shadow-sm">STEP 5</span>
+                    アカウント管理とセキュリティ（安全に使うために）
+                </h2>
+                <p class="mb-6 text-slate-600">Geminiを安全に利用し、情報漏洩を防ぐための必須知識です。</p>
+
+                <div class="space-y-6">
+                    <label class="flex items-start group cursor-pointer p-4 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" class="custom-checkbox text-rose-600 mt-1">
+                        <div class="ml-4">
+                            <span class="block font-bold text-slate-800 group-hover:text-rose-700 transition-colors">Googleアカウントを適切に管理する</span>
+                            <span class="text-slate-600 text-sm mt-1 block">Geminiの利用にはGoogleアカウントが必要です。チャット履歴はアカウントに紐づくため、IDとパスワードは厳重に管理しましょう。</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start group cursor-pointer p-4 rounded-xl hover:bg-rose-50 transition-colors border border-transparent hover:border-rose-100 bg-white">
+                        <input type="checkbox" class="custom-checkbox text-rose-600 mt-1">
+                        <div class="ml-4">
+                            <span class="block font-bold text-rose-700">機密情報・個人情報を絶対に入力しない <span class="text-white text-sm font-normal bg-rose-600 px-2 py-0.5 rounded-full ml-2 shadow-sm">超重要！</span></span>
+                            <div class="text-slate-600 text-sm mt-2 block">
+                                以下の情報は、絶対にAIに入力してはいけません。
+                                <ul class="list-disc pl-5 mt-2 mb-2 text-rose-900 font-medium bg-rose-50 p-3 rounded-md">
+                                    <li>顧客の個人情報</li>
+                                    <li>会社の未公開情報や機密データ</li>
+                                    <li>マイナンバーやクレジットカード情報</li>
+                                </ul>
+                                業務文章をAIに添削させたい場合は、固有名詞を「A社」「B氏」に置き換えたり、金額をぼかしたりする「マスキング（匿名化）」を必ず行ってください。
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </section>
+
+            <section class="mb-16">
+                <h2 class="text-2xl font-bold mb-6 flex items-center text-orange-800 border-b-2 border-orange-100 pb-2">
+                    <span class="bg-orange-100 text-orange-700 py-1 px-3 rounded-lg text-sm mr-3 font-sans shadow-sm">STEP 6</span>
+                    自力で解決する力（検索力）
+                </h2>
+                <p class="mb-6 text-slate-600">AIツールは進化が激しく、画面のレイアウトや使い方が頻繁に変わります。</p>
+
+                <div class="space-y-6">
+                    <label class="flex items-start group cursor-pointer p-4 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" class="custom-checkbox text-orange-600 mt-1">
+                        <div class="ml-4">
+                            <span class="block font-bold text-slate-800 group-hover:text-orange-700 transition-colors">分からないことは「ググる」習慣をつける</span>
+                            <span class="text-slate-600 text-sm mt-1 block">エラーが出た場合や操作が分からない時は、「Gemini ログインできない」「Gemini ファイル 制限」など、複数のキーワードを組み合わせてWeb検索しましょう。<br>この「適切なキーワードを選んで検索する力」は、そのまま「AIに的確な指示（プロンプト）を出す力」に繋がります。</span>
+                        </div>
+                    </label>
+                </div>
+            </section>
+
+            <section class="mt-20 bg-gradient-to-br from-slate-800 to-slate-900 text-white p-8 sm:p-10 rounded-2xl shadow-2xl relative overflow-hidden">
+                <!-- Background decorative shapes -->
+                <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-white opacity-5 rounded-full blur-xl"></div>
+                <div class="absolute bottom-0 left-0 -mb-8 -ml-8 w-32 h-32 bg-blue-500 opacity-10 rounded-full blur-2xl"></div>
+
+                <div class="relative z-10">
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-8 flex items-center justify-center text-center text-amber-400 serif-font tracking-wide border-b border-slate-700 pb-6">
+                        <svg class="w-8 h-8 mr-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        【重要】本日の講座を始める前の4つの約束
+                    </h2>
+                    
+                    <p class="text-center text-slate-300 mb-8 text-lg">演習をスムーズに進めるため、以下の4点だけは必ず守って操作をお願いします。</p>
+
+                    <ul class="space-y-4 max-w-2xl mx-auto">
+                        <li class="flex items-start bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
+                            <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-300 font-bold mr-4 mt-0.5">1</span>
+                            <div>
+                                <span class="font-bold text-white text-lg">改行は <kbd class="bg-slate-700 text-slate-200 border-slate-600">Shift</kbd> + <kbd class="bg-slate-700 text-slate-200 border-slate-600">Enter</kbd> で行う</span>
+                                <span class="block text-slate-400 text-sm mt-1">（誤送信を防ぎます）</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
+                            <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-teal-500/20 text-teal-300 font-bold mr-4 mt-0.5">2</span>
+                            <div>
+                                <span class="font-bold text-white text-lg">コピー＆ペーストは <kbd class="bg-slate-700 text-slate-200 border-slate-600">Ctrl</kbd> キーのショートカットを使う</span>
+                                <span class="block text-slate-400 text-sm mt-1">（作業の疲労を減らします）</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start bg-rose-900/30 p-4 rounded-xl border border-rose-800/50">
+                            <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-rose-500/20 text-rose-300 font-bold mr-4 mt-0.5">3</span>
+                            <div>
+                                <span class="font-bold text-rose-200 text-lg">機密情報は絶対に入力しない</span>
+                                <span class="block text-rose-400/80 text-sm mt-1">（情報漏洩を防ぎ、匿名化の癖をつけます）</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
+                            <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-blue-500/20 text-blue-300 font-bold mr-4 mt-0.5">4</span>
+                            <div>
+                                <span class="font-bold text-white text-lg">AIの回答をそのまま使わず、必ず手直し（編集・確認）する</span>
+                                <span class="block text-slate-400 text-sm mt-1">（AIを盲信しない姿勢を作ります）</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+        </div>
+    </article>
+
+</body>
+</html>
