@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【初心者向け】ノートPC初期設定ガイド - Windows 11編</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            /* 初心者向けに、少し丸みのある優しいフォント（M PLUS Rounded 1c）を採用 */
+            font-family: 'M PLUS Rounded 1c', 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+        }
+        .step-card {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid transparent;
+        }
+        .step-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+            border-color: #e2e8f0;
+        }
+        .step-number-badge {
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        .step-header {
+            padding: 1.5rem 1.5rem 1rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .step-content {
+            padding: 1rem 1.5rem 1.5rem 1.5rem;
+            flex-grow: 1;
+        }
+        .step-content ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .step-content ul li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+        }
+        .step-content ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #3b82f6; /* Blue-500 */
+            font-weight: bold;
+        }
+        .important-box {
+            background-color: #fff7ed; /* Orange-50 */
+            border: 2px solid #fdba74; /* Orange-300 */
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-top: 1.5rem;
+        }
+        .skip-box {
+            background-color: #f0fdf4; /* Green-50 */
+            border: 2px solid #86efac; /* Green-300 */
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-top: 1.5rem;
+        }
+        /* アニメーション */
+        .fade-in {
+            animation: fadeInAnimation 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes fadeInAnimation {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.4s; }
+        .delay-400 { animation-delay: 0.6s; }
+        .delay-500 { animation-delay: 0.8s; }
+    </style>
+</head>
+<body class="bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] py-10 px-4 sm:px-6 lg:px-8">
+
+    <div class="max-w-4xl mx-auto">
+
+        <!-- ヘッダー -->
+        <header class="text-center mb-16 fade-in delay-100">
+            <div class="inline-block bg-blue-100 text-blue-800 px-4 py-1 rounded-full font-semibold text-sm mb-4">
+                初心者さん大歓迎！絶対できるステップ・バイ・ステップ
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-800 mb-4 leading-tight">
+                新しいノートPC<br class="md:hidden">初期設定ガイド
+            </h1>
+            <p class="text-xl text-slate-600 font-medium">Windows 11 最新版対応</p>
+            <p class="text-slate-500 mt-4 max-w-2xl mx-auto">
+                パソコンを買って箱を開けたところから、インターネットに繋いで使えるようになるまでを、難しい言葉を使わずに順番に解説します。焦らず、ゆっくり進めましょう！
+            </p>
+        </header>
+
+        <!-- 0. 事前準備 -->
+        <section class="mb-16 fade-in delay-200">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 flex flex-col md:flex-row items-center gap-6">
+                <div class="shrink-0 bg-yellow-100 p-4 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-yellow-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75" />
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2">電源を入れる前に用意するもの</h2>
+                    <p class="text-slate-600 mb-3">設定の途中で慌てないよう、手元に以下の2つを用意してください。</p>
+                    <ul class="list-disc pl-5 text-slate-700 font-medium space-y-1">
+                        <li><strong>ご自宅のWi-Fiパスワード</strong>（ルーターという機械の裏側や底面のシールに書かれています）</li>
+                        <li><strong>メモ帳とボールペン</strong>（新しく作るパスワードを書き留めるため、絶対に必要です！）</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 1. 準備編 -->
+        <section class="mb-16 fade-in delay-300">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center border-b-2 border-blue-500 pb-2 inline-block">
+                ステップ 1：箱から出して電源を入れる
+            </h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- 1-1 -->
+                <div class="step-card mt-3">
+                    <div class="step-number-badge bg-blue-500">1</div>
+                    <div class="step-header">
+                        <h3 class="text-lg font-bold flex items-center gap-2">
+                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                            中身の確認とケーブル接続
+                        </h3>
+                    </div>
+                    <div class="step-content">
+                        <ul>
+                            <li>パソコン本体と、充電用のケーブル（ACアダプター）を取り出します。</li>
+                            <li>ケーブルをコンセントに挿し、パソコン本体にもしっかりと繋ぎます。</li>
+                            <li>※初期設定中は途中で充電が切れると故障の原因になるため、<strong>必ずコンセントに繋いだまま</strong>行います。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 1-2 -->
+                <div class="step-card mt-3">
+                    <div class="step-number-badge bg-blue-500">2</div>
+                    <div class="step-header">
+                        <h3 class="text-lg font-bold flex items-center gap-2">
+                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            画面を開いて電源オン！
+                        </h3>
+                    </div>
+                    <div class="step-content">
+                        <ul>
+                            <li>画面（モニター）を開きます。最近のパソコンは、開くだけで自動的に電源が入るものが多いです。</li>
+                            <li>画面が暗いままの場合は、キーボードの右上や側面にある「電源ボタン」を1回ポチッと押して、少し待ちましょう。</li>
+                        </ul>
+                        <div class="bg-red-50 text-red-700 p-3 rounded-lg mt-4 text-sm border border-red-200">
+                            <strong>⚠️ モニターを開くときのコツ：</strong><br>
+                            端っこをつまんで開けると、つなぎ目（ヒンジ）が壊れやすくなります。必ず<strong>「画面の真ん中（カメラがあるあたり）」</strong>を持って、優しく開けましょう。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Windows設定編 -->
+        <section class="mb-16 fade-in delay-400">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center border-b-2 border-indigo-500 pb-2 inline-block">
+                ステップ 2：画面の質問に答えていく
+            </h2>
+            <p class="text-slate-600 mb-6">ここからは、画面に表示される案内に従ってマウス（またはタッチパッド）でクリックしていきます。音声が流れることがありますが、驚かなくて大丈夫です。</p>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- 2-1 -->
+                <div class="step-card mt-3">
+                    <div class="step-number-badge bg-indigo-500">3</div>
+                    <div class="step-header">
+                        <h3 class="text-lg font-bold flex items-center gap-2">
+                            <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            国と言語を選ぶ
+                        </h3>
+                    </div>
+                    <div class="step-content">
+                        <ul>
+                            <li>「国または地域はこれでよろしいですか？」 → <strong>「日本」</strong>を選んで「はい」をクリック。</li>
+                            <li>「キーボードレイアウトは…」 → <strong>「Microsoft IME」</strong>を選んで「はい」をクリック。</li>
+                            <li>「2つ目のキーボードレイアウトを…」 → これは不要なので<strong>「スキップ」</strong>をクリック。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 2-2 -->
+                <div class="step-card mt-3">
+                    <div class="step-number-badge bg-indigo-500">4</div>
+                    <div class="step-header">
+                        <h3 class="text-lg font-bold flex items-center gap-2">
+                            <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.906 14.142 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"></path></svg>
+                            インターネット（Wi-Fi）に繋ぐ
+                        </h3>
+                    </div>
+                    <div class="step-content">
+                        <ul>
+                            <li>ご近所の電波も含めて、リストがたくさん表示されます。</li>
+                            <li>用意しておいた<strong>ご自宅のルーターに書かれている名前（SSID）</strong>を探してクリックし、「接続」を押します。</li>
+                            <li><strong>パスワード（暗号化キー）</strong>を入力して「次へ」を押します。（大文字・小文字に注意！）</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 2-3 -->
+                <div class="step-card mt-3 md:col-span-2">
+                    <div class="step-number-badge bg-indigo-500">5</div>
+                    <div class="step-header">
+                        <h3 class="text-lg font-bold flex items-center gap-2">
+                            <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            アカウントの作成（※ここが一番重要です！）
+                        </h3>
+                    </div>
+                    <div class="step-content">
+                        <p class="mb-3 text-slate-600">パソコンを使うための「会員登録」のようなものです。「Microsoftアカウント」を作成します。</p>
+                        <ul>
+                            <li><strong>「サインイン」または「作成」</strong>をクリックします。</li>
+                            <li>普段スマホで使っているメールアドレス（@gmail.comなど）を入力するか、「新しいメールアドレスを取得」を選びます。</li>
+                            <li>好きなパスワードを自分で考えて入力します。</li>
+                            <li><strong>PIN（暗証番号）の作成：</strong> スマホの画面ロック解除のような、4桁の数字を決めます。普段パソコンを開くときはこの数字を使います。</li>
+                        </ul>
+                        
+                        <div class="important-box">
+                            <h4 class="font-bold text-orange-800 flex items-center gap-2 mb-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                メモ帳の出番です！絶対に書いて残してください！
+                            </h4>
+                            <p class="text-orange-700 text-sm">
+                                設定した<strong>「メールアドレス」「パスワード」「PIN（4桁の数字）」</strong>は、忘れるとパソコンが開けなくなってしまいます。今すぐメモ帳に書き写し、大切に保管してください。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2-4 -->
+                <div class="step-card mt-3 md:col-span-2">
+                    <div class="step-number-badge bg-indigo-500">6</div>
+                    <div class="step-header">
+                        <h3 class="text-lg font-bold flex items-center gap-2">
+                            <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            いろんな「お誘い」は、ひとまずスキップ！
+                        </h3>
+                    </div>
+                    <div class="step-content">
+                        <p class="text-slate-600">設定の後半になると、さまざまなサービスの案内画面が連続して出てきます。初心者のうちは、これらは全て<strong>「スキップ」「今はしない」「辞退する」</strong>を選んで進めて問題ありません。（後からいつでも設定できます）</p>
+                        
+                        <div class="skip-box grid md:grid-cols-2 gap-4 text-sm mt-4">
+                            <div>
+                                <h4 class="font-bold text-green-800 mb-1">■ スキップしていい画面の例</h4>
+                                <ul class="text-green-700 space-y-1">
+                                    <li>・デバイスのプライバシー設定（すべて「いいえ」でOK）</li>
+                                    <li>・エクスペリエンスをカスタマイズしましょう</li>
+                                    <li>・AndroidスマホとPCをリンクする</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-transparent select-none mb-1">空</h4>
+                                <ul class="text-green-700 space-y-1">
+                                    <li>・PC Game Pass のご案内</li>
+                                    <li>・Microsoft 365（Office）の無料試用版</li>
+                                    <li>・ブラウザの設定（Edgeを規定にする等）</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 最終調整編 -->
+        <section class="mb-16 fade-in delay-500">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center border-b-2 border-teal-500 pb-2 inline-block">
+                ステップ 3：終わった！と思ったら…最後の大仕事
+            </h2>
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+                <p class="text-slate-600 mb-4">
+                    数分待つと、見慣れた「デスクトップ画面（風景などの背景画）」が表示されます。「終わった！」と嬉しくなりますが、<strong>すぐには使い始めず、必ず「システムの最新化（Windows Update）」を行ってください。</strong>これをやらないと、動作が遅くなったり、セキュリティが危険な状態のままになります。
+                </p>
+
+                <div class="bg-teal-50 border-l-4 border-teal-500 p-5 rounded-r-lg">
+                    <h3 class="text-lg font-bold text-teal-800 mb-3 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                        Windows Update のやり方
+                    </h3>
+                    <ol class="list-decimal pl-5 text-teal-900 space-y-2 font-medium">
+                        <li>画面下の真ん中にある <strong>スタートボタン（田の字のマーク）</strong> をクリックします。</li>
+                        <li><strong>「設定」（歯車のマーク）</strong> を見つけてクリックします。</li>
+                        <li>左側のメニューの一番下にある <strong>「Windows Update」</strong> をクリックします。</li>
+                        <li>右上の <strong>「更新プログラムのチェック」</strong> という青いボタンを押します。</li>
+                        <li>ダウンロードとインストールが始まるので、<strong>ひたすら待ちます。</strong>（数十分かかることもあります）</li>
+                        <li>「今すぐ再起動する」というボタンが出たら押します。</li>
+                    </ol>
+                    <div class="mt-4 p-3 bg-white bg-opacity-60 rounded text-sm text-teal-800">
+                        💡 <strong>再起動が終わったら、もう一度 1〜4 を繰り返してください。</strong> 「最新の状態です」という緑のチェックマークが出るまで、何度か繰り返すのが正常です。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 完了メッセージ -->
+            <div class="mt-12 text-center">
+                <div class="inline-block bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-1 rounded-full">
+                    <div class="bg-white rounded-full px-8 py-4 flex items-center justify-center gap-3">
+                        <span class="text-3xl">🎉</span>
+                        <h4 class="text-2xl font-bold text-slate-800">本当にお疲れ様でした！</h4>
+                        <span class="text-3xl">🎉</span>
+                    </div>
+                </div>
+                <p class="text-slate-600 mt-4 text-lg">
+                    これで初期設定はすべて完了です。<br>
+                    インターネットを見たり、動画を楽しんだり、新しいパソコンを存分に活用してくださいね！
+                </p>
+            </div>
+        </section>
+
+        <!-- フッター -->
+        <footer class="text-center py-8 text-slate-400 text-sm border-t border-slate-200">
+            <p>&copy; <span id="currentYear"></span> 初心者のためのノートPC設定ガイド</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
