@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geminiを活用するための基本スキル - ポータルサイト</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f3f4f6; /* bg-gray-100 */
+        }
+        /* Custom animations for hover effects */
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .bg-gradient-header {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.8) 0%, rgba(124, 58, 237, 0.9) 100%), url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased min-h-screen flex flex-col">
+
+    <header class="bg-gradient-header text-white shadow-lg relative overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-30"></div> <!-- 暗めのオーバーレイを追加してテキストを読みやすく -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center relative z-10">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight drop-shadow-md">
+                <i class="fa-solid fa-brain mr-3 text-yellow-300"></i>Geminiを活用するための基本スキル
+            </h1>
+            <p class="text-lg md:text-2xl text-indigo-50 max-w-2xl mx-auto font-medium drop-shadow">
+                AI時代を生き抜くためのPCスキルアップポータル
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+        
+        <div class="mb-10 text-center">
+            <h2 class="text-2xl font-bold text-gray-700 inline-block border-b-4 border-indigo-500 pb-2">学習コンテンツ一覧</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- Card 1: Gemini活用PC基本スキル -->
+            <a href="https://kunmasa2784.github.io/pc-portal/gemini-pcskill01" target="_blank" rel="noopener noreferrer" class="bg-white rounded-xl shadow-md overflow-hidden card-hover flex items-center border border-gray-100 group h-32 p-4">
+                <div class="h-20 w-20 flex-shrink-0 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-500 group-hover:bg-indigo-500 group-hover:text-white transition-colors duration-300 mr-4">
+                    <i class="fa-solid fa-laptop-code text-3xl"></i>
+                </div>
+                <div class="flex-grow min-w-0">
+                    <div class="flex items-center mb-1">
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 text-[10px] font-bold leading-none text-indigo-600 bg-indigo-100 rounded-full">基礎スキル</span>
+                    </div>
+                    <h3 class="text-base font-bold text-gray-900 group-hover:text-indigo-600 transition-colors truncate">Gemini活用PC基本スキル</h3>
+                    <p class="text-gray-500 text-xs mt-1 line-clamp-2">PC操作の根幹となる基本スキルを学びます。</p>
+                </div>
+                <div class="ml-2 text-gray-400 group-hover:text-indigo-500 transition-colors">
+                     <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </a>
+
+            <!-- Card 2: PC初心者から中級者へ -->
+            <a href="https://beginnersintermediate.netlify.app/" target="_blank" rel="noopener noreferrer" class="bg-white rounded-xl shadow-md overflow-hidden card-hover flex items-center border border-gray-100 group h-32 p-4">
+                <div class="h-20 w-20 flex-shrink-0 bg-emerald-50 rounded-lg flex items-center justify-center text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300 mr-4">
+                    <i class="fa-solid fa-stairs text-3xl"></i>
+                </div>
+                <div class="flex-grow min-w-0">
+                    <div class="flex items-center mb-1">
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 text-[10px] font-bold leading-none text-emerald-600 bg-emerald-100 rounded-full">ステップアップ</span>
+                    </div>
+                    <h3 class="text-base font-bold text-gray-900 group-hover:text-emerald-600 transition-colors truncate">PC初心者から中級者へ</h3>
+                    <p class="text-gray-500 text-xs mt-1 line-clamp-2">初心者の壁を越え、中級者を目指すためのガイドです。</p>
+                </div>
+                <div class="ml-2 text-gray-400 group-hover:text-emerald-500 transition-colors">
+                     <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </a>
+
+            <!-- Card 3: PC学習環境の変化 -->
+            <a href="https://pckiso-aiutilization.netlify.app/" target="_blank" rel="noopener noreferrer" class="bg-white rounded-xl shadow-md overflow-hidden card-hover flex items-center border border-gray-100 group h-32 p-4">
+                <div class="h-20 w-20 flex-shrink-0 bg-amber-50 rounded-lg flex items-center justify-center text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-colors duration-300 mr-4">
+                    <i class="fa-solid fa-seedling text-3xl"></i>
+                </div>
+                <div class="flex-grow min-w-0">
+                    <div class="flex items-center mb-1">
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 text-[10px] font-bold leading-none text-amber-600 bg-amber-100 rounded-full">環境理解</span>
+                    </div>
+                    <h3 class="text-base font-bold text-gray-900 group-hover:text-amber-600 transition-colors truncate">PC学習環境の変化</h3>
+                    <p class="text-gray-500 text-xs mt-1 line-clamp-2">AI台頭による新しい学習スタイルについて解説します。</p>
+                </div>
+                 <div class="ml-2 text-gray-400 group-hover:text-amber-500 transition-colors">
+                     <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </a>
+
+            <!-- Card 4: AI活用のためのWord基礎10 -->
+            <a href="https://wordkiso01.netlify.app/" target="_blank" rel="noopener noreferrer" class="bg-white rounded-xl shadow-md overflow-hidden card-hover flex items-center border border-gray-100 group h-32 p-4">
+                <div class="h-20 w-20 flex-shrink-0 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300 mr-4">
+                    <i class="fa-solid fa-file-word text-3xl"></i>
+                </div>
+                <div class="flex-grow min-w-0">
+                    <div class="flex items-center mb-1">
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 text-[10px] font-bold leading-none text-blue-700 bg-blue-100 rounded-full">アプリケーション</span>
+                    </div>
+                    <h3 class="text-base font-bold text-gray-900 group-hover:text-blue-600 transition-colors truncate">AI活用のためのWord基礎10</h3>
+                    <p class="text-gray-500 text-xs mt-1 line-clamp-2">生成テキストを文書化する必須Wordスキル10選。</p>
+                </div>
+                <div class="ml-2 text-gray-400 group-hover:text-blue-500 transition-colors">
+                     <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </a>
+
+            <!-- Card 5: AI活用のためのExcel基礎10 -->
+            <a href="https://excelkiso01.netlify.app/" target="_blank" rel="noopener noreferrer" class="bg-white rounded-xl shadow-md overflow-hidden card-hover flex items-center border border-gray-100 group h-32 p-4">
+                <div class="h-20 w-20 flex-shrink-0 bg-green-50 rounded-lg flex items-center justify-center text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors duration-300 mr-4">
+                    <i class="fa-solid fa-file-excel text-3xl"></i>
+                </div>
+                <div class="flex-grow min-w-0">
+                    <div class="flex items-center mb-1">
+                        <span class="inline-flex items-center justify-center px-2 py-0.5 text-[10px] font-bold leading-none text-green-700 bg-green-100 rounded-full">アプリケーション</span>
+                    </div>
+                    <h3 class="text-base font-bold text-gray-900 group-hover:text-green-600 transition-colors truncate">AI活用のためのExcel基礎10</h3>
+                    <p class="text-gray-500 text-xs mt-1 line-clamp-2">抽出データを自在に加工・集計する基本スキル10選。</p>
+                </div>
+                 <div class="ml-2 text-gray-400 group-hover:text-green-500 transition-colors">
+                     <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-sm mb-2">Geminiを活用するための基本スキル ポータル</p>
+            <p class="text-xs text-gray-500">&copy; 2026 PC Skill Portal. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
