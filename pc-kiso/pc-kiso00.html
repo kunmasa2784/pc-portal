@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC基礎講座 ポータル</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        /* ヘッダーの背景画像設定 */
+        .hero-header {
+            background-image: linear-gradient(rgba(17, 24, 39, 0.7), rgba(17, 24, 39, 0.7)), url('https://placehold.co/1920x600/2c3e50/ffffff?text=PC+Basics+Course');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* カードのホバーエフェクト */
+        .module-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .module-card:hover {
+            transform: translateY(-5px); /* 浮き上がりを少し控えめに */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* カスタムグラデーションボーダー (上部) */
+        .border-t-gradient-1 { border-top: 4px solid #FF6B6B; }
+        .border-t-gradient-2 { border-top: 4px solid #4ECDC4; }
+        .border-t-gradient-3 { border-top: 4px solid #45B7D1; }
+        .border-t-gradient-4 { border-top: 4px solid #F9CA24; }
+        .border-t-gradient-5 { border-top: 4px solid #9B59B6; }
+        .border-t-gradient-6 { border-top: 4px solid #34495E; }
+        
+        /* アイコンの背景色設定 */
+        .icon-bg-1 { background-color: rgba(255, 107, 107, 0.1); color: #FF6B6B; }
+        .icon-bg-2 { background-color: rgba(78, 205, 196, 0.1); color: #4ECDC4; }
+        .icon-bg-3 { background-color: rgba(69, 183, 209, 0.1); color: #45B7D1; }
+        .icon-bg-4 { background-color: rgba(249, 202, 36, 0.1); color: #F9CA24; }
+        .icon-bg-5 { background-color: rgba(155, 89, 182, 0.1); color: #9B59B6; }
+        .icon-bg-6 { background-color: rgba(52, 73, 94, 0.1); color: #34495E; }
+    </style>
+</head>
+<body class="text-gray-800 antialiased min-h-screen flex flex-col">
+
+    <header class="hero-header text-white pt-16 pb-24 px-6 shadow-md relative overflow-hidden">
+        <div class="max-w-5xl mx-auto relative z-10 text-center md:text-left">
+            <h1 class="text-4xl md:text-5xl font-bold mb-3 tracking-tight leading-tight">PC基礎講座</h1>
+            <p class="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto md:mx-0 font-light leading-snug">
+                <br class="hidden md:block">
+                現代の必須スキルであるパソコンの基本操作をマスターする
+            </p>
+        </div>
+    </header>
+
+    <main class="flex-grow px-4 sm:px-6 lg:px-8 -mt-16 pb-16 relative z-20">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                
+                <a href="https://kunmasa2784.github.io/pc-portal/pc-kiso/pc-kiso01" class="module-card bg-white rounded-xl shadow-sm border-t-gradient-1 flex flex-col h-full overflow-hidden" target="_blank" rel="noopener noreferrer">
+                    <!-- paddingをさらに削減 p-4 -->
+                    <div class="p-4 flex-grow">
+                        <!-- アイコンサイズとマージンを縮小 w-8 h-8 mb-2 -->
+                        <div class="w-8 h-8 rounded-md icon-bg-1 flex items-center justify-center mb-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <h2 class="text-[10px] font-bold text-gray-400 tracking-widest uppercase mb-0.5">Chapter 01</h2>
+                        <!-- タイトルのマージンを縮小 mb-1 -->
+                        <h3 class="text-base font-bold text-gray-900 mb-1">システム構成の概念</h3>
+                        <!-- 行間を詰める leading-snug -->
+                        <p class="text-gray-600 text-[13px] leading-snug">パソコンが動く仕組み（ハードウェア・OS・ソフトウェア）を分かりやすく解説します。</p>
+                    </div>
+                    <!-- フッターエリアのpaddingを削減 py-2 -->
+                    <div class="px-4 py-2 bg-gray-50 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                        <span>学習を始める</span>
+                        <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </div>
+                </a>
+
+                <a href="https://kunmasa2784.github.io/pc-portal/pc-kiso/pc-kiso02" class="module-card bg-white rounded-xl shadow-sm border-t-gradient-2 flex flex-col h-full overflow-hidden" target="_blank" rel="noopener noreferrer">
+                    <div class="p-4 flex-grow">
+                        <div class="w-8 h-8 rounded-md icon-bg-2 flex items-center justify-center mb-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                        </div>
+                        <h2 class="text-[10px] font-bold text-gray-400 tracking-widest uppercase mb-0.5">Chapter 02</h2>
+                        <h3 class="text-base font-bold text-gray-900 mb-1">データの所在と管理概念</h3>
+                        <p class="text-gray-600 text-[13px] leading-snug">「作ったファイルはどこへ消えた？」を解決する、フォルダ階層とクラウドの仕組み</p>
+                    </div>
+                    <div class="px-4 py-2 bg-gray-50 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                        <span>学習を始める</span>
+                        <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </div>
+                </a>
+
+                <a href="https://kunmasa2784.github.io/pc-portal/pc-kiso/pc-kiso03" class="module-card bg-white rounded-xl shadow-sm border-t-gradient-3 flex flex-col h-full overflow-hidden" target="_blank" rel="noopener noreferrer">
+                    <div class="p-4 flex-grow">
+                        <div class="w-8 h-8 rounded-md icon-bg-3 flex items-center justify-center mb-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                        </div>
+                        <h2 class="text-[10px] font-bold text-gray-400 tracking-widest uppercase mb-0.5">Chapter 03</h2>
+                        <h3 class="text-base font-bold text-gray-900 mb-1">ネットワークの仕組み</h3>
+                        <p class="text-gray-600 text-[13px] leading-snug">パソコンが世界と繋がる裏側。「見えない電波」と「情報のお取り寄せ」の概念を紐解きます。</p>
+                    </div>
+                    <div class="px-4 py-2 bg-gray-50 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                        <span>学習を始める</span>
+                        <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </div>
+                </a>
+
+                <a href="https://kunmasa2784.github.io/pc-portal/pc-kiso/pc-kiso04" class="module-card bg-white rounded-xl shadow-sm border-t-gradient-4 flex flex-col h-full overflow-hidden" target="_blank" rel="noopener noreferrer">
+                    <div class="p-4 flex-grow">
+                        <div class="w-8 h-8 rounded-md icon-bg-4 flex items-center justify-center mb-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        </div>
+                        <h2 class="text-[10px] font-bold text-gray-400 tracking-widest uppercase mb-0.5">Chapter 04</h2>
+                        <h3 class="text-base font-bold text-gray-900 mb-1">セキュリティと情報モラル</h3>
+                        <p class="text-gray-600 text-[13px] leading-snug">デジタル空間において「自分の身を守る技術」と「他者を思いやるマナー」を学ぶ。</p>
+                    </div>
+                    <div class="px-4 py-2 bg-gray-50 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                        <span>学習を始める</span>
+                        <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </div>
+                </a>
+
+                <a href="https://kunmasa2784.github.io/pc-portal/pc-kiso/pc-kiso05" class="module-card bg-white rounded-xl shadow-sm border-t-gradient-5 flex flex-col h-full overflow-hidden" target="_blank" rel="noopener noreferrer">
+                    <div class="p-4 flex-grow">
+                        <div class="w-8 h-8 rounded-md icon-bg-5 flex items-center justify-center mb-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
+                        <h2 class="text-[10px] font-bold text-gray-400 tracking-widest uppercase mb-0.5">Chapter 05</h2>
+                        <h3 class="text-base font-bold text-gray-900 mb-1">最新技術への適応リテラシー</h3>
+                        <p class="text-gray-600 text-[13px] leading-snug">生成AIや新ツールを「自分の目的」のために使いこなす、新時代の基礎知識。</p>
+                    </div>
+                    <div class="px-4 py-2 bg-gray-50 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                        <span>学習を始める</span>
+                        <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </div>
+                </a>
+
+                <a href="https://kunmasa2784.github.io/pc-portal/pc-kiso/pc-kiso06" class="module-card bg-white rounded-xl shadow-sm border-t-gradient-6 flex flex-col h-full overflow-hidden" target="_blank" rel="noopener noreferrer">
+                    <div class="p-4 flex-grow">
+                        <div class="w-8 h-8 rounded-md icon-bg-6 flex items-center justify-center mb-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477-4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                        </div>
+                        <h2 class="text-[10px] font-bold text-gray-400 tracking-widest uppercase mb-0.5">Appendix</h2>
+                        <h3 class="text-base font-bold text-gray-900 mb-1">PC基礎 総合用語集</h3>
+                        <p class="text-gray-600 text-[13px] leading-snug">パソコン操作から最新のAI、セキュリティまで、分からない用語をすぐに引ける</p>
+                    </div>
+                    <div class="px-4 py-2 bg-gray-50 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                        <span>学習を始める</span>
+                        <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white py-6 mt-auto border-t border-gray-200">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="text-[11px] text-gray-500">© 2026 PC基礎講座 All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
