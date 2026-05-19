@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC基礎講座：総合用語集（完全版）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', '"Inter"', 'sans-serif'],
+                    },
+                    colors: {
+                        ch1: '#3B82F6', // ハード・ソフト・OS
+                        ch2: '#F59E0B', // データ管理
+                        ch3: '#0D9488', // ネットワーク
+                        ch4: '#E11D48', // セキュリティ
+                        ch5: '#8B5CF6', // 最新技術
+                        ch0: '#64748B', // 一般基礎
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scroll-behavior: smooth; }
+        /* インデックスの追従設定 */
+        .sticky-nav { position: sticky; top: 0; z-index: 50; }
+        /* スクロール時の余白（ヘッダーで隠れないように） */
+        section { scroll-margin-top: 100px; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 leading-relaxed font-sans pb-24">
+
+    <header class="bg-gradient-to-r from-emerald-900 to-slate-900 text-white py-16 px-4 shadow-md relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+                <defs><pattern id="grid-pattern" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M0 40L40 0H20L0 20M40 40V20L20 40" stroke="currentColor" stroke-width="1" fill="none" /></pattern></defs>
+                <rect width="100%" height="100%" fill="url(#grid-pattern)" />
+            </svg>
+        </div>
+        <div class="max-w-6xl mx-auto relative z-10 text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-white/20 text-sm font-semibold mb-4 tracking-wider">保存版辞書</span>
+            <h1 class="text-4xl md:text-5xl font-bold mb-6 drop-shadow-sm">PC基礎 総合用語集</h1>
+            <p class="text-lg opacity-90 max-w-2xl mx-auto">パソコン操作から最新のAI、セキュリティまで、分からない用語をすぐに引ける</p>
+        </div>
+    </header>
+
+    <div class="sticky-nav bg-white shadow-sm border-b border-gray-200 py-3 px-4">
+        <div class="max-w-6xl mx-auto flex flex-wrap justify-center gap-3 text-sm font-bold">
+            <a href="#ch-0" class="px-4 py-2 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-600 hover:text-white transition text-slate-700 border border-slate-200">一般基礎</a>
+            <a href="#ch-1" class="px-4 py-2 flex items-center justify-center rounded-full bg-blue-50 hover:bg-blue-600 hover:text-white transition text-blue-700 border border-blue-200">第1章</a>
+            <a href="#ch-2" class="px-4 py-2 flex items-center justify-center rounded-full bg-amber-50 hover:bg-amber-600 hover:text-white transition text-amber-700 border border-amber-200">第2章</a>
+            <a href="#ch-3" class="px-4 py-2 flex items-center justify-center rounded-full bg-teal-50 hover:bg-teal-600 hover:text-white transition text-teal-700 border border-teal-200">第3章</a>
+            <a href="#ch-4" class="px-4 py-2 flex items-center justify-center rounded-full bg-rose-50 hover:bg-rose-600 hover:text-white transition text-rose-700 border border-rose-200">第4章</a>
+            <a href="#ch-5" class="px-4 py-2 flex items-center justify-center rounded-full bg-purple-50 hover:bg-purple-600 hover:text-white transition text-purple-700 border border-purple-200">第5章</a>
+        </div>
+    </div>
+
+    <main class="max-w-6xl mx-auto px-4 py-8 space-y-12">
+        
+        <!-- 一般基礎 -->
+        <section id="ch-0">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-slate-500 pb-2 flex items-center">
+                <span class="bg-slate-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">基</span>
+                一般基礎（共通操作）
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-slate-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">アカウント</h3>
+                    <p class="text-sm text-gray-600">サービスを利用するための「権利」や「会員証」のようなもの。通常、IDとパスワードのセットで本人確認を行います。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-slate-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">カーソル</h3>
+                    <p class="text-sm text-gray-600">画面上で、文字を入力する位置を示す縦線（|）や、マウスの現在位置を示す矢印（↖）のこと。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-slate-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">クリック (右・ダブル)</h3>
+                    <p class="text-sm text-gray-600">マウスのボタンを押すこと。左は「選択・決定」、右は「メニュー表示」、ダブル（左2回）は「ファイルを開く」役割です。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-slate-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">コピー＆ペースト (コピペ)</h3>
+                    <p class="text-sm text-gray-600">文字やファイルを「複製（コピー）」し、別の場所に「貼り付ける（ペースト）」基本操作。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-slate-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">ショートカットキー</h3>
+                    <p class="text-sm text-gray-600">キーボードの複数のキーを組み合わせて押し、マウスを使わずに素早く操作（コピーなど）を行う近道機能。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-slate-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">デスクトップ</h3>
+                    <p class="text-sm text-gray-600">パソコンを起動したときに最初に表示される基本画面。文字通り「机の上」を意味します。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-slate-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">ドラッグ＆ドロップ</h3>
+                    <p class="text-sm text-gray-600">マウスの左ボタンを押したままアイコンを移動（ドラッグ）し、目的の場所で指を離す（ドロップ）操作。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-slate-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">ログイン / ログアウト</h3>
+                    <p class="text-sm text-gray-600">パスワード等を入れてシステムやサービスを「使い始める（入室）」ことと、「使い終わる（退室）」こと。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-slate-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">USB (ユーエスビー)</h3>
+                    <p class="text-sm text-gray-600">パソコンと周辺機器（マウスやメモリなど）を繋ぐための、最も標準的な接続端子の規格。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第1章 -->
+        <section id="ch-1">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-blue-500 pb-2 flex items-center">
+                <span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">1</span>
+                第1章：システム構成（ハード・ソフト・OS）
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-blue-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">アプリケーション (アプリ)</h3>
+                    <p class="text-sm text-gray-600">特定の目的（文章作成、ネット閲覧など）を叶えるためのソフトウェア。「専門スタッフ」のような存在です。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-blue-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">インストール</h3>
+                    <p class="text-sm text-gray-600">新しいソフトウェア（アプリ）をパソコンに入れ、使える状態に準備・設定すること。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-blue-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">シャットダウン</h3>
+                    <p class="text-sm text-gray-600">パソコンのシステムを安全に終了させ、電源を切ること。いきなり電源ボタンを長押しするのは故障の原因になります。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-blue-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">ハードウェア</h3>
+                    <p class="text-sm text-gray-600">画面、キーボード、マウス、内部の部品など、目に見えて手で触れることができる機械そのもの。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-blue-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">メモリ</h3>
+                    <p class="text-sm text-gray-600">作業中のデータを一時的に置いておく「作業机」。容量が大きいほど、複数のソフトを同時にサクサク動かせます。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-blue-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">CPU (シー・ピー・ユー)</h3>
+                    <p class="text-sm text-gray-600">中央演算処理装置。パソコンの「頭脳」であり、この性能が高いほど処理スピードが速くなります。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-blue-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">OS (オペレーティングシステム)</h3>
+                    <p class="text-sm text-gray-600">WindowsやmacOSなど。アプリと機械の橋渡しをし、パソコン全体を指揮する最も重要な土台のシステム。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第2章 -->
+        <section id="ch-2">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-amber-500 pb-2 flex items-center">
+                <span class="bg-amber-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">2</span>
+                第2章：データ管理
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-amber-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">エクスプローラー</h3>
+                    <p class="text-sm text-gray-600">Windowsにおいて、ファイルやフォルダを探したり整理したりするための基本機能（黄色いフォルダのアイコン）。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-amber-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">拡張子 (かくちょうし)</h3>
+                    <p class="text-sm text-gray-600">ファイル名の末尾につく「.docx」「.jpg」などの英数字。何のソフトで開くファイルかを見分ける名札です。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-amber-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">クラウドストレージ</h3>
+                    <p class="text-sm text-gray-600">インターネット上の貸金庫。ここに保存すれば、スマホなど別の端末からでも同じデータを見ることができます。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-amber-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">ストレージ</h3>
+                    <p class="text-sm text-gray-600">データを永続的に記録・保存しておく「引き出し」。HDDやSSDなどの種類があります。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-amber-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">バックアップ</h3>
+                    <p class="text-sm text-gray-600">万が一の故障やデータ消失に備えて、USBメモリやクラウドなど別の場所にデータを複製して保存しておくこと。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-amber-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">ファイル / フォルダ</h3>
+                    <p class="text-sm text-gray-600">「ファイル」は作成した1枚の書類のデータ。「フォルダ」はそれらを整理して入れるバインダーのこと。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-amber-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">ローカル</h3>
+                    <p class="text-sm text-gray-600">クラウド（ネット上）に対して、「手元の自分のパソコン本体の中」を指す言葉です。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第3章 -->
+        <section id="ch-3">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-teal-500 pb-2 flex items-center">
+                <span class="bg-teal-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">3</span>
+                第3章：ネットワーク
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-teal-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">インターネット</h3>
+                    <p class="text-sm text-gray-600">世界中のコンピューターやルーターがクモの巣状に繋がった、巨大な情報通信ネットワーク。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-teal-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">オフライン / オンライン</h3>
+                    <p class="text-sm text-gray-600">インターネットに繋がっていない状態を「オフライン」、繋がっている状態を「オンライン」と呼びます。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-teal-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">検索エンジン</h3>
+                    <p class="text-sm text-gray-600">GoogleやYahoo!など、情報を探すシステム。あらかじめ作られた巨大な目次帳から答えを探し出します。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-teal-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">サーバー</h3>
+                    <p class="text-sm text-gray-600">インターネット上でデータを保管し、利用者の要求（注文）に応じてWebサイトのデータ等を提供する高性能なコンピュータ。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-teal-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">ダウンロード</h3>
+                    <p class="text-sm text-gray-600">インターネット上のサーバーから、自分の手元のパソコン（ローカル）にデータを「引き取って保存する」こと。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-teal-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">ネットワーク</h3>
+                    <p class="text-sm text-gray-600">複数のコンピューターをケーブルや電波で繋ぎ、情報をやり取りできるようにした仕組み。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-teal-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">ルーター</h3>
+                    <p class="text-sm text-gray-600">家庭内のPCやスマホの通信を束ねて、インターネットの世界へ送り出す「郵便局長（交通整理係）」。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-teal-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">URL (ユーアールエル)</h3>
+                    <p class="text-sm text-gray-600">「https://〜」から始まる文字列で、インターネット上にあるWebサイトの「住所」を示します。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-teal-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">Wi-Fi (ワイファイ)</h3>
+                    <p class="text-sm text-gray-600">ケーブルを使わずに、電波を使ってパソコンやスマホをインターネット（ルーター）に接続する無線技術。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第4章 -->
+        <section id="ch-4">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-rose-500 pb-2 flex items-center">
+                <span class="bg-rose-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">4</span>
+                第4章：セキュリティ
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-rose-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">アップデート</h3>
+                    <p class="text-sm text-gray-600">OSやソフトの欠陥（セキュリティの穴）を修理し、最新で安全な状態に更新する作業のこと。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-rose-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">デジタルタトゥー</h3>
+                    <p class="text-sm text-gray-600">一度ネット上に公開された情報は、刺青（タトゥー）のように完全に消し去るのが極めて困難であること。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-rose-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">パスワードマネージャー</h3>
+                    <p class="text-sm text-gray-600">大量の複雑なパスワードを安全な金庫に一括管理し、必要な時に自動で入力してくれる便利なツール。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-rose-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">フィッシング詐欺</h3>
+                    <p class="text-sm text-gray-600">実在する銀行や宅配業者を装った偽メールで偽サイトに誘導し、パスワード等を盗む詐欺手口。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-rose-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">マルウェア（ウイルス）</h3>
+                    <p class="text-sm text-gray-600">悪意を持って作られたプログラムの総称。データを破壊したり、情報を盗んだりします。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第5章 -->
+        <section id="ch-5">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-purple-500 pb-2 flex items-center">
+                <span class="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">5</span>
+                第5章：最新技術
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-purple-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">生成AI (Generative AI)</h3>
+                    <p class="text-sm text-gray-600">学習したデータをもとに、対話形式で新しい文章や画像を作り出す人工知能。Geminiなどが代表的です。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-purple-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">ハルシネーション</h3>
+                    <p class="text-sm text-gray-600">AIが、事実とは異なる情報を「もっともらしい嘘（知ったかぶり）」として生成してしまう現象。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-purple-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">プロンプト</h3>
+                    <p class="text-sm text-gray-600">AIに対して人間が出す「指示」や「質問文」のこと。これを上手く書くことがAI活用の鍵となります。</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 hover:border-purple-400 transition">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">e-sports (イースポーツ)</h3>
+                    <p class="text-sm text-gray-600">コンピューターゲームを競技として捉えるもの。体力差を超えた交流の場としてシニア世代にも普及しています。</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 py-10 mt-8 text-center text-slate-400 text-sm">
+        <p>&copy; 2026 パソコン基礎講座 All rights reserved.</p>
+        <p class="mt-2 text-xs opacity-70">※各用語は初学者向けに分かりやすさを優先して表現しています。</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>パソコン基礎講座 第4章：セキュリティと情報モラル</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', '"Inter"', 'sans-serif'],
+                    },
+                    colors: {
+                        shield: '#3B82F6',   // 守りの青
+                        alert: '#F59E0B',    // 警告のオレンジ
+                        moral: '#10B981',    // 倫理・平和の緑
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        .quiz-answer { display: none; }
+        .quiz-answer.show { display: block; animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 leading-relaxed font-sans">
+
+    <!-- 赤基調のヘッダー -->
+    <header class="bg-gradient-to-r from-red-900 to-red-700 text-white py-16 px-4 shadow-md relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+                <defs><pattern id="grid-pattern" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M0 40L40 0H20L0 20M40 40V20L20 40" stroke="currentColor" stroke-width="1" fill="none" /></pattern></defs>
+                <rect width="100%" height="100%" fill="url(#grid-pattern)" />
+            </svg>
+        </div>
+        <div class="max-w-5xl mx-auto relative z-10 text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-white/10 text-sm font-semibold mb-4 tracking-wider">パソコン基礎講座 第4章</span>
+            <h1 class="text-4xl md:text-5xl font-bold mb-6 drop-shadow-sm">セキュリティと情報モラル</h1>
+            <p class="text-xl opacity-90 max-w-2xl mx-auto">デジタル空間において「自分の身を守る技術」と「他者を思いやるマナー」を学ぶ。</p>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-12">
+        <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-12 transform transition hover:-translate-y-1 hover:shadow-md duration-300">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center border-b-2 border-slate-200 pb-3">
+                <svg class="w-6 h-6 mr-3 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                はじめに：インターネットは「世界中と繋がる巨大な街」
+            </h2>
+            <div class="space-y-4 text-gray-600">
+                <p>インターネットは便利ですが、同時に悪意を持った人も存在する「現実の街」と同じです。安全に歩くためには、<strong>「家の鍵をしっかりかける（技術的防衛）」</strong>ことと、<strong>「怪しい声かけを無視する（詐欺の察知）」</strong>こと、そして<strong>「広場で大声で迷惑をかけない（情報モラル）」</strong>ことが必要です。</p>
+            </div>
+        </section>
+
+        <!-- 3つの基本概念 -->
+        <h2 class="text-3xl font-bold text-center mb-10 text-gray-800">安全を守る3つの柱</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            
+            <!-- 1. 技術的な防衛 -->
+            <div class="bg-white rounded-2xl shadow-lg border-t-4 border-shield overflow-hidden flex flex-col">
+                <div class="p-6 bg-blue-50/50 text-center border-b border-blue-100">
+                    <div class="w-16 h-16 mx-auto bg-shield text-white rounded-full flex items-center justify-center mb-4 shadow-sm">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">技術的な防衛</h3>
+                    <p class="text-sm text-shield font-semibold mt-1">「鍵」と「警備員」の役割</p>
+                </div>
+                <div class="p-6 flex-grow text-gray-600 text-sm">
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>パスワード管理:</strong> 簡単なパスワードは、鍵をかけずに外出するのと同じです。長く、推測されにくいものを使い回さずに設定します。</li>
+                        <li><strong>OSのアップデート:</strong> 家の「ほころび（弱点）」を修理する作業です。常に最新の状態に保ちます。</li>
+                        <li><strong>セキュリティソフト:</strong> 常に監視してくれる警備員です。ウイルスの侵入を防ぎます。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 2. 脅威を見抜く（フィッシング） -->
+            <div class="bg-white rounded-2xl shadow-lg border-t-4 border-alert overflow-hidden flex flex-col">
+                <div class="p-6 bg-amber-50/50 text-center border-b border-amber-100">
+                    <div class="w-16 h-16 mx-auto bg-alert text-white rounded-full flex items-center justify-center mb-4 shadow-sm">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">脅威を見抜く視点</h3>
+                    <p class="text-sm text-alert font-semibold mt-1">「偽の訪問者」に騙されない</p>
+                </div>
+                <div class="p-6 flex-grow text-gray-600 text-sm">
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>フィッシング詐欺:</strong> 銀行や宅配業者を装った偽のメールやSMSを送り、本物そっくりの偽サイトで暗証番号を入力させる手口です。</li>
+                        <li><strong>対策の基本:</strong> メールのリンクを安易にクリックせず、必ず「普段使っているアプリ」や「ブックマーク」から公式サイトを確認する癖をつけます。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 3. 情報モラル -->
+            <div class="bg-white rounded-2xl shadow-lg border-t-4 border-moral overflow-hidden flex flex-col">
+                <div class="p-6 bg-emerald-50/50 text-center border-b border-emerald-100">
+                    <div class="w-16 h-16 mx-auto bg-moral text-white rounded-full flex items-center justify-center mb-4 shadow-sm">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">情報モラル</h3>
+                    <p class="text-sm text-moral font-semibold mt-1">「公共の広場」でのマナー</p>
+                </div>
+                <div class="p-6 flex-grow text-gray-600 text-sm">
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>発信の責任:</strong> 画面の向こうには生身の人間がいます。対面で言えないことはネット上でも書き込まないのが鉄則です。</li>
+                        <li><strong>権利の尊重:</strong> 他人の写真や文章を無断で使わない（著作権・肖像権の保護）。</li>
+                        <li><strong>情報の見極め:</strong> フェイクニュースに踊らされず、情報を鵜呑みにしない冷静な視点（クリティカルシンキング）を持ちます。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- インタラクティブ復習問題 -->
+        <section class="bg-slate-100 rounded-2xl p-8 mb-12 border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 text-center">復習問題（クリックで解答）</h2>
+            <div class="space-y-6 max-w-3xl mx-auto">
+                
+                <!-- 問題1 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <p class="font-bold text-lg mb-4 text-gray-800">Q1. 銀行から「口座が凍結されました。今すぐ以下のURLからパスワードを再設定してください」というメールが届きました。正しい行動はどれ？</p>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button onclick="checkAnswer('q1', false)" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold py-2 px-4 border border-slate-300 rounded shadow-sm transition">急いでURLをクリックする</button>
+                        <button onclick="checkAnswer('q1', true)" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold py-2 px-4 border border-slate-300 rounded shadow-sm transition">メールを無視し、普段のアプリから確認する</button>
+                    </div>
+                    <div id="ans-q1" class="quiz-answer mt-4 p-4 rounded bg-slate-50 border-l-4"></div>
+                </div>
+
+                <!-- 問題2 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <p class="font-bold text-lg mb-4 text-gray-800">Q2. 一度インターネット上に書き込んだ情報や写真は、後から完全に消し去ることはできる？</p>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button onclick="checkAnswer('q2', false)" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold py-2 px-4 border border-slate-300 rounded shadow-sm transition">削除ボタンを押せば完全に消える</button>
+                        <button onclick="checkAnswer('q2', true)" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold py-2 px-4 border border-slate-300 rounded shadow-sm transition">誰かに保存されると完全に消すのは難しい</button>
+                    </div>
+                    <div id="ans-q2" class="quiz-answer mt-4 p-4 rounded bg-slate-50 border-l-4"></div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 用語集 -->
+        <section class="mt-16 bg-white rounded-2xl p-8 border border-slate-200">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-slate-700 pl-4">第4章 用語集</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <h4 class="font-bold text-lg text-gray-800 mb-2 border-b border-slate-200 pb-2">フィッシング詐欺</h4>
+                    <p class="text-sm text-gray-600">実在する企業を装った偽のメール等から偽のウェブサイトに誘導し、個人情報やパスワードを盗み出す詐欺の手口。</p>
+                </div>
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <h4 class="font-bold text-lg text-gray-800 mb-2 border-b border-slate-200 pb-2">マルウェア（ウイルス）</h4>
+                    <p class="text-sm text-gray-600">悪意を持って作られたソフトウェアの総称。パソコンのデータを破壊したり、情報を盗み出したりします。</p>
+                </div>
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <h4 class="font-bold text-lg text-shield mb-2 border-b border-slate-200 pb-2">2段階認証（多要素認証）</h4>
+                    <p class="text-sm text-gray-600">パスワードに加えて、スマホへのSMS通知などを組み合わせることで、乗っ取りを防ぐ強力なセキュリティ対策。</p>
+                </div>
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <h4 class="font-bold text-lg text-gray-800 mb-2 border-b border-slate-200 pb-2">アップデート (Update)</h4>
+                    <p class="text-sm text-gray-600">OSやソフトの欠陥（セキュリティの穴）を修正し、最新で安全な状態に更新する作業のこと。</p>
+                </div>
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <h4 class="font-bold text-lg text-moral mb-2 border-b border-slate-200 pb-2">デジタルタトゥー</h4>
+                    <p class="text-sm text-gray-600">一度インターネット上に公開された情報は、刺青（タトゥー）のように完全に消し去るのが極めて困難であるという例え。</p>
+                </div>
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <h4 class="font-bold text-lg text-gray-800 mb-2 border-b border-slate-200 pb-2">肖像権・著作権</h4>
+                    <p class="text-sm text-gray-600">他人の顔写真や、他人が作った文章・イラストなどを、無断で公開されない権利。SNS利用時に特に注意が必要。</p>
+                </div>
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <h4 class="font-bold text-lg text-gray-800 mb-2 border-b border-slate-200 pb-2">パスワードマネージャー</h4>
+                    <p class="text-sm text-gray-600">大量の複雑なパスワードを安全に一括管理し、自動入力してくれるツール。安全と便利を両立させます。</p>
+                </div>
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <h4 class="font-bold text-lg text-gray-800 mb-2 border-b border-slate-200 pb-2">情報モラル</h4>
+                    <p class="text-sm text-gray-600">情報社会で適正に活動するための倫理観。自分や他人の権利を守り、責任を持って行動する姿勢のこと。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 mt-12 py-8 text-center text-slate-400 text-sm">
+        <p>&copy; 2026 パソコン基礎講座 All rights reserved.</p>
+    </footer>
+
+    <script>
+        function checkAnswer(question, isCorrect) {
+            const ansDiv = document.getElementById('ans-' + question);
+            ansDiv.classList.remove('border-emerald-500', 'border-rose-500', 'text-emerald-700', 'text-rose-700');
+            
+            if (question === 'q1') {
+                if (isCorrect) {
+                    ansDiv.innerHTML = '<span class="font-bold text-emerald-600">⭕ 正解！</span><br>焦らせてクリックさせるのが詐欺の常套手段です。不安な時は必ず公式サイトや公式アプリからログインして確認しましょう。';
+                    ansDiv.classList.add('border-emerald-500', 'text-emerald-700');
+                } else {
+                    ansDiv.innerHTML = '<span class="font-bold text-rose-600">❌ 不正解...</span><br>メールのURLは偽サイト（フィッシング）の可能性が高いです。絶対にクリックしてはいけません。';
+                    ansDiv.classList.add('border-rose-500', 'text-rose-700');
+                }
+            } else if (question === 'q2') {
+                if (isCorrect) {
+                    ansDiv.innerHTML = '<span class="font-bold text-emerald-600">⭕ 正解！</span><br>これを「デジタルタトゥー」と呼びます。一度発信した情報は誰かにスクリーンショットなどで保存される可能性があり、後から取り消すのは非常に困難です。';
+                    ansDiv.classList.add('border-emerald-500', 'text-emerald-700');
+                } else {
+                    ansDiv.innerHTML = '<span class="font-bold text-rose-600">❌ 不正解...</span><br>自分の画面上で削除しても、すでに誰かにコピー・保存されている可能性があり、完全に消し去ることはできません。';
+                    ansDiv.classList.add('border-rose-500', 'text-rose-700');
+                }
+            }
+            
+            ansDiv.classList.add('show');
+        }
+    </script>
+</body>
+</html>

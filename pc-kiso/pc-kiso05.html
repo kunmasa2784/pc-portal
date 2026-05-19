@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>パソコン基礎講座 第5章：最新技術への適応リテラシー</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', '"Inter"', 'sans-serif'],
+                    },
+                    colors: {
+                        ai: '#8B5CF6',       // AIの紫
+                        esports: '#EC4899',  // 交流のピンク
+                        mindset: '#06B6D4',  // 適応のシアン
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        .quiz-answer { display: none; }
+        .quiz-answer.show { display: block; animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 leading-relaxed font-sans">
+
+    <!-- 落ち着いたバイオレットベースのヘッダー -->
+    <header class="bg-gradient-to-r from-indigo-900 to-purple-800 text-white py-16 px-4 shadow-md relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+                <defs><pattern id="grid-pattern" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M0 40L40 0H20L0 20M40 40V20L20 40" stroke="currentColor" stroke-width="1" fill="none" /></pattern></defs>
+                <rect width="100%" height="100%" fill="url(#grid-pattern)" />
+            </svg>
+        </div>
+        <div class="max-w-5xl mx-auto relative z-10 text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-white/10 text-sm font-semibold mb-4 tracking-wider">パソコン基礎講座 第5章</span>
+            <h1 class="text-4xl md:text-5xl font-bold mb-6 drop-shadow-sm">最新技術への適応リテラシー</h1>
+            <p class="text-xl opacity-90 max-w-2xl mx-auto">生成AIや新ツールを「自分の目的」のために使いこなす、新時代の基礎知識。</p>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-12">
+        <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-12 transform transition hover:-translate-y-1 hover:shadow-md duration-300">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center border-b-2 border-indigo-100 pb-3">
+                <svg class="w-6 h-6 mr-3 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                はじめに：パソコンは「文房具」から「パートナー」へ
+            </h2>
+            <div class="space-y-4 text-gray-600">
+                <p>これまでのパソコンは「文字を打つ」「計算する」といった、人間の作業を清書する『高度な文房具』でした。しかし現在のパソコンは、AIの発展により<strong>「一緒にアイデアを考える」「新しい交流の場を提供する」パートナー</strong>へと進化しています。大切なのは、すべての操作を暗記することではなく、ツールの「得意なこと」と「限界」を知り、道具として使いこなす姿勢です。</p>
+            </div>
+        </section>
+
+        <!-- 3つの基本概念 -->
+        <h2 class="text-3xl font-bold text-center mb-10 text-gray-800">新技術と付き合う3つの視点</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            
+            <!-- 1. 生成AIの活用と限界 -->
+            <div class="bg-white rounded-2xl shadow-lg border-t-4 border-ai overflow-hidden flex flex-col">
+                <div class="p-6 bg-violet-50/50 text-center border-b border-violet-100">
+                    <div class="w-16 h-16 mx-auto bg-ai text-white rounded-full flex items-center justify-center mb-4 shadow-sm">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">対話型AIとの付き合い方</h3>
+                    <p class="text-sm text-ai font-semibold mt-1">「優秀なアシスタント」の光と影</p>
+                </div>
+                <div class="p-6 flex-grow text-gray-600 text-sm">
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>得意なこと:</strong> 大量の文章の要約や、アイデアの壁打ち。GeminiやNotebookLMなどを活用すれば、資料作成の効率が飛躍的に上がります。</li>
+                        <li><strong>限界（注意点）:</strong> AIはもっともらしい「嘘（ハルシネーション）」をつくことがあります。最終的な事実確認と責任は、必ず人間が持つ必要があります。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 2. e-sportsとデジタル交流 -->
+            <div class="bg-white rounded-2xl shadow-lg border-t-4 border-esports overflow-hidden flex flex-col">
+                <div class="p-6 bg-pink-50/50 text-center border-b border-pink-100">
+                    <div class="w-16 h-16 mx-auto bg-esports text-white rounded-full flex items-center justify-center mb-4 shadow-sm">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">デジタルを通じた新しい交流</h3>
+                    <p class="text-sm text-esports font-semibold mt-1">「e-sports」というボーダーレス空間</p>
+                </div>
+                <div class="p-6 flex-grow text-gray-600 text-sm">
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>限界を超える:</strong> e-sportsは単なるゲームではなく、年齢、性別、体力の差を越えて同じフィールドで楽しめる新しい交流の形です。</li>
+                        <li><strong>コミュニティの力:</strong> オンライン・オフラインを問わず、同じ目標に向かって活動することで、地域や世代を超えたつながりを生み出します。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 3. 適応とアップデート -->
+            <div class="bg-white rounded-2xl shadow-lg border-t-4 border-mindset overflow-hidden flex flex-col">
+                <div class="p-6 bg-cyan-50/50 text-center border-b border-cyan-100">
+                    <div class="w-16 h-16 mx-auto bg-mindset text-white rounded-full flex items-center justify-center mb-4 shadow-sm">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">アップデートを楽しむ</h3>
+                    <p class="text-sm text-mindset font-semibold mt-1">「変化」を恐れず道具にする</p>
+                </div>
+                <div class="p-6 flex-grow text-gray-600 text-sm">
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>完璧を求めない:</strong> デジタルの世界は常に変化します。すべてのボタンの意味を覚える必要はありません。</li>
+                        <li><strong>目的ファースト:</strong> 「AIを使わなきゃ」と焦るのではなく、「自分のやりたい活動（俳句や資料作成など）を楽にするにはどう使うか？」という視点を持つことがリテラシーの第一歩です。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- インタラクティブ復習問題 -->
+        <section class="bg-slate-100 rounded-2xl p-8 mb-12 border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 text-center">おさらい復習問題（クリックで解答）</h2>
+            <div class="space-y-6 max-w-3xl mx-auto">
+                
+                <!-- 問題1 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <p class="font-bold text-lg mb-4 text-gray-800">Q1. 生成AI（Geminiなど）に質問をして、もっともらしい回答が返ってきました。この後の正しい対応はどれ？</p>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button onclick="checkAnswer('q1', false)" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold py-2 px-4 border border-slate-300 rounded shadow-sm transition">AIの言うことは絶対なので、そのまま資料に使う</button>
+                        <button onclick="checkAnswer('q1', true)" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold py-2 px-4 border border-slate-300 rounded shadow-sm transition">間違いが含まれている可能性を考え、必ず自分で事実を確認する</button>
+                    </div>
+                    <div id="ans-q1" class="quiz-answer mt-4 p-4 rounded bg-slate-50 border-l-4"></div>
+                </div>
+
+                <!-- 問題2 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <p class="font-bold text-lg mb-4 text-gray-800">Q2. 近年、シニア世代の間でも「e-sports」が注目されている最大の理由（メリット）はどれ？</p>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button onclick="checkAnswer('q2', false)" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold py-2 px-4 border border-slate-300 rounded shadow-sm transition">激しい運動により、筋肉を直接鍛えることができるから</button>
+                        <button onclick="checkAnswer('q2', true)" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold py-2 px-4 border border-slate-300 rounded shadow-sm transition">体力や年齢に関係なく、多様な世代とフラットに交流できるから</button>
+                    </div>
+                    <div id="ans-q2" class="quiz-answer mt-4 p-4 rounded bg-slate-50 border-l-4"></div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 用語集 -->
+        <section class="mt-16 bg-white rounded-2xl p-8 border border-slate-200">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-indigo-700 pl-4">第5章 用語集</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <h4 class="font-bold text-lg text-gray-800 mb-2 border-b border-slate-200 pb-2">生成AI (Generative AI)</h4>
+                    <p class="text-sm text-gray-600">学習したデータをもとに、新しい文章や画像、音声などを「作り出す」ことができる人工知能のこと。GeminiやChatGPTなどが代表的です。</p>
+                </div>
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <h4 class="font-bold text-lg text-ai mb-2 border-b border-slate-200 pb-2">プロンプト (Prompt)</h4>
+                    <p class="text-sm text-gray-600">AIに対して出す「指示」や「質問」のこと。上手なプロンプト（具体的な指示）を書く能力が、今後の必須スキルと言われています。</p>
+                </div>
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <h4 class="font-bold text-lg text-rose-700 mb-2 border-b border-slate-200 pb-2">ハルシネーション (Hallucination)</h4>
+                    <p class="text-sm text-gray-600">AIがもっともらしい「嘘」や「事実とは異なる情報」を生成してしまう現象。直訳で「幻覚」を意味します。</p>
+                </div>
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <h4 class="font-bold text-lg text-esports mb-2 border-b border-slate-200 pb-2">e-sports</h4>
+                    <p class="text-sm text-gray-600">「エレクトロニック・スポーツ」の略。コンピューターゲームを使った対戦をスポーツ競技として捉えるもの。シニア層の脳トレやコミュニティ形成としても注目されています。</p>
+                </div>
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <h4 class="font-bold text-lg text-gray-800 mb-2 border-b border-slate-200 pb-2">NotebookLM</h4>
+                    <p class="text-sm text-gray-600">自分が用意した資料（PDFやテキスト）だけを元に答えてくれる、GoogleのAIツール。調べ物や資料のまとめに特化しています。</p>
+                </div>
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <h4 class="font-bold text-lg text-gray-800 mb-2 border-b border-slate-200 pb-2">デジタルリテラシー</h4>
+                    <p class="text-sm text-gray-600">デジタル機器やインターネット上の情報を正しく理解し、目的に合わせて安全かつ効果的に活用できる能力のこと。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 mt-12 py-8 text-center text-slate-400 text-sm">
+        <p>&copy; 2026 パソコン基礎講座 All rights reserved.</p>
+    </footer>
+
+    <script>
+        function checkAnswer(question, isCorrect) {
+            const ansDiv = document.getElementById('ans-' + question);
+            ansDiv.classList.remove('border-emerald-500', 'border-rose-500', 'text-emerald-700', 'text-rose-700');
+            
+            if (question === 'q1') {
+                if (isCorrect) {
+                    ansDiv.innerHTML = '<span class="font-bold text-emerald-600">⭕ 正解！</span><br>AIは時に事実ではないこと（ハルシネーション）を自信満々に答えることがあります。最終的なチェックは人間の大切な仕事です。';
+                    ansDiv.classList.add('border-emerald-500', 'text-emerald-700');
+                } else {
+                    ansDiv.innerHTML = '<span class="font-bold text-rose-600">❌ 不正解...</span><br>AIの情報を鵜呑みにするのは危険です。必ず公式サイトや信頼できる情報源で事実確認（ファクトチェック）を行いましょう。';
+                    ansDiv.classList.add('border-rose-500', 'text-rose-700');
+                }
+            } else if (question === 'q2') {
+                if (isCorrect) {
+                    ansDiv.innerHTML = '<span class="font-bold text-emerald-600">⭕ 正解！</span><br>e-sportsの最大の魅力は、オンライン上で体力差を気にせず、孫世代や遠くの友人と一緒に楽しめる「ボーダーレスなコミュニケーションツール」である点です。';
+                    ansDiv.classList.add('border-emerald-500', 'text-emerald-700');
+                } else {
+                    ansDiv.innerHTML = '<span class="font-bold text-rose-600">❌ 不正解...</span><br>e-sports自体は画面上で行うため直接的な筋肉トレーニングにはなりませんが、脳の活性化や仲間との交流に大きな効果をもたらします。';
+                    ansDiv.classList.add('border-rose-500', 'text-rose-700');
+                }
+            }
+            
+            ansDiv.classList.add('show');
+        }
+    </script>
+</body>
+</html>
