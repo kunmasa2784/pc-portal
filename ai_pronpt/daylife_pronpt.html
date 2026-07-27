@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インタラクティブ・ガイドブック：Gemini活用術</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Soft Teal -->
+    <!-- Application Structure Plan: A single-page, vertical scrolling application with interactive accordion/toggle sections for each category. This structure was chosen for its simplicity and intuitiveness, making it easy for the target audience (65+ housewives) to navigate without getting lost. Users can use the navigation to explore topics. The core interaction—clicking to reveal prompt examples—prevents information overload and encourages active exploration. -->
+    <!-- Visualization & Content Choices: 
+        - Content Sections: (Goal: Organize/Inform) Each category from the report is a distinct section. Sub-categories contain interactive buttons. Interaction: Clicking a button reveals a list of specific prompts. Justification: This "progressive disclosure" method makes the content highly digestible and user-driven, avoiding a wall of text. Method: HTML/CSS/JS toggle.
+        - Icons: (Goal: Visual Cue) Unicode emojis are used for section headings (e.g., 🌱, 🍳) for a friendly, visually scannable interface. Method: Unicode characters.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #FDFBF8;
+            color: #403A3A;
+        }
+        .prompt-content {
+            transition: all 0.3s ease-in-out;
+            max-height: 0;
+            overflow: hidden;
+        }
+        .prompt-content.open {
+            max-height: 1000px; /* Adjust as needed */
+        }
+        .nav-button.active {
+            background-color: #047857;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-amber-50 text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-teal-800 mb-2">Gemini完全活用ガイドブック</h1>
+            <p class="text-xl text-stone-600">毎日をもっと楽しく、豊かにするプロンプト集</p>
+        </header>
+
+        <nav id="navbar" class="sticky top-0 bg-amber-50/90 backdrop-blur-sm z-10 py-4 mb-12 border-y border-amber-200">
+            <div class="flex flex-wrap justify-center gap-2 md:gap-4">
+            </div>
+        </nav>
+
+        <main id="app-content">
+        </main>
+
+    </div>
+
+    <script>
+        const appData = [
+            {
+                id: 'hobbies',
+                title: '趣味の世界を広げる 🌱',
+                description: '新しい趣味との出会いは、日々に新鮮な彩りを与えてくれます。今ある趣味をさらに深めるお手伝いもお任せください。',
+                subcategories: [
+                    {
+                        title: 'ガーデニング・家庭菜園',
+                        prompts: [
+                            'ベランダのプランターで、初心者でも簡単に育てられる夏野菜を3つ教えてください。それぞれの育て方のコツや、収穫までのおおよその期間も知りたいです。',
+                            'ミニトマトの葉に白い斑点ができてしまいました。これは病気でしょうか？原因として考えられることと、農薬を使わない家庭でできる優しい対策を複数教えてください。',
+                            '今の季節（7月）に庭に植えられる、香りの良いお花は何がありますか？虫がつきにくく、切り花としても楽しめる育てやすいものを希望します。',
+                            'きゅうりの実が苦くなってしまいます。水やりや肥料で気をつけるべき点は何ですか？美味しく育てるための秘訣を教えてください。'
+                        ]
+                    },
+                    {
+                        title: '新しい学び・創作活動',
+                        prompts: [
+                            '夏の夕暮れをテーマにした俳句を5つ作ってください。季語は「夕涼み」でお願いします。それぞれの句について、簡単な情景の説明も加えてください。',
+                            'これから水彩画を始めてみたいです。初心者が最初に揃えるべき道具一式を、品質と価格のバランスを考えた選び方のポイントと一緒にリストアップしてください。',
+                            '余っている毛糸がたくさんあります。かぎ針編みでできる、簡単な小物（コースターや小さなポーチなど）のアイデアと、写真付きで解説しているような分かりやすい作り方の手順を教えてください。',
+                            '自分史を少しずつ書き始めてみたいです。何から書き始めれば良いか、構成のアイデアや、思い出すためのヒントになるような質問をいくつかください。'
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'cooking',
+                title: '毎日の料理をもっと楽しく、健康的に 🍳',
+                description: '献立の悩みから解放され、食卓から家族の健康を支えましょう。新しい味への挑戦も応援します。',
+                subcategories: [
+                    {
+                        title: '献立・レシピの提案',
+                        prompts: [
+                            '冷蔵庫に、豚こま切れ肉、玉ねぎ、ピーマンがあります。これらを使って30分以内に作れる、簡単で美味しい夕食のレシピを3つ、調理手順を追いながら提案してください。',
+                            '最近、夫婦で血圧が気になります。塩分控えめでも満足感があり、美味しく食べられる鶏むね肉を使ったメイン料理のレシピを教えてください。減塩のコツも知りたいです。',
+                            '今日は暑くて食欲がありません。夏野菜（トマト、きゅうり、なす）をたっぷり使った、さっぱりして食べやすい麺料理のレシピを、そうめんと冷製パスタでそれぞれ教えてください。'
+                        ]
+                    },
+                    {
+                        title: '健康管理',
+                        prompts: [
+                            '60代女性向けの、骨粗しょう症予防を意識した1週間の健康的な献立を考えてください。カルシウムとビタミンDが豊富な食材を取り入れた和食中心で、買い物リストも作ってくれると助かります。',
+                            '膝に負担がかからない、室内でテレビを見ながらでもできる5分程度の簡単なストレッチを教えてください。特に下半身の筋力維持に効果的なものが知りたいです。'
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'travel',
+                title: '旅行やお出かけの計画 ✈️',
+                description: '計画を立てる時間も旅の楽しみの一つ。でも、情報が多すぎて大変な時はGeminiがいれば安心です。',
+                subcategories: [
+                    {
+                        title: '具体的なプランニング',
+                        prompts: [
+                           '千葉県の船橋駅から電車で1時間以内で行ける、紫陽花が綺麗な名所を教えてください。ランチにおすすめの、落ち着いた雰囲気で美味しい和食がいただけるお店もいくつか候補を挙げてほしいです。',
+                           '今度の週末、主人と二人で鎌倉に行きます。定番の鶴岡八幡宮や大仏は訪れたいですが、あまり混雑していない静かなお寺や、こだわりのコーヒーが飲めるカフェも楽しめる、大人のための日帰りモデルコースを時間軸に沿って提案してください。',
+                           '来年の春に、小学生の孫（男の子）と70代の親を連れて3世代で旅行に行きます。子供が体を動かして遊べて、高齢の親もゆっくり温泉に入れるような宿泊施設はどこかありますか？関東近郊で、バリアフリーに対応している宿を3つ候補を挙げてください。'
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'communication',
+                title: '家族や友人との心温まるコミュニケーション 💌',
+                description: '言葉で気持ちを伝えるのは、時に少し照れくさいもの。そんな時、あなたの心を届けるお手伝いをします。',
+                subcategories: [
+                    {
+                        title: '手紙やメッセージの作成',
+                        prompts: [
+                           'しばらく会っていない友人への、残暑見舞いの手紙を書いてください。相手の健康を気遣い、「また近いうちにお茶でも」と気軽に誘えるような、丁寧で温かい文章でお願いします。',
+                           '遠方に住む息子夫婦に、孫の誕生日プレゼントを送る際のメッセージカードの文面を考えてください。「お誕生日おめでとう」の気持ちと、健やかな成長を願う言葉、そして親である息子夫婦への労いの言葉も少し添えたいです。',
+                           '最近の小学生の間では、どんな遊びやアニメ、ゲームが流行っていますか？今度来る孫との会話のきっかけになるように、いくつか具体的な名前と、どんな内容なのかを簡単に教えてください。'
+                        ]
+                    }
+                ]
+            },
+             {
+                id: 'deepresearch',
+                title: '専門的な情報収集 (DeepResearch) 📚',
+                description: '健康のこと、趣味の歴史、地域の情報など、インターネット上の膨大な情報の中から、信頼できる情報を集めて分かりやすく要約します。',
+                subcategories: [
+                    {
+                        title: '知りたいことを深く探る',
+                        prompts: [
+                            '「ポリフェノール」が体に良いと聞きますが、具体的にどのような健康効果が期待できるのか、科学的な根拠を基に詳しく解説してください。また、ポリフェノールを多く含む食品もリストアップしてください。',
+                            '私の住んでいる千葉県船橋市で、60代から始められるコーラスサークルや合唱団を探しています。活動場所、練習日、費用などの情報をまとめて一覧にしてください。',
+                            '葛飾北斎の「富嶽三十六景」について、制作された背景や、特に有名な作品の見どころを専門家の視点で解説してください。'
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'canvas',
+                title: '共同ノート (Canvas) でアイデアを整理・保存 📝',
+                description: 'レシピ集、旅行のしおり、自分史など、長文の作成や情報の整理に最適です。一度作った後でも、いつでも修正や追加ができます。',
+                subcategories: [
+                    {
+                        title: 'あなただけのノート作り',
+                        prompts: [
+                           'これからこのノートに、我が家の「おせち料理」のレシピ集を作りたいです。まず「筑前煮」「栗きんとん」「紅白なます」の3品の材料と作り方を書き出してください。',
+                           '（↑の続き）ありがとうございます。では次に「伊達巻」のレシピを追加してください。',
+                           '秋に計画している京都旅行のしおりを作成します。まず「1日目：嵐山散策コース」として、おすすめの観光スポットと移動手段、昼食場所の案を書き出してください。'
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'image_generation',
+                title: '画像生成で、イメージを絵にする 🎨',
+                description: 'あなたの言葉から、世界に一枚だけの美しい画像をAIが生成します。頭の中にあるイメージを、まるで絵画のように形にすることができます。',
+                 subcategories: [
+                    {
+                        title: '想像を形にする',
+                        prompts: [
+                           '「夏の終わりの夕暮れ、縁側でうちわを扇ぎながらスイカを食べる、優しいおばあちゃんの水彩画風のイラスト」を生成してください。',
+                           '「たくさんの種類のバラが咲き誇る、イングリッシュガーデンのアーチ。柔らかな日差しが差し込んでいる、写真のようにリアルな画像」をお願いします。',
+                           '「青い着物を着たかぐや姫が、満月を見上げている、幻想的で美しい日本画風のイラスト」を作ってください。'
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'advice',
+                title: '使い方のアドバイス ✨',
+                description: 'Geminiと上手に付き合うための、ちょっとしたコツです。これらを意識すると、より便利にGeminiを使いこなせます。',
+                subcategories: [
+                     {
+                        title: '上手に付き合うコツ',
+                        isAdvice: true,
+                        advice: [
+                            { title: '具体的に質問する', text: '「何か教えて」よりも「トマトの育て方を教えて」の方が、的確な答えが返ってきます。状況や希望を詳しく伝えるほど、あなたの理想に近い答えになります。' },
+                            { title: '役割を与える', text: '「あなたはプロの編集者です」「あなたはベテランの旅行プランナーです」のように役割を与えると、その道の専門家になりきって、より質の高い視点で答えてくれます。' },
+                            { title: '条件を追加する', text: '「小学生にも分かるように」「優しい言葉で」「箇条書きでまとめて」といった条件を加えることで、答えの形式やトーンをあなた好みに調整できます。' },
+                            { title: '対話を続ける', text: '一度の回答で満足できなくても大丈夫です。「もう少し詳しく教えて」「他の選択肢は？」など、人間と話すように対話を続けてみてください。' }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const appContent = document.getElementById('app-content');
+            const navbar = document.getElementById('navbar').querySelector('div');
+
+            appData.forEach(section => {
+                const sectionHtml = `
+                    <section id="${section.id}" class="mb-12 scroll-mt-24">
+                        <h2 class="text-2xl md:text-3xl font-bold text-teal-700 mb-4 pb-2 border-b-2 border-amber-200">${section.title}</h2>
+                        <p class="mb-8 text-stone-600">${section.description}</p>
+                        <div class="space-y-4">
+                            ${section.subcategories.map(subcat => {
+                                if (subcat.isAdvice) {
+                                    return `
+                                    <div class="bg-white/60 p-4 rounded-lg shadow-sm">
+                                        <h3 class="text-xl font-semibold text-emerald-800 mb-3">${subcat.title}</h3>
+                                        <ul class="space-y-3 list-inside">
+                                            ${subcat.advice.map(item => `
+                                                <li class="text-stone-700">
+                                                    <strong class="text-emerald-700">${item.title}：</strong>${item.text}
+                                                </li>
+                                            `).join('')}
+                                        </ul>
+                                    </div>
+                                    `;
+                                }
+                                return `
+                                <div class="bg-white/60 rounded-lg shadow-sm overflow-hidden">
+                                    <button class="prompt-toggle w-full text-left p-4 flex justify-between items-center bg-transparent hover:bg-amber-100/50 transition-colors">
+                                        <span class="text-xl font-semibold text-emerald-800">${subcat.title}</span>
+                                        <span class="transform transition-transform text-2xl text-emerald-600">▼</span>
+                                    </button>
+                                    <div class="prompt-content">
+                                        <ul class="p-4 pt-0 space-y-3 text-stone-700">
+                                            ${subcat.prompts.map(prompt => `<li class="p-3 bg-emerald-50/70 rounded-md border-l-4 border-emerald-500">${prompt}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                </div>
+                            `}).join('')}
+                        </div>
+                    </section>
+                `;
+                appContent.innerHTML += sectionHtml;
+                
+                const navButton = document.createElement('button');
+                navButton.className = 'nav-button px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base font-semibold text-teal-800 rounded-full hover:bg-teal-600 hover:text-white transition-colors';
+                navButton.textContent = section.title.split(' ')[0];
+                navButton.dataset.target = `#${section.id}`;
+                navbar.appendChild(navButton);
+            });
+
+            const promptToggles = document.querySelectorAll('.prompt-toggle');
+            promptToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const content = toggle.nextElementSibling;
+                    const icon = toggle.querySelector('span:last-child');
+                    
+                    content.classList.toggle('open');
+                    icon.classList.toggle('rotate-180');
+                });
+            });
+
+            const navButtons = document.querySelectorAll('.nav-button');
+            navButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = button.dataset.target;
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+            
+            const sections = document.querySelectorAll('main section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        navButtons.forEach(btn => {
+                            btn.classList.toggle('active', btn.dataset.target === `#${id}`);
+                        });
+                    }
+                });
+            }, { rootMargin: '-40% 0px -60% 0px' });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>

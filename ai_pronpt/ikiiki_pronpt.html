@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>いきいき同窓会 活性化のためのプロンプト・アイデアハブ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals (Slate, Amber) with Sky Blue Accent -->
+    <!-- Application Structure Plan: The SPA is structured as an "Idea Hub" or "Prompt Explorer". The main view is a grid of 8 category cards. Clicking a card dynamically loads the prompts for that category into a dedicated display area below. Each prompt is presented in an accordion-style card, showing the prompt text first, with the explanation expandable on click. This structure was chosen to make the large collection of text-based prompts easily navigable without overwhelming the user. It encourages exploration and provides a focused view for each category, enhancing usability over a long, linear document. -->
+    <!-- Visualization & Content Choices: 
+        - Category Navigation -> Goal: Organize/Navigate -> Interactive Card Grid -> Justification: Provides a clear, visual overview of all topics and serves as the primary navigation, making content discovery intuitive -> Vanilla JS.
+        - Prompt Display -> Goal: Inform/Detail -> Accordion Cards -> Justification: Manages information density by hiding detailed explanations initially, allowing users to scan prompts quickly and dive into details as needed -> Vanilla JS.
+        - Prompt Text -> Goal: Enable Action -> Code Block with Copy Button -> Justification: The core purpose is to use these prompts. This makes them easy to copy and paste into another application (like an AI chat), fulfilling the user's primary task -> Vanilla JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .category-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .prompt-code {
+            position: relative;
+            background-color: #1e293b; /* slate-800 */
+            color: #e2e8f0; /* slate-200 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: #475569; /* slate-600 */
+            color: white;
+            border: none;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        .copy-btn:hover {
+            background-color: #334155; /* slate-700 */
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-3xl font-bold text-sky-800">いきいき同窓会 活性化のためのプロンプト・アイデアハブ</h1>
+            <p class="mt-2 text-md text-slate-600">AIへの質問（プロンプト）を活用して、同窓会活性化の新しいアイデアを見つけましょう。</p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <section id="categories">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6">カテゴリを選択してください</h2>
+            <div id="category-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            </div>
+        </section>
+
+        <section id="prompts" class="mt-12">
+            <div id="prompt-display-container" class="hidden">
+                 <h2 id="prompt-category-title" class="text-2xl font-bold text-slate-900 mb-6"></h2>
+                 <div id="prompt-display" class="space-y-6"></div>
+            </div>
+            <div id="prompt-placeholder" class="text-center py-16 bg-white rounded-lg shadow-inner">
+                <p class="text-slate-500">上のカテゴリをクリックすると、ここに関連するプロンプトが表示されます。</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-white mt-16">
+        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-sm text-slate-400">&copy; 2025 いきいき同窓会 活性化推進プロジェクト</p>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const promptData = [
+            {
+                id: 1,
+                title: '魅力的な活動・イベント企画',
+                icon: '🎉',
+                prompts: [
+                    {
+                        title: 'プロンプト例 1-1: 新しい同好会・イベントのアイデア',
+                        prompt: `あなたは経験豊富なイベントプランナーです。「いきいき同窓会」の会員（60代～80代が中心）が、思わず参加したくなるような新しい同好会やイベントのアイデアを5つ提案してください。\n\n# 条件\n- 会員の知的好奇心を刺激する「学び」の要素を含める\n- 健康増進や生きがいにつながる要素を含める\n- 若い世代（新規卒業生）も興味を持つような、世代間交流が生まれる企画を最低1つ含める\n- E-Sports同好会の成功事例のように、デジタルツールを活用する企画を最低1つ含める`,
+                        explanation: 'AIに専門家の役割を与えることで、質の高い提案を引き出します。資料にあった「学び」「健康」「世代間交流」「デジタル活用」という成功要因を条件に含め、同窓会のニーズに合った具体的で魅力的な企画の創出を促します。'
+                    },
+                    {
+                        title: 'プロンプト例 1-2: 既存行事の刷新アイデア',
+                        prompt: `「いきいき同窓会」の既存の年中行事（例：総会、作品展など）がマンネリ化しているという課題があります。これらの行事を、より多くの会員が参加したくなるような魅力的なイベントに刷新するための具体的な改善案を、各行事ごとに3つ提案してください。`,
+                        explanation: '全く新しい企画だけでなく、既存の活動を見直す視点も重要です。このプロンプトは、伝統ある行事の良さを活かしつつ、現代のニーズに合わせてアップデートするためのアイデアを引き出すことを目的としています。'
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: 'コミュニケーション活性化と情報発信',
+                icon: '💬',
+                prompts: [
+                    {
+                        title: 'プロンプト例 2-1: SNSコンテンツ企画案',
+                        prompt: `あなたはSNS運用の専門家です。「いきいき同窓会」のホームページやLINE公式アカウントで発信するためのコンテンツ企画案を、以下の形式で3つ提案してください。目的は、活動の「楽しさ」や「価値」を伝え、会員の参加意欲を高めることです。\n\n# 形式\n- **企画タイトル:**\n- **内容:** (どのような情報を、どのように見せるか)\n- **ねらい:** (この発信で、会員にどう感じてほしいか)\n- **投稿文(例):** (読者の興味を引くような具体的な文章)`,
+                        explanation: '活動の「見える化」を具体的に進めるためのプロンプトです。専門家の役割と具体的な「形式」を指定することで、「準備段階のわくわく感」や「参加者の笑顔」が伝わるような、実践的なコンテンツ案を作成させることができます。'
+                    },
+                    {
+                        title: 'プロンプト例 2-2: デジタル会報の改善アイデア',
+                        prompt: `「いきいき同窓会」のデジタル会報を、紙媒体よりも「面白い」「読んでみたい」と思わせるための改善アイデアを5つ提案してください。写真や動画の活用以外で、会員の参加を促す双方向的な仕掛け（例：クイズ、アンケート、投稿コーナー）を含めてください。`,
+                        explanation: 'デジタル化のメリットを最大限に活かし、単なる情報伝達ツールではない「参加型メディア」としての会報を目指すためのプロンプトです。読者が受け身にならずに関われるようなインタラクティブなアイデアを引き出します。'
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: '新規会員の獲得と定着支援',
+                icon: '🤝',
+                prompts: [
+                    {
+                        title: 'プロンプト例 3-1: 新規会員向けキャッチコピー',
+                        prompt: `あなたはマーケティング戦略家です。市民大学校の新規修了生（主に60代）が、「いきいき同窓会に入会したい！」と感じるようなキャッチコピーを5つ考えてください。同窓会に参加するメリットが直感的に伝わるような、魅力的で心に響く言葉をお願いします。`,
+                        explanation: '新規会員獲得の第一歩は、同窓会の魅力を的確に伝えることです。マーケティングの視点から、ターゲットの心に刺さる言葉を創出することを目的としています。「第二の人生」「仲間づくり」「新しい挑戦」といったキーワードをAIに与えることで、より効果的なキャッチコピーが期待できます。'
+                    },
+                    {
+                        title: 'プロンプト例 3-2: 新会員向けウェルカムプログラム',
+                        prompt: `新しく「いきいき同窓会」に入会した会員が、孤立せずにすぐに馴染めるようにするための「ウェルカムプログラム」を企画してください。入会直後から3ヶ月間の具体的なアクションプランを、タイムライン形式で提案してください。メンター制度の導入や、新会員同士の交流会なども含めてください。`,
+                        explanation: '入会後のフォローアップは、会員の定着率を大きく左右します。このプロンプトは、新会員が安心して活動に参加し、仲間を見つけられるような具体的な仕組みづくりを目的としています。体系的なプログラムとして整理させるのに役立ちます。'
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: '会員の主体性とエンゲージメント向上',
+                icon: '💡',
+                prompts: [
+                    {
+                        title: 'プロンプト例 4-1: 会員からの企画提案を促す仕組み',
+                        prompt: `あなたはコミュニティマネージャーです。会員から「こんなことをやってみたい！」という自発的な企画や提案を吸い上げ、実現までサポートするための具体的な仕組みを提案してください。「提案ボックス」の設置から、理事会での検討、実行支援までのプロセスを明確に示してください。`,
+                        explanation: '会員の主体性を尊重し、「やらされている感」をなくすためのプロンプトです。会員のアイデアを形にするプロセスを構築することで、運営への参画意識を高め、組織全体の活性化につなげます。'
+                    },
+                    {
+                        title: 'プロンプト例 4-2: サイレント会員へのアプローチ',
+                        prompt: `活動にあまり参加できていない「サイレント会員」に対して、再び同窓会に関心を持ってもらうためのアプローチ方法を5つ提案してください。デジタル名簿の情報を活用し、個々の興味に合わせたパーソナルな働きかけのアイデアを含めてください。`,
+                        explanation: '全会員とのつながりを維持し、離脱を防ぐためのプロンプトです。画一的なアプローチではなく、データに基づいた個別のアプローチを考えることで、休眠会員の掘り起こしとエンゲージメント回復を目指します。'
+                    }
+                ]
+            },
+            {
+                id: 5,
+                title: 'デジタル活用推進とリテラシー向上支援',
+                icon: '💻',
+                prompts: [
+                    {
+                        title: 'プロンプト例 5-1: デジタル倶楽部の年間カリキュラム',
+                        prompt: `PCやスマホ操作が苦手な会員向けに開催する「ゆっくりデジタル倶楽部」の年間カリキュラムを作成してください。参加者が「できなかったことができるようになった」という成功体験を積み重ね、楽しみながら学べるような構成にしてください。\n\n# 含めるべき内容\n- 初級、中級、応用編の3つのレベル\n- 各レベルの学習目標\n- 具体的な講座内容（例：LINEの使い方、オンライン会議への参加方法、デジタル写真の整理術など）\n- 教える側（中級者会員）のモチベーションを高める工夫`,
+                        explanation: 'デジタルデバイドの解消は、同窓会全体のDXを成功させる鍵です。「教え合いの文化」を醸成する視点を加えることで、学習機会の提供だけでなく、新たな交流や役割創出にもつなげます。'
+                    },
+                    {
+                        title: 'プロンプト例 5-2: 運営効率化のためのデジタルツール提案',
+                        prompt: `あなたはITコンサルタントです。「いきいき同窓会」の運営を効率化し、役員の負担を軽減するためのデジタルツールを3つ提案してください。会員名簿管理、イベント出欠管理、会計管理のそれぞれの分野で、シニア世代でも比較的簡単に使えるツールを選定し、その導入メリットを説明してください。`,
+                        explanation: '運営側の負担軽減は、持続可能な組織運営に不可欠です。このプロンプトは、具体的な業務課題を解決するためのツール選定をAIに依頼することで、実用的なDX推進プランの策定を支援します。'
+                    }
+                ]
+            },
+            {
+                id: 6,
+                title: '組織運営の改革とリーダーシップ育成',
+                icon: '🏛️',
+                prompts: [
+                    {
+                        title: 'プロンプト例 6-1: 理事会改革の改善策',
+                        prompt: `あなたは組織コンサルタントです。「いきいき同窓会」の理事会が、単なる報告の場から脱却し、活発な議論やアイデアが生まれる「共創の場」になるための具体的な改善策を3つ提案してください。ファシリテーションの手法や、オンラインツール（Google Jamboardなど）の活用方法も含めてください。`,
+                        explanation: '資料で最も根深い問題として指摘されていた「理事会の機能不全」を解決するためのプロンプトです。会議の生産性を高める具体的な手法を提案させ、形骸化した会議を再生させるための実践的なヒントを得ることができます。'
+                    },
+                    {
+                        title: 'プロンプト例 6-2: 次世代リーダー育成プログラム',
+                        prompt: `同窓会の将来を担う、新しいリーダーや運営ボランティアを発掘・育成するための「次世代リーダー育成プログラム」の骨子を提案してください。現役員のサポート業務から企画立案まで、段階的に運営に関わってもらうステップや、新任者向けの研修内容を含めてください。`,
+                        explanation: '「業務の属人化」や「後継者不足」という課題に対応するためのプロンプトです。意欲ある会員がスムーズに運営に参加できる道筋を作ることで、組織の持続可能性を高めることを目指します。'
+                    }
+                ]
+            },
+            {
+                id: 7,
+                title: '地域社会との連携と社会貢献',
+                icon: '🌳',
+                prompts: [
+                    {
+                        title: 'プロンプト例 7-1: 地域貢献ボランティア活動のアイデア',
+                        prompt: `「いきいき同窓会」が持つ会員の知識、経験、スキル（例：元教師、技術者、経理担当など）を活かして、地域社会に貢献できるボランティア活動のアイデアを5つ提案してください。地域の団体や小中学校と連携するような企画を含めてください。`,
+                        explanation: '会員が持つ豊富なリソースを社会貢献に繋げ、会員自身の生きがいや誇りを創出することを目的としています。同窓会が地域にとって不可欠な存在となることで、組織の社会的価値と求心力を高めます。'
+                    },
+                    {
+                        title: 'プロンプト例 7-2: 地域への広報戦略',
+                        prompt: `同窓会の活動や存在を、地域住民にもっと広く知ってもらうための広報戦略を3つ提案してください。地域の広報誌やケーブルテレビ、コミュニティFMなど、シニア層に届きやすいメディアの活用方法を具体的に示してください。`,
+                        explanation: '同窓会の活動を内に閉じるのではなく、外に開いていくためのプロンプトです。地域での認知度を高めることで、新たな協力者や連携の機会が生まれ、活動の幅が広がる可能性があります。'
+                    }
+                ]
+            },
+            {
+                id: 8,
+                title: '財政基盤の安定化と会員価値の向上',
+                icon: '💰',
+                prompts: [
+                    {
+                        title: 'プロンプト例 8-1: 新たな収入源確保のアイデア',
+                        prompt: `あなたはファンドレイザーです。「いきいき同窓会」の財政基盤を安定させるため、会費以外の新たな収入源を確保するためのアイデアを3つ提案してください。地域企業からの協賛、クラウドファンディングの活用、有料講座の開催など、実現可能性のある具体的な方法をお願いします。`,
+                        explanation: '会費収入だけに頼らない、多角的な財源確保の道を探るためのプロンプトです。安定した財政基盤は、より充実した活動を展開するための土台となります。'
+                    },
+                    {
+                        title: 'プロンプト例 8-2: 会員限定特典・サービスのアイデア',
+                        prompt: `「いきいき同窓会」で年会費を払う価値があると感じてもらえるような、会員限定の特典やサービスを5つ提案してください。特に、会費を払ってでも利用したいと思えるような、独自性と実用性の高いアイデア（例：提携店での割引、専門家会員による無料相談会など）をお願いします。`,
+                        explanation: '会員であることのメリットを具体的に示すことは、会費納入率の向上と退会防止に直結します。活動への参加不参加に関わらず、全会員が享受できる「価値」を創出するためのアイデアを引き出します。'
+                    }
+                ]
+            }
+        ];
+
+        const categoryGrid = document.getElementById('category-grid');
+        const promptDisplayContainer = document.getElementById('prompt-display-container');
+        const promptCategoryTitle = document.getElementById('prompt-category-title');
+        const promptDisplay = document.getElementById('prompt-display');
+        const promptPlaceholder = document.getElementById('prompt-placeholder');
+
+        function renderCategories() {
+            promptData.forEach(category => {
+                const card = document.createElement('div');
+                card.className = 'category-card bg-white p-6 rounded-lg shadow-md cursor-pointer flex flex-col items-center text-center';
+                card.dataset.categoryId = category.id;
+                card.innerHTML = `
+                    <div class="text-4xl mb-4">${category.icon}</div>
+                    <h3 class="text-lg font-bold text-slate-900">${category.title}</h3>
+                `;
+                card.addEventListener('click', () => {
+                    renderPrompts(category.id);
+                });
+                categoryGrid.appendChild(card);
+            });
+        }
+
+        function renderPrompts(categoryId) {
+            const category = promptData.find(c => c.id === categoryId);
+            if (!category) return;
+
+            promptPlaceholder.classList.add('hidden');
+            promptDisplayContainer.classList.remove('hidden');
+            
+            promptCategoryTitle.innerHTML = `<span class="mr-3">${category.icon}</span>${category.title}`;
+            promptDisplay.innerHTML = '';
+
+            category.prompts.forEach((prompt, index) => {
+                const promptCard = document.createElement('div');
+                promptCard.className = 'bg-white rounded-lg shadow-sm overflow-hidden';
+                promptCard.innerHTML = `
+                    <div class="p-4 border-b border-slate-200 cursor-pointer flex justify-between items-center accordion-toggle">
+                        <h4 class="font-bold text-md text-slate-800">${prompt.title}</h4>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="p-4">
+                            <div class="prompt-code">
+                                <button class="copy-btn">コピー</button>
+                                <code>${prompt.prompt}</code>
+                            </div>
+                            <div class="mt-4 p-4 bg-slate-100 rounded-md">
+                                <h5 class="font-bold text-sm mb-2 text-slate-700">【解説】</h5>
+                                <p class="text-sm text-slate-600">${prompt.explanation}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                promptDisplay.appendChild(promptCard);
+            });
+
+            promptDisplayContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        promptDisplay.addEventListener('click', e => {
+            if (e.target.classList.contains('copy-btn')) {
+                const codeElement = e.target.nextElementSibling;
+                navigator.clipboard.writeText(codeElement.innerText).then(() => {
+                    e.target.textContent = 'コピー完了!';
+                    setTimeout(() => {
+                        e.target.textContent = 'コピー';
+                    }, 2000);
+                });
+            }
+
+            if (e.target.closest('.accordion-toggle')) {
+                const toggle = e.target.closest('.accordion-toggle');
+                const content = toggle.nextElementSibling;
+                const arrow = toggle.querySelector('span');
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                    arrow.style.transform = 'rotate(0deg)';
+                } else {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    arrow.style.transform = 'rotate(180deg)';
+                }
+            }
+        });
+
+        renderCategories();
+    });
+    </script>
+</body>
+</html>

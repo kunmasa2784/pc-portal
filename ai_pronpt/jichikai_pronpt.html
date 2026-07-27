@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自治会・町会の悩み解決プロンプト集</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutral (Stone, Slate, Amber) -->
+    <!-- Application Structure Plan: A task-oriented interactive tool. The user first sees 8 problem categories in a grid. Clicking a category instantly filters and displays the relevant prompts on the right (or below on mobile). Each prompt is a 'card' with a title, explanation, and a one-click 'copy' button. This structure transforms the static report into a dynamic tool, allowing users to quickly find and use a solution without reading the entire document. A welcome section explains the tool's purpose, and a small chart provides a visual overview of the problem categories, enhancing engagement. -->
+    <!-- Visualization & Content Choices: Report Info -> 8 Problem Categories. Goal -> Quick Navigation & Selection. Viz/Method -> Interactive Grid with Icons (HTML/CSS/Unicode). Interaction -> Click to filter prompts. Justification -> Visually appealing and much faster than scrolling a list. | Report Info -> 16 Prompts. Goal -> Easy Reading & Usage. Viz/Method -> Content Cards with structured text and a 'Copy' button. Interaction -> Click to copy prompt to clipboard. Justification -> Makes the core content (the prompts) immediately actionable. | Report Info -> Overall structure. Goal -> Provide overview. Viz/Method -> Chart.js Doughnut Chart showing 8 categories. Justification -> Adds a modern dashboard feel and visual context to the available information. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: auto;
+            max-height: 400px;
+        }
+        .prompt-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .prompt-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .nav-button.active {
+            background-color: #ca8a04; /* amber-600 */
+            color: white;
+            transform: scale(1.05);
+        }
+        .copy-button:active {
+            transform: scale(0.95);
+        }
+        .toast-message {
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800">
+
+    <div id="toast" class="toast-message fixed top-5 right-5 bg-emerald-500 text-white py-2 px-4 rounded-lg shadow-lg opacity-0 transform translate-y-[-20px] z-50">
+        コピーしました！
+    </div>
+
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <h1 class="text-2xl sm:text-3xl font-bold text-slate-800 text-center">自治会・町会の悩み解決プロンプト集</h1>
+            <p class="text-center text-slate-600 mt-2">あなたの悩みに合った解決策のヒントをAIから引き出しましょう。</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <aside class="lg:col-span-1">
+                <div class="bg-white p-6 rounded-xl shadow-lg sticky top-8">
+                    <h2 class="text-xl font-bold mb-4 border-b-2 border-amber-500 pb-2">課題カテゴリーを選択</h2>
+                    <p class="text-sm text-stone-600 mb-6">解決したい悩みのカテゴリーをクリックすると、具体的なプロンプトが表示されます。</p>
+                    <div id="category-navigation" class="grid grid-cols-1 gap-4">
+                    </div>
+                </div>
+            </aside>
+
+            <section id="content-area" class="lg:col-span-2 space-y-8">
+                <div id="welcome-section" class="bg-white p-8 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-4">ようこそ！このツールの使い方</h2>
+                    <p class="text-stone-600 mb-6 leading-relaxed">
+                        このツールは、自治会・町会運営の様々な課題を解決するための「プロンプト（AIへの指示・質問文）」を見つけるお手伝いをします。左のカテゴリーからあなたの悩みに近いものを選択してください。AIへの質問の仕方を工夫するだけで、具体的で役立つ回答を引き出すことができます。
+                    </p>
+                    <div class="bg-amber-50 border border-amber-200 p-4 rounded-lg">
+                        <h3 class="font-bold text-amber-800 mb-2">💡 プロンプト活用のコツ</h3>
+                        <ul class="list-disc list-inside text-sm text-amber-900 space-y-1">
+                            <li><strong>役割を与える：</strong>「あなたはプロの〇〇です」とAIに役割を伝えます。</li>
+                            <li><strong>背景を詳しく伝える：</strong>自治会の規模や地域の特徴、課題を具体的に説明します。</li>
+                            <li><strong>制約条件を伝える：</strong>予算や人員など、実現可能な条件を示します。</li>
+                            <li><strong>出力形式を指定する：</strong>「箇条書きで」「表形式で」など、答えの形を指定します。</li>
+                        </ul>
+                    </div>
+                     <div class="mt-8">
+                        <h3 class="text-lg font-semibold text-center text-slate-700 mb-4">課題カテゴリー分布</h3>
+                        <div class="chart-container">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div id="prompt-display" class="space-y-8"></div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="text-center py-6 mt-8 bg-white border-t">
+        <p class="text-stone-500 text-sm">このツールは、自治会・町内会の活動を支援するために作成されました。</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const promptData = {
+                "運営・組織": [
+                    {
+                        title: "1-1：役員のなり手を増やしたい",
+                        prompt: "あなたは、多くの自治会の課題を解決してきた経験豊富なコミュニティコンサルタントです。\n\n# 背景\n私たちの自治会は、約【300世帯】で構成されており、住民の高齢化が進んでいます。そのため、毎年役員のなり手が不足し、役員選出が非常に難航しています。結果として、同じ人が何年も役員を続けざるを得ず、負担が集中している状況です。\n\n# 課題\n役員の負担を軽減し、現役世代や新しい住民が「これなら自分にもできそう」と感じられるような、魅力的な自治会運営の仕組みと、新しい役員の選出方法を提案してください。\n\n# 条件\n* 役員の役割分担（会計、広報、イベント担当など）を細分化するアイデア\n* オンラインツールを活用して会議や情報共有を効率化する方法\n* 役員を務めることのメリットやインセンティブの導入案\n* 選出方法の公平性を保つためのアイデア（ポイント制など）\n\n上記の条件を踏まえ、具体的なアイデアを複数、それぞれのメリット・デメリットと共に提案してください。",
+                        explanation: "単に「なり手を増やす方法」を尋ねるのではなく、「負担軽減」と「魅力向上」という2つの側面から具体的な解決策を求めています。AIにコンサルタントの役割を与えることで、多角的な視点からの体系的な提案が期待できます。"
+                    },
+                    {
+                        title: "1-2：会議を効率化し、意思決定を迅速にしたい",
+                        prompt: "あなたは、企業の生産性向上を支援する業務改善コンサルタントです。\n\n# 背景\n私たちの自治会では、役員会を毎月1回開催していますが、毎回2時間以上かかり、議論がまとまらないことがよくあります。議題が多岐にわたる上、話が脱線しがちで、参加者の負担が大きくなっています。\n\n# 課題\n自治会の役員会を効率的に運営し、意思決定をスムーズに行うための具体的な手法やルールを提案してください。\n\n# 条件\n* 会議の前にできる準備（アジェンダの事前共有、資料のペーパーレス化など）\n* 効果的な会議の進行方法（タイムキーパーの設置、議題ごとの時間設定など）\n* 意見が分かれた際の合意形成のルール\n* オンライン会議と対面会議のハイブリッド開催のコツ\n\nこれらの条件について、明日からでも実践できる具体的なアクションプランをステップ形式で示してください。",
+                        explanation: "「業務改善コンサルタント」という役割を与えることで、ビジネスで使われるような実践的な会議運営術の提案を促します。具体的なアクションプランを求めることで、漠然とした精神論ではなく、すぐに実行可能な手順を知ることができます。"
+                    }
+                ],
+                "イベント・行事": [
+                    {
+                        title: "2-1：イベントの参加者を増やし、マンネリを打破したい",
+                        prompt: "あなたは、地域活性化を専門とするプロのイベントプランナーです。\n\n# 背景\n私たちの自治会では、毎年【夏祭り】と【防災訓練】を開催しています。しかし、参加者がいつも同じ顔ぶれで、特に【若いファミリー層】や【一人暮らしの学生・社会人】の参加が少ないのが悩みです。\n\n# 課題\nこれまで参加が少なかった層を惹きつけ、世代を超えて楽しめる、斬新で魅力的なイベントの企画案を5つ提案してください。\n\n# 条件\n* ターゲット層を明確にする（例：未就学児のいる家庭、20代の単身者など）\n* 各企画の具体的な内容、目的、おおよその予算感、準備のポイントをまとめる\n* 出力は以下の形式でお願いします。\n    - **企画名：**\n    - **ターゲット層：**\n    - **内容：**",
+                        explanation: "具体的なターゲット層を指定することで、AIはその層に響くような企画を考えやすくなります。出力形式を指定することで、役員会などで検討しやすい、整理された企画書形式の回答を得ることができます。"
+                    },
+                    {
+                        title: "2-2：参加型の防災イベントを企画したい",
+                        prompt: "あなたは、防災教育とコミュニティデザインの専門家です。\n\n# 背景\n私たちの地域は【川が近く、水害のリスク】があります。毎年、防災訓練を行っていますが、内容は消火器の使い方や備蓄品の説明が中心で、参加者も少なく、実践的とは言えません。\n\n# 課題\n子どもから高齢者までが「自分ごと」として防災を考え、いざという時に助け合える関係を築くことを目的とした、楽しくてためになる参加型の防災イベントを企画してください。\n\n# 条件\n* ゲーム感覚で楽しめる要素（防災クイズラリー、避難所運営ゲームHUGなど）を取り入れる\n* 地域の特性（水害リスク）に特化した内容を含める\n* イベントを通じて、住民同士の顔が見える関係づくりを促進する仕掛け\n* 準備が少なくても実施できるアイデアと、本格的に準備するアイデアの両方を提案\n\n具体的な企画案を3つ、それぞれの準備物リストと当日のタイムスケジュール案と共に提案してください。",
+                        explanation: "「楽しくてためになる」というキーワードで、従来の堅苦しい訓練とは一線を画すアイデアを求めます。地域の具体的なリスク（水害）を伝えることで、より実践的でカスタマイズされた企画の提案が期待できます。"
+                    }
+                ],
+                "広報・情報共有": [
+                    {
+                        title: "3-1：回覧板に代わる新しい情報伝達方法を探したい",
+                        prompt: "あなたは、地域のデジタル化支援を専門とするNPOのスタッフです。\n\n# 背景\n私たちの自治会（約【500世帯】）では、住民の半数以上が【65歳以上】です。主な情報伝達手段は紙の回覧板ですが、「回覧が遅れる」「情報を見ていない」といった問題が頻発しています。\n\n# 課題\n高齢者が取り残されないように配慮しつつ、情報伝達を効率化・確実化する方法を提案してください。\n\n# 条件\n* LINE公式アカウント、電子回覧板アプリ、シンプルなWebサイトなど、複数の選択肢を提示してください。\n* それぞれの方法について、導入手順、費用、メリット、デメリット（特に高齢者にとっての障壁）を比較できる表を作成してください。\n* 紙媒体とデジタルを併用するハイブリッドな運用方法についても、具体的なアイデアをください。",
+                        explanation: "「高齢者への配慮」という条件を加えることで、多様な住民が共存するための現実的な解決策を引き出せます。比較表の形式を指定することで、各選択肢の長所・短所が一目瞭然になり、合意形成に役立ちます。"
+                    },
+                    {
+                        title: "3-2：新しく引っ越してきた住民向けの案内を作りたい",
+                        prompt: "あなたは、分かりやすい文章とデザインを得意とする編集者兼デザイナーです。\n\n# 背景\n私たちの自治会には、毎年【10〜20世帯】の新しい住民が引っ越してきます。しかし、自治会のルールや地域の情報を伝える統一されたツールがなく、新住民が孤立しがちです。\n\n# 課題\n新しく引っ越してきた住民が、地域に早くなじめるようにするための「ウェルカムキット」の制作を計画しています。その中に入れる「自治会と地域の案内」の構成案と、盛り込むべき内容を提案してください。\n\n# 条件\n* 親しみやすく、歓迎の気持ちが伝わるようなデザインの方向性\n* 掲載すべき情報（ゴミ出しルール、地域の避難場所、年間行事、役員紹介、近隣の便利マップなど）を網羅的にリストアップ\n* 外国人住民のために、やさしい日本語や多言語対応のヒントも加える\n* A4用紙2〜4ページ程度でまとめることを想定した構成案\n\n上記の条件を満たす構成案を、見出しと簡単な説明文の形で作成してください。",
+                        explanation: "「編集者兼デザイナー」という役割設定により、情報の網羅性だけでなく、デザインや伝え方の工夫といった観点からの提案を期待できます。「ウェルカムキット」という具体的なアウトプットを想定することで、すぐに使える実践的なアイデアが得られます。"
+                    }
+                ],
+                "住民トラブル・課題解決": [
+                    {
+                        title: "4-1：ゴミ出しのマナー違反を減らしたい",
+                        prompt: "あなたは、対立を生まないコミュニケーション設計を専門とするコミュニティデザイナーです。\n\n# 背景\n私たちの自治会のゴミ集積所では、分別ルールが守られなかったり、収集日以外にゴミが出されたりする問題が後を絶ちません。「ルールを守りましょう」といった強い口調の貼り紙をしても効果がありません。\n\n# 課題\n罰則や強制に頼るのではなく、住民の自発的な協力を促し、自然とマナーが向上するような、ポジティブでユニークな解決策を提案してください。\n\n# 条件\n* 住民同士のコミュニケーションを活性化させるアプローチ\n* ゲーム感覚で楽しめるような仕掛け（ナッジ理論の応用など）\n* 子どもたちを巻き込むような教育的なアプローチ\n\nすぐに試せる簡単なものから、少し準備が必要なものまで、段階的なアイデアを複数提案してください。",
+                        explanation: "「コミュニティデザイナー」という役割と、「ポジティブな解決策」という方向性を指定することで、命令や監視とは異なる創造的なアイデアを引き出します。対立を避け、協力的な雰囲気の醸成を目指す姿勢がポイントです。"
+                    },
+                    {
+                        title: "4-2：迷惑駐車問題を解決したい",
+                        prompt: "あなたは、住民間の合意形成をサポートする経験豊富なファシリテーターです。\n\n# 背景\n私たちの自治会内の道路は道幅が狭く、来客者などの迷惑駐車が問題になっています。特にカーブでの駐車は危険で、何度もトラブルになりかけています。しかし、誰が駐車しているのか特定が難しく、注意喚起の貼り紙も効果がありません。\n\n# 課題\n住民同士が感情的に対立することなく、迷惑駐車問題を解決するための現実的な対策案と、その合意形成プロセスを提案してください。\n\n# 条件\n* 問題の現状把握と原因分析の方法\n* 段階的な対策案（例：ソフトな注意喚起→ルールの明確化→物理的な対策）\n* 住民説明会やアンケートを実施する際のポイント\n* 来客用駐車スペースの確保など、代替案の検討\n\n上記の条件について、自治会として取り組むべき手順を、ステップバイステップで具体的に説明してください。",
+                        explanation: "「ファシリテーター」の役割を与えることで、単なる対策案だけでなく、住民の意見をどうまとめ、合意に至るかという「プロセス」に焦点を当てた回答を求めます。デリケートな問題だからこそ、丁寧な手順を踏むことの重要性をAIに理解させることが有効です。"
+                    }
+                ],
+                "会計・予算": [
+                    {
+                        title: "5-1：活用できる助成金・補助金を探したい",
+                        prompt: "あなたは、自治体向けの補助金申請を専門とする行政書士です。\n\n# 背景\n私たちは【東京都世田谷区】にある自治会です。来年度、【防犯カメラの設置】と【多世代交流型の防災イベント】を計画しています。\n\n# 課題\n上記の計画を実現するために、私たちの自治会が活用できそうな国、東京都、世田谷区の助成金や補助金制度をリストアップしてください。\n\n# 条件\n* それぞれの制度について、以下の情報を分かりやすくまとめてください。\n    - **制度名、実施主体、目的、対象経費、補助率・上限額、申請期間、公式情報へのリンク**\n* 申請にあたっての一般的な注意点や、採択されやすくなるコツも教えてください。",
+                        explanation: "自治体の名前と計画内容を具体的に記述することで、AIは関連性の高い制度を検索しやすくなります。公式情報へのリンクを要求することで、情報の正確性を確認し、次のアクションにスムーズに移ることができます。"
+                    },
+                    {
+                        title: "5-2：住民に分かりやすい会計報告書を作成したい",
+                        prompt: "あなたは、NPOや市民活動団体の会計に詳しい公認会計士です。\n\n# 背景\n私たちの自治会の会計報告は、役員が作成した収支計算書を総会で配布するだけです。しかし、数字の羅列で分かりにくく、「会費が何に使われているのかよく分からない」という声が住民から上がっています。\n\n# 課題\n会計の専門知識がない住民でも、自治会の財政状況が一目で理解でき、運営の透明性・納得感を高められるような「会計報告書」のフォーマットと、説明の仕方を提案してください。\n\n# 条件\n* グラフや図を効果的に使ったビジュアルな報告書のテンプレート案\n* 「事業別（イベント、広報、管理費など）」に予算と実績を比較して見せる方法\n* 専門用語を避け、平易な言葉で説明するためのポイント\n* 総会で会計報告を行う際の、分かりやすいプレゼンテーションのシナリオ例\n\nこれらの条件を満たす報告書のテンプレート案を、具体的な項目立てと共に示してください。",
+                        explanation: "「公認会計士」に「NPOや市民活動団体に詳しい」という専門性を加えることで、営利企業とは異なる、住民目線での分かりやすい報告の仕方を引き出します。テンプレートやシナリオを求めることで、すぐに使える具体的な成果物を得ることができます。"
+                    }
+                ],
+                "防犯・防災": [
+                    {
+                        title: "6-1：地域独自の防災ハザードマップを作りたい",
+                        prompt: "あなたは、地域の防災活動を支援する防災士です。\n\n# 背景\n私たちの自治会は、市のハザードマップで【浸水想定区域】に含まれています。しかし、マップは広域的で、自分たちの身近な危険箇所（古いブロック塀、狭い路地など）までは分かりません。\n\n# 課題\n住民が主体となって、自分たちの足で歩いて危険箇所をチェックし、地域独自の「まち歩き防災ハザードマップ」を作成する企画を立案してください。\n\n# 条件\n* 企画の目的と、参加を呼びかけるためのキャッチコピー案\n* 「まち歩き」の具体的な進め方（チーム分け、チェック項目リスト、安全管理）\n* マップの作成方法（手書き、Googleマップなどのデジタルツール活用）\n* 完成したマップを地域で共有し、防災意識を高めるための活用法\n\nこの企画をイベントとして実施するための、準備から当日、事後活用までのロードマップを提案してください。",
+                        explanation: "「防災士」という専門家視点から、安全で効果的な「まち歩き」のノウハウを求めます。単にマップを作るだけでなく、そのプロセスを通じてコミュニティの防災意識を高め、関係性を深めるという目的を明確にすることが重要です。"
+                    },
+                    {
+                        title: "6-2：防犯パトロール活動を始めたいが、負担を減らしたい",
+                        prompt: "あなたは、持続可能なボランティア活動の仕組みづくりを専門とするコンサルタントです。\n\n# 背景\n私たちの地域で【空き巣や自転車盗】が散発しており、住民から防犯パトロールを望む声が上がっています。しかし、役員の高齢化もあり、決まった日時に巡回するような負担の大きい活動は避けたいと考えています。\n\n# 課題\n「頑張りすぎない」をモットーに、無理なく始められて、長く続けられるような、新しい形の防犯パトロール活動のアイデアを提案してください。\n\n# 条件\n* 「ながら見守り」（犬の散歩中、買い物ついでなど）を推奨する方法\n* LINEなどを活用して、地域の危険情報や不審者情報をリアルタイムで共有する仕組み\n* パトロール活動の可視化（活動マップ、ステッカー配布など）によるモチベーション維持策\n* 警察や行政との連携方法\n\nこれらのアイデアを組み合わせた、ユニークな防犯活動のネーミング案も併せて3つ提案してください。",
+                        explanation: "「持続可能」「無理なく」という制約条件を設けることで、従来の義務的なパトロールとは異なる、現代のライフスタイルに合った柔軟なアイデアを引き出します。活動のネーミングを求めることで、住民が親しみを感じ、参加したくなるような工夫を促します。"
+                    }
+                ],
+                "環境美化・景観維持": [
+                    {
+                        title: "7-1：地域の清掃活動への参加率を上げたい",
+                        prompt: "あなたは、人々の行動変容を促す「ナッジ理論」を専門とする行動経済学者です。\n\n# 背景\n私たちの自治会では、年に2回、公園や道路の清掃活動を行っています。しかし、参加者はいつも同じメンバーで、全体の2割にも満たない状況です。\n\n# 課題\n義務感や同調圧力に頼るのではなく、住民が「参加すると楽しそう」「ちょっといいことがあるかも」と感じ、自発的に清掃活動に参加したくなるような、心理学的なアプローチに基づいたアイデアを提案してください。\n\n# 条件\n* 参加のハードルを下げる工夫（例：30分だけの参加OK、手ぶらで参加OK）\n* ゲーム性を取り入れたアイデア（例：宝探し清掃、集めたゴミの重さコンテスト）\n* 参加への感謝を伝える効果的な方法（例：SNSでの発信、地域通貨の付与）\n* 活動のネーミングを「ゴミ拾い」からポジティブなものへ変更する提案\n\nこれらのアイデアを、科学的な知見（同調効果、返報性の原理など）の簡単な解説と共に提案してください。",
+                        explanation: "「ナッジ理論」の専門家という設定で、人の心理に働きかける科学的アプローチを求めます。「ゴミ拾い」というネガティブなイメージを払拭し、イベントとしての楽しさや参加メリットを打ち出すことで、新たな参加者を惹きつけることを狙います。"
+                    },
+                    {
+                        title: "7-2：放置自転車や不法投棄の問題を解決したい",
+                        prompt: "あなたは、地域の生活環境問題を解決してきた行政職員です。\n\n# 背景\n私たちの自治会が管理する【駅前の駐輪場】には、所有者不明の自転車が長期間放置され、他の利用者の迷惑になっています。また、【地域の林道】には、粗大ゴミの不法投棄が後を絶ちません。\n\n# 課題\n放置自転車と不法投棄の問題に対し、自治会として取り組める現実的かつ効果的な対策を、法的な側面も踏まえて提案してください。\n\n# 条件\n* **放置自転車対策：**\n    * 所有者を確認し、撤去に至るまでの正規の手順（警告札の貼り付け期間、警察への照会など）\n    * そもそも放置されにくくするための予防策（駐輪場の整理、登録制の導入など）\n* **不法投棄対策：**\n    * 監視の目を意識させる方法（ダミーカメラ、看板のデザインの工夫）\n    * 投棄されにくい環境づくり（定期的な草刈り、花壇の設置など）\n    * 行政や警察への通報・連携の手順\n\nこれらの対策を、短期的にできることと、中長期的に取り組むべきことに分けて、体系的に整理して示してください。",
+                        explanation: "「行政職員」という役割設定により、法律や条例に基づいた正しい手順や、行政との連携方法など、実務的なアドバイスを求めます。自転車と不法投棄という2つの問題に対し、それぞれ「撤去（事後対応）」と「予防」の両面から対策を考えさせることがポイントです。"
+                    }
+                ],
+                "多世代交流・コミュニティ形成": [
+                    {
+                        title: "8-1：「地域の先生」制度を立ち上げたい",
+                        prompt: "あなたは、生涯学習と地域連携を推進するコーディネーターです。\n\n# 背景\n私たちの自治会には、様々な知識や特技を持った住民（元教師、大工仕事が得意な方、PCの専門家、料理上手な主婦など）がたくさんいるはずですが、その才能が地域で活かされていません。\n\n# 課題\n住民一人ひとりが持つスキルや経験を「地域の財産」として登録し、住民同士が気軽に教え合ったり、助け合ったりできる「地域の先生」制度（スキルシェア）の立ち上げプランを提案してください。\n\n# 条件\n* 制度のコンセプトと、参加を呼びかける魅力的なネーミング案\n* 「先生」を募集し、スキルを登録してもらう方法（オンラインフォーム、紙の申込書など）\n* 利用者（生徒）が先生を探し、依頼するまでの流れ\n* トラブルを避けるためのルール作り（謝礼の基準、保険の検討など）\n* 最初に実施するのに適した、小規模なワークショップの企画案\n\nこの制度を成功させるためのステップを、準備段階から本格運用まで時系列で示してください。",
+                        explanation: "「生涯学習コーディネーター」という役割設定で、単なるマッチングだけでなく、学びを通じたコミュニティ活性化という視点からの提案を促します。トラブル防止のルールなど、現実的な運営を見据えた条件を入れることで、計画の解像度を高めます。"
+                    },
+                    {
+                        title: "8-2：気軽に立ち寄れる地域の居場所を作りたい",
+                        prompt: "あなたは、居心地の良い空間づくりを専門とする建築家兼コミュニティデザイナーです。\n\n# 背景\n私たちの自治会には、子どもから高齢者まで、誰もが目的なくふらっと立ち寄れて、自然に交流が生まれるような「居場所」がありません。公園のベンチはありますが、雨の日は使えず、長居もしにくい状況です。\n\n# 課題\n自治会館の【使われていない一室（約20畳）】を改修し、住民のための居心地の良いコミュニティスペースを作るためのアイデアを提案してください。\n\n# 条件\n* スペースのコンセプト（例：ブックカフェ風、縁側風、キッズスペース併設など）\n* 様々な世代の人が快適に過ごせるような空間デザインや家具のアイデア\n* 少ない予算で実現するためのDIYや中古品活用のヒント\n* スペースの運営ルール（開館時間、飲食のルール、管理方法など）\n* このスペースを拠点としたイベントや活動のアイデア\n\n上記の条件を満たす具体的なプランを、コンセプト、空間デザイン、運営方法の3つのパートに分けて提案してください。",
+                        explanation: "「建築家兼コミュニティデザイナー」という役割を与えることで、ハード（空間デザイン）とソフト（運営・活動）の両面からの総合的な提案を期待できます。具体的な場所（使われていない一室）と広さを指定することで、より現実的でイメージしやすいアイデアを引き出すことができます。"
+                    }
+                ]
+            };
+
+            const categoryNavigation = document.getElementById('category-navigation');
+            const promptDisplay = document.getElementById('prompt-display');
+            const welcomeSection = document.getElementById('welcome-section');
+            const toast = document.getElementById('toast');
+
+            const icons = {
+                "運営・組織": '👥',
+                "イベント・行事": '🎉',
+                "広報・情報共有": '📢',
+                "住民トラブル・課題解決": '🤝',
+                "会計・予算": '💰',
+                "防犯・防災": '🛡️',
+                "環境美化・景観維持": '🌿',
+                "多世代交流・コミュニティ形成": '🏘️'
+            };
+
+            const categories = Object.keys(promptData);
+
+            function displayPrompts(category) {
+                welcomeSection.style.display = 'none';
+                promptDisplay.innerHTML = '';
+                const prompts = promptData[category];
+                
+                const categoryHeader = document.createElement('h2');
+                categoryHeader.className = "text-2xl font-bold text-slate-800 mb-4";
+                categoryHeader.textContent = `${icons[category]} ${category}`;
+                promptDisplay.appendChild(categoryHeader);
+
+                prompts.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'prompt-card bg-white p-6 rounded-xl shadow-lg';
+                    card.innerHTML = `
+                        <h3 class="text-xl font-bold text-slate-700 mb-3">${p.title}</h3>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-stone-600 mb-2">【プロンプト本文】</h4>
+                            <div class="bg-slate-100 p-4 rounded-lg text-sm text-slate-800 whitespace-pre-wrap font-mono">${p.prompt}</div>
+                            <button class="copy-button mt-3 bg-amber-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-600 transition-colors duration-200 text-sm" data-prompt="${p.prompt}">
+                                このプロンプトをコピー
+                            </button>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-stone-600 mb-2">【解説】</h4>
+                            <p class="text-sm text-stone-600 leading-relaxed">${p.explanation}</p>
+                        </div>
+                    `;
+                    promptDisplay.appendChild(card);
+                });
+
+                document.querySelectorAll('.nav-button').forEach(btn => {
+                    if(btn.dataset.category === category) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            }
+
+            categories.forEach(category => {
+                const button = document.createElement('button');
+                button.className = 'nav-button w-full bg-stone-100 p-3 rounded-lg shadow-md hover:shadow-lg hover:bg-amber-500 hover:text-white transition-all duration-200 text-slate-700 font-semibold text-center text-sm sm:text-base';
+                button.textContent = `${icons[category]} ${category}`;
+                button.dataset.category = category;
+                button.addEventListener('click', () => {
+                    displayPrompts(category);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+                categoryNavigation.appendChild(button);
+            });
+
+            promptDisplay.addEventListener('click', function(e) {
+                if (e.target.classList.contains('copy-button')) {
+                    const promptText = e.target.dataset.prompt;
+                    const textArea = document.createElement("textarea");
+                    textArea.value = promptText;
+                    
+                    textArea.style.position = 'fixed';
+                    textArea.style.top = '0';
+                    textArea.style.left = '0';
+                    textArea.style.width = '2em';
+                    textArea.style.height = '2em';
+                    textArea.style.padding = '0';
+                    textArea.style.border = 'none';
+                    textArea.style.outline = 'none';
+                    textArea.style.boxShadow = 'none';
+                    textArea.style.background = 'transparent';
+
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+
+                    try {
+                        const successful = document.execCommand('copy');
+                        if(successful) {
+                            toast.classList.remove('opacity-0', 'translate-y-[-20px]');
+                            toast.classList.add('opacity-100', 'translate-y-0');
+                            setTimeout(() => {
+                                toast.classList.remove('opacity-100', 'translate-y-0');
+                                toast.classList.add('opacity-0', 'translate-y-[-20px]');
+                            }, 2000);
+                        }
+                    } catch (err) {
+                        console.error('コピーに失敗しました', err);
+                    }
+
+                    document.body.removeChild(textArea);
+                }
+            });
+
+            const ctx = document.getElementById('categoryChart').getContext('2d');
+            const categoryChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: categories,
+                    datasets: [{
+                        label: '課題カテゴリー',
+                        data: categories.map(() => 1),
+                        backgroundColor: [
+                            '#fde68a', '#fcd34d', '#fbbf24', '#f59e0b',
+                            '#d97706', '#b45309', '#92400e', '#78350f'
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 12
+                                },
+                                boxWidth: 20
+                            }
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

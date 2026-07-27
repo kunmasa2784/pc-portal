@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC初心者のお悩み解決 | インタラクティブ・プロンプトガイド</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutral -->
+    <!-- Application Structure Plan: 利用者の学習フローを考慮し、左側にカテゴリー選択用の固定サイドバーを配置し、右側に選択されたカテゴリーのプロンプト一覧をカード形式で表示する、直感的な2カラムレイアウトを採用。この構造は、ユーザーが必要な情報に素早くアクセスし、集中して内容を確認できるため、学習効率を最大化します。さらに、キーワード検索機能を追加することで、特定の目的を持つユーザーが迅速に該当プロンプトを見つけられるようにし、各プロンプトにはワンクリックでコピーできるボタンを設置。これにより、情報を探す、見つける、活用するという一連の行動をシームレスに支援します。 -->
+    <!-- Visualization & Content Choices: 元のレポートがテキストベースであるため、Chart.jsなどによるデータ可視化は行いません。代わりに、情報の整理と提示方法に重点を置きました。[情報源：カテゴリー分けされたプロンプト集] -> [目標：対話的で実用的なツールにする] -> [表現方法：カテゴリナビゲーション＋検索機能付きカード型レイアウト] -> [インタラクション：カテゴリ選択による動的フィルタリング、キーワード検索、プロンプトのクリップボードへのコピー機能] -> [正当性：この構成は、初心者が情報を段階的に、または目的に応じて探索することを容易にし、学習から実践への移行をスムーズにするため最適です。] -> [ライブラリ/手法：Tailwind CSSによるスタイリングとレイアウト、インタラクションは全てVanilla JavaScriptで実装。アイコンはUnicode文字を使用。] -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans JP', 'Inter', sans-serif;
+        }
+        .sidebar-link.active {
+            background-color: #e0f2f1;
+            color: #00796b;
+            font-weight: 600;
+        }
+        .prompt-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .prompt-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .copy-btn.copied {
+            background-color: #00796b;
+            color: white;
+        }
+        /* For sticky search bar */
+        main {
+            height: 100vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="w-full md:w-64 lg:w-72 bg-white border-r border-stone-200 p-4 md:p-6 md:fixed md:h-full flex flex-col">
+            <h1 class="text-2xl font-bold text-teal-800 mb-2">プロンプトガイド</h1>
+            <p class="text-sm text-stone-500 mb-6">PC初心者のためのAI活用術</p>
+            <nav id="category-nav" class="space-y-2 overflow-y-auto">
+                <!-- Navigation links will be inserted here by JavaScript -->
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="w-full md:pl-64 lg:pl-72">
+            <div class="p-4 sm:p-6 md:p-8">
+                <header class="mb-8">
+                    <h2 id="main-title" class="text-3xl font-bold text-stone-900">PC初心者のお悩み解決へようこそ</h2>
+                    <p class="mt-2 text-stone-600">PCの「？」をAIに質問するためのお手本集です。左のメニューや検索で質問を見つけ、コピーしてAIに聞いてみましょう。あなたのPCライフをサポートします。</p>
+                </header>
+                
+                <!-- Search Bar -->
+                <div class="mb-8 sticky top-0 bg-stone-50/80 backdrop-blur-sm py-4 z-10">
+                    <input type="text" id="search-input" placeholder="🔍 キーワードでプロンプトを検索 (例: Excel, Wi-Fi)" class="w-full p-4 border border-stone-300 rounded-xl shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition">
+                </div>
+
+                <!-- Prompts Container -->
+                <div id="prompts-container" class="max-w-7xl mx-auto">
+                    <!-- Prompt sections and cards will be inserted here by JavaScript -->
+                </div>
+
+                <p id="no-results" class="text-center text-stone-500 py-12 hidden">該当するプロンプトが見つかりませんでした。</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const promptData = [
+            { category: 1, title: '基本操作の習得', prompts: [ 'パソコンの電源の入れ方と、安全な切り方を教えてください。', 'マウスの「クリック」と「ダブルクリック」は何が違いますか？どんな時に使い分けますか？', 'Windows 11で、複数のファイルを一度に選択して、別のフォルダに「コピー」する方法と「移動」する方法の違いを、図解をイメージさせるように教えてください。', 'パソコン作業が格段に速くなる、絶対に覚えるべきキーボードショートカットキー（コピー、貼り付け、元に戻す、上書き保存など）を5つ、具体的な使い方と合わせて教えてください。', 'デスクトップに新しいフォルダを作成する方法と、そのフォルダに分かりやすい名前を付ける（名前の変更）方法を、手順を追って教えてください。', 'Windows 11で、画面全体のスクリーンショットを撮る方法と、アクティブなウィンドウだけを撮る方法の違いと、それぞれのやり方を教えてください。', ] },
+            { category: 2, title: '専門用語の解説', prompts: [ '「ファイル」と「フォルダ」の違いは何ですか？分かりやすく教えてください。', '「デスクトップ」とは、パソコンのどの画面のことですか？何をする場所ですか？', 'PCの「OS」「ブラウザ」「アプリケーション」という言葉の違いがよく分かりません。それぞれの役割と関係性を、家を建てることに例えて説明してください。', '圧縮ファイル（ZIPファイル）とは何ですか？メールで送られてきた圧縮ファイルを解凍（展開）して、中のファイルを取り出す方法を教えてください。', 'よく聞く「CPU」「メモリ(RAM)」「ストレージ(SSD)」とは、パソコンのどの部分で、それぞれどんな働きをしていますか？性能が良いと何が変わるのかも教えてください。', '「クラウドに保存する」とは、具体的にどういうことですか？自分のパソコンに保存するのと何が違い、どんなメリット・デメリットがありますか？', ] },
+            { category: 3, title: 'ソフトウェアの導入と使い方', prompts: [ '「ソフトウェア」や「アプリ」とは何ですか？どんな種類がありますか？', 'Word（ワード）を起動するにはどうすればいいですか？', '無料のオフィスソフト「LibreOffice」を公式サイトから安全にダウンロードし、Windows 11にインストールするまでの手順を、注意点も含めて具体的に教えてください。', 'Excelで、簡単な家計簿を作りたいです。日付、項目、収入、支出、残高の列を作成し、支出の合計を自動で計算する数式（SUM関数）の使い方を教えてください。', '無料の画像編集ソフト「GIMP」を使って、写真のサイズをブログ用に小さく（リサイズ）する方法と、ファイル形式をJPEGで保存する手順を教えてください。', ] },
+            { category: 4, title: 'インターネット接続とメール', prompts: [ 'インターネットを見るにはどうすればいいですか？何が必要ですか？', 'メールアドレスとは何ですか？どうやって作るのですか？', '外出先のカフェで、公衆Wi-Fiに安全に接続するための注意点を5つ教えてください。特に気をつけるべきことは何ですか？', 'Gmailで、特定の相手（例：〇〇商事の佐藤さん）からのメールが、自動的に「仕事」というラベル（フォルダ）に振り分けられるように設定したいです。フィルタ機能の使い方を教えてください。', 'メールに50MBのファイルを添付しようとしたら「容量が大きすぎます」と表示されました。大容量のファイルを相手に送るための、安全で簡単な方法を3つ教えてください。', ] },
+            { category: 5, title: 'セキュリティ対策', prompts: [ '「ウイルス」とは何ですか？パソコンがウイルスに感染するとどうなりますか？', '安全なパスワードの作り方を、具体例を挙げて教えてください。', 'Windows 11に標準で搭載されているセキュリティ機能「Windows Defender」を最新の状態に保つ方法と、手動でフルスキャンを実行する手順を教えてください。', '「二段階認証」とは何ですか？なぜ設定した方が安全なのですか？自分のGoogleアカウントで二段階認証を設定する手順を、最初から分かりやすく教えてください。', 'Amazonを装った偽のログインページに誘導するメールが届きました。このようなフィッシング詐欺を見破るためのチェックポイントを具体的に教えてください。', ] },
+            { category: 6, title: 'トラブルシューティング', prompts: [ 'パソコンの画面が固まって動かなくなりました（フリーズしました）。どうすればいいですか？', 'パソコンから音が出なくなりました。確認すべきことを教えてください。', 'パソコンの起動が非常に遅いです。Windows 11で、起動と同時に立ち上がる不要なアプリ（スタートアップアプリ）を特定し、無効にする方法を教えてください。', '急にプリンターで印刷ができなくなりました。PCとプリンターの両方で確認すべきチェックリストを、簡単なものから順番に5ステップで教えてください。', '特定のウェブサイトだけ「このサイトは安全ではありません」と表示されて開けません。考えられる原因と、安全性を確認した上で表示させる方法を教えてください。', ] },
+            { category: 7, title: 'ファイル管理とバックアップ', prompts: [ '作ったファイルはどこに保存すればいいですか？「ドキュメント」フォルダとは何ですか？', '間違えてファイルを消してしまいました。「ごみ箱」から元に戻す方法を教えてください。', 'デスクトップがアイコンで散らかっています。「ドキュメント」や「ピクチャ」フォルダを効果的に使って、ファイルを種類別に整理するための、具体的なフォルダ構成の例を「仕事用」「プライベート用」で提案してください。', 'ダウンロードフォルダがごちゃごちゃです。一時的なファイルと保存すべきファイルを見分け、効率的に整理・削除するための手順と考え方を教えてください。', '旅行で撮った大量の写真ファイルの名前を「2025-07-10_沖縄旅行_001」のように一括で変更したいです。Windows 11の標準機能だけで、複数のファイル名を一度に変更する方法を教えてください。', 'ファイル名の一部しか思い出せないファイルを探したいです。Windowsのエクスプローラーで、ワイルドカード（*や?）を使ったり、更新日時で絞り込んだりする高度な検索テクニックを教えてください。', 'パソコンが壊れた時に備えて、大切な写真や書類をバックアップしたいです。無料で使えるオンラインストレージ（Google Drive）を使って、指定したフォルダを自動でバックアップする設定方法を教えてください。', 'パソコンの空き容量が少なくなってきました。Windows 11の機能を使って、不要なファイルを安全に削除し、ディスクの空き容量を増やす方法を教えてください。', ] },
+            { category: 8, title: 'PCのカスタマイズと効率化', prompts: [ 'パソコンの音量を調整するにはどうすればいいですか？', 'デスクトップの背景画像（壁紙）を、自分の好きな写真に変える方法を教えてください。', 'よく使うフォルダやアプリをすぐに開けるようにしたいです。Windows 11のタスクバーにアプリをピン留めする方法と、デスクトップによく使うフォルダのショートカットを作成する方法を教えてください。', 'Webブラウザ（Google Chrome）の閲覧履歴やキャッシュを定期的に削除して、動作を軽くしたいです。その手順と、削除によるメリット・デメリットを教えてください。', 'マウスのポインター（矢印）が小さくて見失いがちです。Windows 11で、ポインターのサイズや色を自分好みに変更する方法を教えてください。', ] },
+            { category: 9, title: 'ハードウェアと購入相談', prompts: [ '「キーボード」と「マウス」以外に、パソコンに接続できるものには何がありますか？例をいくつか教えてください。', 'ノートパソコンとデスクトップパソコンの、それぞれの良い点と悪い点を教えてください。', 'ノートパソコンのバッテリーをできるだけ長持ちさせるための、具体的な使い方や設定を5つ教えてください。充電しながら使い続けても大丈夫ですか？', 'オンライン会議（ZoomやTeams）を快適に行えるウェブカメラとマイクを選びたいです。選ぶ際の性能のポイントと、5000円前後で買えるおすすめの製品を3つ教えてください。', '現在のパソコンのスペック（CPU, メモリ, ストレージ）を調べる方法を教えてください。また、そのスペックで動画編集ソフトが快適に動くかどうか、判断基準を教えてください。', ] },
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const categoryNav = document.getElementById('category-nav');
+            const promptsContainer = document.getElementById('prompts-container');
+            const searchInput = document.getElementById('search-input');
+            const noResults = document.getElementById('no-results');
+            const mainTitle = document.getElementById('main-title');
+
+            let activeCategoryId = promptData[0].category;
+
+            promptData.forEach(cat => {
+                const navLink = document.createElement('a');
+                navLink.href = `#category-${cat.category}`;
+                navLink.textContent = cat.title;
+                navLink.dataset.categoryId = cat.category;
+                navLink.className = 'sidebar-link block w-full text-left p-3 rounded-lg text-stone-700 hover:bg-stone-100 transition duration-200';
+                categoryNav.appendChild(navLink);
+
+                const section = document.createElement('section');
+                section.id = `category-${cat.category}`;
+                section.className = 'prompt-section mb-12';
+                
+                const sectionTitle = document.createElement('h3');
+                sectionTitle.className = 'text-2xl font-bold mb-6 pb-2 border-b-2 border-teal-200';
+                sectionTitle.textContent = cat.title;
+                section.appendChild(sectionTitle);
+
+                const grid = document.createElement('div');
+                grid.className = 'grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6';
+                section.appendChild(grid);
+
+                cat.prompts.forEach(promptText => {
+                    const card = document.createElement('div');
+                    card.className = 'prompt-card bg-white p-6 rounded-xl border border-stone-200 shadow-sm flex flex-col justify-between';
+                    card.dataset.text = promptText.toLowerCase();
+
+                    const textP = document.createElement('p');
+                    textP.className = 'text-stone-700 leading-relaxed mb-4';
+                    textP.textContent = promptText;
+                    card.appendChild(textP);
+
+                    const copyButton = document.createElement('button');
+                    copyButton.className = 'copy-btn mt-auto w-full sm:w-auto self-start sm:self-end bg-teal-50 hover:bg-teal-100 text-teal-800 font-semibold py-2 px-4 rounded-lg transition duration-200';
+                    copyButton.textContent = '📋 コピー';
+                    copyButton.onclick = () => copyToClipboard(promptText, copyButton);
+                    card.appendChild(copyButton);
+                    grid.appendChild(card);
+                });
+                promptsContainer.appendChild(section);
+            });
+            
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const promptSections = document.querySelectorAll('.prompt-section');
+
+            function updateView() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                let resultsFound = false;
+
+                if (searchTerm) {
+                    sidebarLinks.forEach(link => link.classList.remove('active'));
+                    mainTitle.textContent = '検索結果';
+
+                    promptSections.forEach(section => {
+                        let sectionHasVisibleCards = false;
+                        section.querySelectorAll('.prompt-card').forEach(card => {
+                            if (card.dataset.text.includes(searchTerm)) {
+                                card.style.display = 'flex';
+                                sectionHasVisibleCards = true;
+                                resultsFound = true;
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+                        section.style.display = sectionHasVisibleCards ? 'block' : 'none';
+                    });
+                } else {
+                    const activeCategoryData = promptData.find(cat => cat.category == activeCategoryId);
+                    if (activeCategoryData) {
+                        mainTitle.textContent = activeCategoryData.title;
+                    }
+
+                    sidebarLinks.forEach(link => {
+                        link.classList.toggle('active', link.dataset.categoryId == activeCategoryId);
+                    });
+
+                    promptSections.forEach(section => {
+                        if (section.id === `category-${activeCategoryId}`) {
+                            section.style.display = 'block';
+                            section.querySelectorAll('.prompt-card').forEach(card => {
+                                card.style.display = 'flex';
+                            });
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                    resultsFound = true;
+                }
+                noResults.style.display = resultsFound ? 'none' : 'block';
+            }
+
+            categoryNav.addEventListener('click', (e) => {
+                e.preventDefault();
+                const link = e.target.closest('.sidebar-link');
+                if (link) {
+                    activeCategoryId = link.dataset.categoryId;
+                    searchInput.value = '';
+                    updateView();
+                }
+            });
+
+            searchInput.addEventListener('input', updateView);
+
+            updateView();
+        });
+
+        function copyToClipboard(text, button) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                const originalText = button.textContent;
+                button.textContent = 'コピーしました！';
+                button.classList.add('copied');
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                alert('テキストのコピーに失敗しました。');
+            }
+            document.body.removeChild(textarea);
+        }
+    </script>
+
+</body>
+</html>
