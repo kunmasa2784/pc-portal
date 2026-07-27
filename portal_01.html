@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">資料共有ライブラリ</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDKs (Compat v10) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+    <style>
+        body { font-family: 'Inter', 'Noto Sans JP', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <header id="main-header" class="text-white shadow-md sticky top-0 z-30 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-3.5">
+                <div class="bg-white/10 p-2.5 rounded-xl backdrop-blur-md">
+                    <i id="header-icon" class="fa-solid fa-laptop-code text-2xl text-blue-100"></i>
+                </div>
+                <div>
+                    <h1 id="app-title-display" class="text-xl sm:text-2xl font-bold tracking-tight">パソコン研究会</h1>
+                    <p id="app-subtitle-display" class="text-xs text-blue-100 opacity-90">学習用資料・テキストライブラリ</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                <!-- 接続状態バッジ -->
+                <div id="connection-badge" class="px-3 py-1 rounded-full text-xs font-medium bg-white/15 backdrop-blur-md text-white flex items-center gap-2 border border-white/20">
+                    <span id="badge-dot" class="w-2 h-2 rounded-full bg-amber-300 animate-pulse"></span>
+                    <span id="badge-text">接続確認中...</span>
+                </div>
+                
+                <!-- 管理者ログインボタン（歯車アイコン） -->
+                <button id="auth-btn" onclick="toggleAuthModal()" title="管理者ログイン" aria-label="管理者ログイン" class="bg-white/20 hover:bg-white/30 text-white p-2.5 rounded-xl backdrop-blur-md transition flex items-center justify-center border border-white/20 active:scale-95 shadow-xs">
+                    <i id="auth-btn-icon" class="fa-solid fa-gear text-lg"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+        
+        <!-- Filter & Search Controls -->
+        <div class="bg-white rounded-xl shadow-xs p-4 mb-6 border border-slate-200 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <div id="category-filter-container" class="flex items-center gap-2 overflow-x-auto w-full md:w-auto custom-scrollbar pb-1 md:pb-0">
+                <!-- 動的にフィルターボタンが挿入されます -->
+            </div>
+            <div class="relative w-full md:w-72">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                <input type="text" id="search-input" oninput="renderMaterials()" placeholder="キーワードで検索..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+            </div>
+        </div>
+
+        <div id="app-layout" class="grid grid-cols-1 gap-6 transition-all duration-300">
+            
+            <!-- 資料一覧エリア（左側） -->
+            <div id="materials-wrapper" class="w-full order-1">
+                <div class="flex justify-between items-center mb-4 px-1">
+                    <h2 class="text-base font-bold text-slate-700 flex items-center gap-2">
+                        <i id="folder-icon" class="fa-solid fa-folder-open text-blue-600"></i>
+                        <span>公開資料一覧</span>
+                        <span id="material-count" class="text-xs bg-slate-200/80 text-slate-600 px-2.5 py-0.5 rounded-full font-normal">0件</span>
+                    </h2>
+                    <span class="text-[11px] text-slate-400">登録日の新しい順</span>
+                </div>
+
+                <!-- 資料カードグリッド -->
+                <div id="materials-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- 動的生成 -->
+                </div>
+            </div>
+
+            <!-- 管理者コントロールパネル（右側・ログイン時のみ表示） -->
+            <div id="admin-panel" class="hidden w-full space-y-4 order-2">
+                
+                <!-- ⚙️ 1. サイトタイトル＆ヘッダー背景色の変更 -->
+                <div class="bg-slate-100 rounded-lg p-2.5 border border-slate-200 text-slate-700 text-xs">
+                    <div class="flex justify-between items-center">
+                        <button type="button" onclick="toggleTitleSettingForm()" class="w-full flex justify-between items-center text-slate-600 hover:text-slate-900 font-medium">
+                            <span class="flex items-center gap-1.5 font-bold text-slate-700">
+                                <i class="fa-solid fa-gear text-slate-500"></i>
+                                <span>サイトタイトルの変更</span>
+                            </span>
+                            <span id="title-toggle-text" class="text-[11px] text-blue-600 font-semibold underline">開く</span>
+                        </button>
+                    </div>
+
+                    <!-- 展開されるタイトル・背景変更フォーム -->
+                    <form id="title-setting-form" onsubmit="handleSettingsSubmit(event)" class="hidden mt-2.5 pt-2.5 border-t border-slate-200 space-y-2.5">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">メインタイトル *</label>
+                            <input type="text" id="settings-title-input" required placeholder="例: パソコン研究会" class="w-full text-xs text-slate-800 px-2.5 py-1.5 bg-white border border-slate-300 rounded-md focus:ring-1 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">サブタイトル</label>
+                            <input type="text" id="settings-subtitle-input" placeholder="例: 学習用資料ライブラリ" class="w-full text-xs text-slate-800 px-2.5 py-1.5 bg-white border border-slate-300 rounded-md focus:ring-1 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">ヘッダー背景色（グラデーション）</label>
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="flex-1">
+                                    <span class="block text-[10px] text-slate-500 mb-0.5">開始色</span>
+                                    <input type="color" id="settings-bg-start" value="#2563eb" oninput="previewHeaderBg()" class="w-full h-7 p-0.5 bg-white border border-slate-300 rounded cursor-pointer">
+                                </div>
+                                <div class="flex-1">
+                                    <span class="block text-[10px] text-slate-500 mb-0.5">終了色</span>
+                                    <input type="color" id="settings-bg-end" value="#4338ca" oninput="previewHeaderBg()" class="w-full h-7 p-0.5 bg-white border border-slate-300 rounded cursor-pointer">
+                                </div>
+                            </div>
+                            <!-- 🎨 プリセットカラー選択 -->
+                            <div>
+                                <span class="block text-[10px] text-slate-500 mb-1">カラープリセット</span>
+                                <div class="flex gap-1.5 flex-wrap">
+                                    <button type="button" onclick="setBgPreset('#2563eb', '#4338ca')" class="w-6 h-6 rounded-full border-2 border-white shadow-xs hover:scale-110 transition" style="background: linear-gradient(135deg, #2563eb, #4338ca);" title="ブルー"></button>
+                                    <button type="button" onclick="setBgPreset('#059669', '#065f46')" class="w-6 h-6 rounded-full border-2 border-white shadow-xs hover:scale-110 transition" style="background: linear-gradient(135deg, #059669, #065f46);" title="エメラルド"></button>
+                                    <button type="button" onclick="setBgPreset('#7c3aed', '#4c1d95')" class="w-6 h-6 rounded-full border-2 border-white shadow-xs hover:scale-110 transition" style="background: linear-gradient(135deg, #7c3aed, #4c1d95);" title="パープル"></button>
+                                    <button type="button" onclick="setBgPreset('#0f172a', '#334155')" class="w-6 h-6 rounded-full border-2 border-white shadow-xs hover:scale-110 transition" style="background: linear-gradient(135deg, #0f172a, #334155);" title="ダークスレート"></button>
+                                    <button type="button" onclick="setBgPreset('#e11d48', '#881337')" class="w-6 h-6 rounded-full border-2 border-white shadow-xs hover:scale-110 transition" style="background: linear-gradient(135deg, #e11d48, #881337);" title="ローズ"></button>
+                                    <button type="button" onclick="setBgPreset('#d97706', '#92400e')" class="w-6 h-6 rounded-full border-2 border-white shadow-xs hover:scale-110 transition" style="background: linear-gradient(135deg, #d97706, #92400e);" title="アンバー"></button>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs py-1.5 px-3 rounded-md transition shadow-xs flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-palette"></i> 設定を保存する
+                        </button>
+                    </form>
+                </div>
+
+                <!-- 🏷️ 2. 検索カテゴリーの追加・編集 -->
+                <div class="bg-slate-100 rounded-lg p-2.5 border border-slate-200 text-slate-700 text-xs">
+                    <div class="flex justify-between items-center">
+                        <button type="button" onclick="toggleCategorySettingForm()" class="w-full flex justify-between items-center text-slate-600 hover:text-slate-900 font-medium">
+                            <span class="flex items-center gap-1.5 font-bold text-slate-700">
+                                <i class="fa-solid fa-tags text-blue-600"></i>
+                                <span>検索カテゴリーの管理</span>
+                            </span>
+                            <span id="cat-toggle-text" class="text-[11px] text-blue-600 font-semibold underline">開く</span>
+                        </button>
+                    </div>
+
+                    <!-- 展開されるカテゴリ管理エリア -->
+                    <div id="category-setting-area" class="hidden mt-2.5 pt-2.5 border-t border-slate-200 space-y-3">
+                        <div id="category-manager-list" class="space-y-1.5 max-h-48 overflow-y-auto custom-scrollbar pr-1">
+                            <!-- 動的にカテゴリ一覧バッジが挿入されます -->
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-200">
+                            <button type="button" onclick="openCategoryForm()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-1.5 px-3 rounded-md transition shadow-xs flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-plus-circle"></i> 新しいカテゴリーを追加
+                            </button>
+                        </div>
+
+                        <!-- カテゴリ追加/編集用インラインフォーム -->
+                        <form id="category-form" onsubmit="handleCategorySave(event)" class="hidden bg-white p-3 rounded-lg border border-slate-200 space-y-2.5 shadow-xs">
+                            <h4 id="category-form-title" class="font-bold text-slate-800 text-[11px] flex items-center gap-1">
+                                <i class="fa-solid fa-pen-to-square text-amber-500"></i> カテゴリーの設定
+                            </h4>
+                            <input type="hidden" id="cat-edit-id" value="">
+                            
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-600 mb-1">カテゴリー名 *</label>
+                                <input type="text" id="cat-label-input" required placeholder="例: PowerPoint" class="w-full text-xs text-slate-800 px-2.5 py-1.5 border border-slate-300 rounded-md focus:ring-1 focus:ring-blue-500 focus:outline-none">
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-600 mb-1">アイコン *</label>
+                                <select id="cat-icon-select" class="w-full text-xs text-slate-800 px-2.5 py-1.5 bg-white border border-slate-300 rounded-md focus:ring-1 focus:ring-blue-500 focus:outline-none">
+                                    <option value="fa-file-excel">📊 Excel (fa-file-excel)</option>
+                                    <option value="fa-file-word">📝 Word (fa-file-word)</option>
+                                    <option value="fa-file-powerpoint">🖥️ PowerPoint (fa-file-powerpoint)</option>
+                                    <option value="fa-code">💻 プログラミング (fa-code)</option>
+                                    <option value="fa-microchip">⚙️ ハードウェア/PC (fa-microchip)</option>
+                                    <option value="fa-robot">🤖 AI / Bot (fa-robot)</option>
+                                    <option value="fa-globe">🌐 Web / インターネット (fa-globe)</option>
+                                    <option value="fa-shield-halved">🛡️ セキュリティ (fa-shield-halved)</option>
+                                    <option value="fa-book">📚 マニュアル / テキスト (fa-book)</option>
+                                    <option value="fa-circle-info">ℹ️ その他 (fa-circle-info)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-600 mb-1">カラーテーマ *</label>
+                                <select id="cat-color-select" class="w-full text-xs text-slate-800 px-2.5 py-1.5 bg-white border border-slate-300 rounded-md focus:ring-1 focus:ring-blue-500 focus:outline-none">
+                                    <option value="emerald">💚 エメラルドグリーン</option>
+                                    <option value="blue">💙 ブルー</option>
+                                    <option value="purple">💜 パープル</option>
+                                    <option value="amber">🧡 アンバーオレンジ</option>
+                                    <option value="rose">❤️ ローズレッド</option>
+                                    <option value="cyan">🩵 シアン</option>
+                                    <option value="indigo">💙 インディゴ</option>
+                                    <option value="slate">🩶 スレートグレー</option>
+                                </select>
+                            </div>
+
+                            <div class="flex gap-2 pt-1">
+                                <button type="button" onclick="closeCategoryForm()" class="w-1/3 bg-slate-100 text-slate-600 hover:bg-slate-200 text-xs font-semibold py-1 rounded-md transition">
+                                    キャンセル
+                                </button>
+                                <button type="submit" class="flex-grow bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-1 rounded-md transition shadow-xs">
+                                    保存する
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 📁 3. 資料登録フォーム -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden sticky top-20">
+                    <div class="bg-slate-900 text-white px-4 py-3 flex justify-between items-center">
+                        <h3 id="form-title" class="font-bold text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-plus-circle text-amber-400"></i> 新しい資料を登録
+                        </h3>
+                        <button onclick="closeAdminPanel()" class="text-slate-400 hover:text-white transition">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+
+                    <form id="material-form" onsubmit="handleFormSubmit(event)" class="p-4 space-y-3">
+                        <input type="hidden" id="edit-id" value="">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">資料タイトル *</label>
+                            <input type="text" id="form-title-input" required placeholder="例: 第1回 Excel関数の基本" class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">カテゴリ *</label>
+                            <select id="form-category-select" required class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">説明文・内容のポイント *</label>
+                            <textarea id="form-desc-input" rows="3" required placeholder="学ぶ内容や使い方を簡単に記載..." class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">資料リンク / URL *</label>
+                            <input type="url" id="form-url-input" required placeholder="https://docs.google.com/..." class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+
+                        <div class="flex gap-2 pt-2">
+                            <button type="button" id="cancel-edit-btn" onclick="resetForm()" class="hidden w-1/3 bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-semibold py-2.5 rounded-lg transition">
+                                キャンセル
+                            </button>
+                            <button type="submit" id="form-submit-btn" class="flex-grow bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-md">
+                                <i class="fa-solid fa-plus mr-1"></i>資料を保存する
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-5 mt-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-400">
+            <p>&copy; <span id="footer-year"></span> <span id="footer-app-name">パソコン研究会</span>. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ログイン用 モーダル -->
+    <div id="auth-modal" onclick="if(event.target===this) closeAuthModal()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-xl max-w-sm w-full p-6 shadow-2xl border border-slate-100">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-user-shield text-amber-500"></i> 管理者ログイン
+                </h3>
+                <button type="button" onclick="closeAuthModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <p class="text-xs text-slate-500 mb-4">資料の追加・編集やサイト名の変更を行うにはパスワードを入力してください。</p>
+            <input type="password" id="admin-pass-input" placeholder="パスワードを入力" class="w-full text-xs px-3 py-2.5 border border-slate-200 rounded-lg mb-4 focus:ring-2 focus:ring-blue-500 focus:outline-none" onkeydown="if(event.key==='Enter') loginAdmin()">
+            <div class="flex justify-end gap-2">
+                <button type="button" onclick="closeAuthModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition">キャンセル</button>
+                <button type="button" onclick="loginAdmin()" class="px-5 py-2 text-xs font-bold bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition">ログイン</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- カスタム確認ダイアログ -->
+    <div id="confirm-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-xl max-w-sm w-full p-6 shadow-2xl border border-slate-100">
+            <div class="flex items-center gap-3 mb-3 text-rose-600">
+                <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+                <h3 class="text-base font-bold text-slate-800">確認</h3>
+            </div>
+            <p id="confirm-modal-msg" class="text-xs text-slate-600 mb-5">この処理を実行してもよろしいですか？</p>
+            <div class="flex justify-end gap-2">
+                <button onclick="closeConfirmModal(false)" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">キャンセル</button>
+                <button onclick="closeConfirmModal(true)" class="px-5 py-2 text-xs font-bold bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition">実行する</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- トースト通知 -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-4 py-3 rounded-xl text-xs shadow-2xl transition-all duration-300 opacity-0 pointer-events-none transform translate-y-3 flex items-center gap-2.5 z-50 border border-slate-700">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
+        <span id="toast-message" class="font-medium">処理が完了しました</span>
+    </div>
+
+    <!-- 📄 資料インラインプレビュー モーダル -->
+    <div id="preview-modal" onclick="if(event.target===this) closePreviewModal()" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm hidden items-center justify-center p-2 sm:p-4 z-50 transition-opacity">
+        <div class="bg-white rounded-2xl max-w-5xl w-full h-[85vh] flex flex-col shadow-2xl border border-slate-100 overflow-hidden">
+            <!-- モーダルヘッダー -->
+            <div class="bg-slate-900 text-white px-4 py-3 flex justify-between items-center shrink-0">
+                <div class="flex items-center gap-2 overflow-hidden pr-2">
+                    <span id="preview-modal-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-600 text-white shrink-0">資料</span>
+                    <h3 id="preview-modal-title" class="text-sm font-bold truncate">資料プレビュー</h3>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <a id="preview-external-link" href="#" target="_blank" rel="noopener noreferrer" class="text-xs bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg transition flex items-center gap-1">
+                        <i class="fa-solid fa-up-right-from-square"></i> <span class="hidden sm:inline">新しいタブで開く</span>
+                    </a>
+                    <button onclick="closePreviewModal()" class="text-slate-400 hover:text-white p-1.5 rounded-lg transition">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- プレビューコンテンツ表示枠 -->
+            <div id="preview-modal-content" class="flex-grow bg-slate-100 relative overflow-hidden flex items-center justify-center">
+                <!-- JSでiframeや画像が挿入されます -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // 🎨 カスタマイズ基本設定 (APP_CONFIG)
+        // ==========================================
+        const COLOR_PRESETS = {
+            emerald: { bg: "bg-emerald-100", text: "text-emerald-700", border: "border-emerald-200", label: "エメラルド" },
+            blue: { bg: "bg-blue-100", text: "text-blue-700", border: "border-blue-200", label: "ブルー" },
+            purple: { bg: "bg-purple-100", text: "text-purple-700", border: "border-purple-200", label: "パープル" },
+            amber: { bg: "bg-amber-100", text: "text-amber-700", border: "border-amber-200", label: "アンバー" },
+            rose: { bg: "bg-rose-100", text: "text-rose-700", border: "border-rose-200", label: "ローズ" },
+            cyan: { bg: "bg-cyan-100", text: "text-cyan-700", border: "border-cyan-200", label: "シアン" },
+            indigo: { bg: "bg-indigo-100", text: "text-indigo-700", border: "border-indigo-200", label: "インディゴ" },
+            slate: { bg: "bg-slate-100", text: "text-slate-700", border: "border-slate-200", label: "スレート" }
+        };
+
+        // 画像通りのカテゴリー（テキスト・WEB・スライド・動画・画像・その他）
+        const DEFAULT_CATEGORIES = [
+            { id: "Text", label: "テキスト", icon: "fa-file-lines", colorKey: "emerald" },
+            { id: "Web", label: "WEB", icon: "fa-globe", colorKey: "blue" },
+            { id: "Slide", label: "スライド", icon: "fa-file-powerpoint", colorKey: "purple" },
+            { id: "Video", label: "動画", icon: "fa-shield-halved", colorKey: "rose" },
+            { id: "Image", label: "画像", icon: "fa-robot", colorKey: "amber" },
+            { id: "Other", label: "その他", icon: "fa-circle-info", colorKey: "slate" }
+        ];
+
+        const APP_CONFIG = {
+            appId: "pc-study01",                  // Firebase保存キー
+            appName: "パソコン研究会",          // 初期タイトル
+            appSubtitle: "学習用資料・テキストライブラリ", // 初期サブタイトル
+            headerIcon: "fa-laptop-code",       // ヘッダーアイコン
+            adminPassHash: "YWRtaW4xMjM=",      // 管理者パスワード (初期: admin123)
+
+            theme: {
+                primary: "#2563eb",             
+                gradientStart: "#2563eb",       
+                gradientEnd: "#4338ca",         
+            }
+        };
+
+        // アプリの状態
+        let materials = [];
+        let appCategories = [...DEFAULT_CATEGORIES];
+        let activeCategory = "ALL";
+        let isAdminLoggedIn = false;
+        let isFirebaseActive = false;
+        let db = null;
+        let pendingConfirmAction = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initAppTheme();
+            initFirebase();
+            document.getElementById('footer-year').textContent = new Date().getFullYear();
+        });
+
+        function initAppTheme() {
+            document.getElementById('header-icon').className = `fa-solid ${APP_CONFIG.headerIcon} text-2xl text-blue-100`;
+            updateTitleDisplays(APP_CONFIG.appName, APP_CONFIG.appSubtitle, APP_CONFIG.theme.gradientStart, APP_CONFIG.theme.gradientEnd);
+            renderCategoryUI();
+        }
+
+        function getCategoryStyle(cat) {
+            const color = COLOR_PRESETS[cat.colorKey] || COLOR_PRESETS.slate;
+            return {
+                bg: cat.bg || color.bg,
+                text: cat.text || color.text,
+                border: cat.border || color.border,
+                label: cat.label,
+                icon: cat.icon || "fa-file"
+            };
+        }
+
+        function renderCategoryUI() {
+            renderCategoryFilters();
+            renderCategorySelect();
+            renderCategoryManagerList();
+        }
+
+        function renderCategoryFilters() {
+            const filterContainer = document.getElementById('category-filter-container');
+            if (!filterContainer) return;
+
+            let html = `
+                <button onclick="setCategory('ALL')" id="cat-btn-ALL" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-medium ${activeCategory === 'ALL' ? 'bg-blue-600 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'} transition whitespace-nowrap">
+                    すべて
+                </button>
+            `;
+
+            appCategories.forEach(cat => {
+                const isActive = activeCategory === cat.id;
+                const style = getCategoryStyle(cat);
+                const activeClass = isActive ? 'bg-blue-600 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200';
+                
+                html += `
+                    <button onclick="setCategory('${cat.id}')" id="cat-btn-${cat.id}" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-medium ${activeClass} transition whitespace-nowrap flex items-center gap-1.5">
+                        <i class="fa-solid ${style.icon}"></i> ${cat.label}
+                    </button>
+                `;
+            });
+
+            filterContainer.innerHTML = html;
+        }
+
+        function renderCategorySelect() {
+            const selectContainer = document.getElementById('form-category-select');
+            if (!selectContainer) return;
+
+            selectContainer.innerHTML = appCategories.map(cat => 
+                `<option value="${cat.id}">${cat.label}</option>`
+            ).join('');
+        }
+
+        function renderCategoryManagerList() {
+            const list = document.getElementById('category-manager-list');
+            if (!list) return;
+
+            if (appCategories.length === 0) {
+                list.innerHTML = `<p class="text-[11px] text-slate-400 py-1">カテゴリがありません。</p>`;
+                return;
+            }
+
+            list.innerHTML = appCategories.map(cat => {
+                const style = getCategoryStyle(cat);
+                return `
+                    <div class="flex justify-between items-center bg-white p-2 rounded-md border border-slate-200 text-xs">
+                        <span class="font-semibold text-slate-700 flex items-center gap-1.5">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${style.bg} ${style.text} ${style.border} flex items-center gap-1">
+                                <i class="fa-solid ${style.icon}"></i> ${cat.label}
+                            </span>
+                        </span>
+                        <div class="flex gap-1">
+                            <button type="button" onclick="openCategoryForm('${cat.id}')" class="px-2 py-1 bg-amber-50 text-amber-700 hover:bg-amber-100 rounded text-[10px] font-bold transition">編集</button>
+                            <button type="button" onclick="requestDeleteCategory('${cat.id}')" class="px-2 py-1 bg-rose-50 text-rose-700 hover:bg-rose-100 rounded text-[10px] font-bold transition">削除</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleCategorySettingForm() {
+            const form = document.getElementById('category-setting-area');
+            const text = document.getElementById('cat-toggle-text');
+
+            if (form.classList.contains('hidden')) {
+                form.classList.remove('hidden');
+                text.textContent = "閉じる";
+            } else {
+                form.classList.add('hidden');
+                text.textContent = "開く";
+                closeCategoryForm();
+            }
+        }
+
+        function openCategoryForm(catId = null) {
+            const form = document.getElementById('category-form');
+            form.classList.remove('hidden');
+
+            if (catId) {
+                const cat = appCategories.find(c => c.id === catId);
+                if (cat) {
+                    document.getElementById('cat-edit-id').value = cat.id;
+                    document.getElementById('cat-label-input').value = cat.label;
+                    document.getElementById('cat-icon-select').value = cat.icon || "fa-file-lines";
+                    document.getElementById('cat-color-select').value = cat.colorKey || "blue";
+                    document.getElementById('category-form-title').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-500"></i> カテゴリーの編集`;
+                }
+            } else {
+                document.getElementById('cat-edit-id').value = '';
+                document.getElementById('cat-label-input').value = '';
+                document.getElementById('cat-icon-select').value = 'fa-file-lines';
+                document.getElementById('cat-color-select').value = 'emerald';
+                document.getElementById('category-form-title').innerHTML = `<i class="fa-solid fa-plus-circle text-emerald-500"></i> 新しいカテゴリーを追加`;
+            }
+        }
+
+        function closeCategoryForm() {
+            const form = document.getElementById('category-form');
+            if (form) form.classList.add('hidden');
+        }
+
+        async function handleCategorySave(e) {
+            e.preventDefault();
+            const editId = document.getElementById('cat-edit-id').value;
+            const label = document.getElementById('cat-label-input').value.trim();
+            const icon = document.getElementById('cat-icon-select').value;
+            const colorKey = document.getElementById('cat-color-select').value;
+
+            if (!label) return;
+
+            if (editId) {
+                const idx = appCategories.findIndex(c => c.id === editId);
+                if (idx !== -1) {
+                    appCategories[idx] = { id: editId, label, icon, colorKey };
+                }
+            } else {
+                const newId = "cat_" + Date.now();
+                appCategories.push({ id: newId, label, icon, colorKey });
+            }
+
+            await saveCategoriesState();
+            closeCategoryForm();
+            renderCategoryUI();
+            renderMaterials();
+            showToast("カテゴリーを保存しました！");
+        }
+
+        function requestDeleteCategory(catId) {
+            const cat = appCategories.find(c => c.id === catId);
+            const name = cat ? cat.label : "このカテゴリー";
+            openConfirmModal(`カテゴリー「${name}」を削除してもよろしいですか？`, () => {
+                deleteCategory(catId);
+            });
+        }
+
+        async function deleteCategory(catId) {
+            appCategories = appCategories.filter(c => c.id !== catId);
+            if (activeCategory === catId) activeCategory = "ALL";
+            await saveCategoriesState();
+            renderCategoryUI();
+            renderMaterials();
+            showToast("カテゴリーを削除しました");
+        }
+
+        async function saveCategoriesState() {
+            localStorage.setItem(`categories_${APP_CONFIG.appId}`, JSON.stringify(appCategories));
+
+            if (isFirebaseActive && db) {
+                try {
+                    const settingsRef = db.collection('artifacts').doc(APP_CONFIG.appId).collection('public').doc('settings');
+                    await settingsRef.set({
+                        categories: appCategories,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                } catch (e) {
+                    console.warn("Firestore categories update fallback to local:", e);
+                }
+            }
+        }
+
+        function updateTitleDisplays(title, subtitle, bgStart = null, bgEnd = null) {
+            document.getElementById('app-title-display').textContent = title;
+            document.getElementById('app-subtitle-display').textContent = subtitle;
+            document.getElementById('footer-app-name').textContent = title;
+            document.title = title;
+            
+            document.getElementById('settings-title-input').value = title;
+            document.getElementById('settings-subtitle-input').value = subtitle;
+
+            if (bgStart && bgEnd) {
+                applyHeaderBg(bgStart, bgEnd);
+                document.getElementById('settings-bg-start').value = bgStart;
+                document.getElementById('settings-bg-end').value = bgEnd;
+            }
+        }
+
+        function applyHeaderBg(bgStart, bgEnd) {
+            const header = document.getElementById('main-header');
+            if (header) {
+                header.style.background = `linear-gradient(135deg, ${bgStart} 0%, ${bgEnd} 100%)`;
+            }
+        }
+
+        function previewHeaderBg() {
+            const start = document.getElementById('settings-bg-start').value;
+            const end = document.getElementById('settings-bg-end').value;
+            applyHeaderBg(start, end);
+        }
+
+        function setBgPreset(start, end) {
+            document.getElementById('settings-bg-start').value = start;
+            document.getElementById('settings-bg-end').value = end;
+            applyHeaderBg(start, end);
+        }
+
+        function initFirebase() {
+            try {
+                if (typeof firebase !== 'undefined') {
+                    const firebaseConfig = {
+                        apiKey: "AIzaSyAupptKMp7uqJtP0PVAsuSKmpdVpOIYvvE",
+                        authDomain: "pc-study-library.firebaseapp.com",
+                        projectId: "pc-study-library",
+                        storageBucket: "pc-study-library.firebasestorage.app",
+                        messagingSenderId: "717869175180",
+                        appId: "1:717869175180:web:277b7a8625492a724046a9"
+                    };
+
+                    if (!firebase.apps.length) {
+                        firebase.initializeApp(firebaseConfig);
+                    }
+                    db = firebase.firestore();
+                    isFirebaseActive = true;
+
+                    listenToSiteSettings();
+                    listenToMaterials();
+                    updateBadge("cloud", "☁️ クラウド接続完了");
+                    return;
+                }
+            } catch (e) {
+                console.warn("Firebase fallback triggered:", e);
+            }
+            
+            isFirebaseActive = false;
+            updateBadge("demo", "💻 デモ動作中");
+            loadLocalSettings();
+            loadLocalMaterials();
+        }
+
+        function listenToSiteSettings() {
+            loadLocalSettings();
+
+            if (!isFirebaseActive || !db) return;
+            const settingsRef = db.collection('artifacts').doc(APP_CONFIG.appId).collection('public').doc('settings');
+            
+            settingsRef.onSnapshot((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.categories && Array.isArray(data.categories) && data.categories.length > 0) {
+                        appCategories = data.categories;
+                        renderCategoryUI();
+                    }
+                    updateTitleDisplays(
+                        data.appName || APP_CONFIG.appName, 
+                        data.appSubtitle || APP_CONFIG.appSubtitle,
+                        data.headerBgStart || APP_CONFIG.theme.gradientStart,
+                        data.headerBgEnd || APP_CONFIG.theme.gradientEnd
+                    );
+                }
+            }, (err) => {
+                console.warn("Settings sync warning, using local settings:", err);
+                loadLocalSettings();
+            });
+        }
+
+        function loadLocalSettings() {
+            const savedCategories = localStorage.getItem(`categories_${APP_CONFIG.appId}`);
+            if (savedCategories) {
+                try {
+                    appCategories = JSON.parse(savedCategories);
+                    renderCategoryUI();
+                } catch (e) { console.warn(e); }
+            } else {
+                appCategories = [...DEFAULT_CATEGORIES];
+                renderCategoryUI();
+            }
+
+            const saved = localStorage.getItem(`settings_${APP_CONFIG.appId}`);
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    if (data.appName) {
+                        updateTitleDisplays(
+                            data.appName, 
+                            data.appSubtitle || '',
+                            data.headerBgStart || APP_CONFIG.theme.gradientStart,
+                            data.headerBgEnd || APP_CONFIG.theme.gradientEnd
+                        );
+                    }
+                } catch (e) { console.warn(e); }
+            }
+        }
+
+        function listenToMaterials() {
+            const ref = db.collection('artifacts').doc(APP_CONFIG.appId).collection('public').doc('data').collection('materials');
+            ref.onSnapshot((snapshot) => {
+                materials = [];
+                snapshot.forEach((doc) => {
+                    materials.push({ id: doc.id, ...doc.data() });
+                });
+                materials.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+                renderMaterials();
+            }, (err) => {
+                console.warn("Permission error fallback to local materials:", err);
+                loadLocalMaterials();
+            });
+        }
+
+        function loadLocalMaterials() {
+            const saved = localStorage.getItem(`materials_${APP_CONFIG.appId}`);
+            if (saved) {
+                try { materials = JSON.parse(saved); } catch(e) { materials = []; }
+            } else {
+                materials = [
+                    { id: "demo-1", title: "第1回 パソコン基礎講義テキスト", category: "Text", description: "キーボード入力のコツとフォルダ・ファイル操作の基礎解説テキストです。", fileUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", createdAt: "2026-05-18T10:00:00.000Z" },
+                    { id: "demo-2", title: "Excel関数・グラフ解説スライド", category: "Slide", description: "IF関数やVLOOKUP関数の使い方をスライド形式で分かりやすく紹介します。", fileUrl: "https://example.com", createdAt: "2026-05-19T10:00:00.000Z" },
+                    { id: "demo-3", title: "Web検索＆AI活用チュートリアル動画", category: "Video", description: "効率的な情報収集とAIツールの基本的な連携操作を解説した動画コンテンツです。", fileUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", createdAt: "2026-05-20T10:00:00.000Z" }
+                ];
+            }
+            renderMaterials();
+        }
+
+        function renderMaterials() {
+            const grid = document.getElementById('materials-grid');
+            if (!grid) return;
+
+            const query = document.getElementById('search-input').value.trim().toLowerCase();
+
+            const filtered = materials.filter(m => {
+                const matchCat = activeCategory === "ALL" || m.category === activeCategory;
+                const matchQuery = !query || m.title.toLowerCase().includes(query) || m.description.toLowerCase().includes(query);
+                return matchCat && matchQuery;
+            });
+
+            document.getElementById('material-count').textContent = `${filtered.length}件`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-slate-400 bg-white rounded-xl border border-slate-200">
+                        <i class="fa-solid fa-folder-open text-3xl mb-2 text-slate-300"></i>
+                        <p class="text-sm">該当する資料が見つかりません。</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => {
+                const catObj = appCategories.find(c => c.id === item.category) || { label: item.category, icon: "fa-file", colorKey: "slate" };
+                const cat = getCategoryStyle(catObj);
+                const date = item.createdAt ? item.createdAt.substring(0, 10) : '';
+
+                return `
+                    <div class="bg-white rounded-xl shadow-xs border border-slate-200 hover:shadow-md hover:border-blue-200 transition duration-200 flex flex-col justify-between p-4 group">
+                        <div>
+                            <div class="flex justify-between items-start gap-2 mb-2">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded border ${cat.bg} ${cat.text} ${cat.border} flex items-center gap-1">
+                                    <i class="fa-solid ${cat.icon}"></i> ${cat.label}
+                                </span>
+                                <span class="text-[10px] text-slate-400 font-medium">${date}</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-sm mb-1 line-clamp-2 group-hover:text-blue-600 transition">${escapeHtml(item.title)}</h3>
+                            <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed mb-4">${escapeHtml(item.description)}</p>
+                        </div>
+
+                        <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                            <div class="flex gap-1.5">
+                                <button onclick="openPreviewModal('${escapeHtml(item.fileUrl)}', '${escapeHtml(item.title)}', '${item.category}')" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1 shadow-xs">
+                                    <i class="fa-solid fa-eye text-xs"></i> プレビュー
+                                </button>
+                                <a href="${escapeHtml(item.fileUrl)}" target="_blank" rel="noopener noreferrer" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-2.5 py-1.5 rounded-lg transition flex items-center gap-1" title="新しいタブで開く">
+                                    <i class="fa-solid fa-up-right-from-square"></i>
+                                </a>
+                            </div>
+                            
+                            ${isAdminLoggedIn ? `
+                                <div class="flex gap-1">
+                                    <button onclick="editMaterial('${item.id}')" class="text-xs bg-amber-50 text-amber-700 border border-amber-200 px-2 py-1 rounded-lg hover:bg-amber-100 transition">編集</button>
+                                    <button onclick="requestDeleteMaterial('${item.id}')" class="text-xs bg-rose-50 text-rose-700 border border-rose-200 px-2 py-1 rounded-lg hover:bg-rose-100 transition">削除</button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 👁️ プレビュー機能モーダルの制御
+        function openPreviewModal(url, title, categoryId) {
+            const modal = document.getElementById('preview-modal');
+            const titleEl = document.getElementById('preview-modal-title');
+            const badgeEl = document.getElementById('preview-modal-badge');
+            const externalLink = document.getElementById('preview-external-link');
+            const contentEl = document.getElementById('preview-modal-content');
+
+            const catObj = appCategories.find(c => c.id === categoryId) || { label: "資料", colorKey: "blue" };
+            
+            titleEl.textContent = title;
+            badgeEl.textContent = catObj.label;
+            externalLink.href = url;
+
+            contentEl.innerHTML = '<div class="text-slate-400 text-sm flex items-center gap-2"><i class="fa-solid fa-spinner animate-spin"></i> プレビュー読み込み中...</div>';
+
+            const cleanUrl = url.trim();
+            const lowerUrl = cleanUrl.toLowerCase();
+
+            // YouTube 動画埋め込み処理
+            if (lowerUrl.includes('youtube.com/watch') || lowerUrl.includes('youtu.be/')) {
+                let videoId = '';
+                if (lowerUrl.includes('youtu.be/')) {
+                    videoId = cleanUrl.split('youtu.be/')[1].split('?')[0];
+                } else if (lowerUrl.includes('v=')) {
+                    videoId = cleanUrl.split('v=')[1].split('&')[0];
+                }
+                if (videoId) {
+                    contentEl.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                } else {
+                    renderIframePreview(cleanUrl, contentEl);
+                }
+            }
+            // 画像形式 (JPG, PNG, GIF, WEBP, SVG)
+            else if (/\.(jpg|jpeg|png|gif|webp|svg)($|\?)/i.test(lowerUrl)) {
+                contentEl.innerHTML = `<div class="w-full h-full p-4 flex items-center justify-center bg-slate-900/10"><img src="${escapeHtml(cleanUrl)}" alt="${escapeHtml(title)}" class="max-w-full max-h-full object-contain rounded-lg shadow-md"></div>`;
+            }
+            // PDF ドキュメント
+            else if (/\.pdf($|\?)/i.test(lowerUrl)) {
+                contentEl.innerHTML = `<iframe src="${escapeHtml(cleanUrl)}" class="w-full h-full border-0"></iframe>`;
+            }
+            // その他 Webサイト・クラウド資料
+            else {
+                renderIframePreview(cleanUrl, contentEl);
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function renderIframePreview(url, container) {
+            container.innerHTML = `
+                <iframe src="${escapeHtml(url)}" class="w-full h-full border-0" title="プレビュー"></iframe>
+            `;
+        }
+
+        function closePreviewModal() {
+            const modal = document.getElementById('preview-modal');
+            const contentEl = document.getElementById('preview-modal-content');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+            if (contentEl) {
+                contentEl.innerHTML = '';
+            }
+        }
+
+        function toggleTitleSettingForm() {
+            const form = document.getElementById('title-setting-form');
+            const text = document.getElementById('title-toggle-text');
+
+            if (form.classList.contains('hidden')) {
+                form.classList.remove('hidden');
+                text.textContent = "閉じる";
+            } else {
+                form.classList.add('hidden');
+                text.textContent = "開く";
+            }
+        }
+
+        async function handleSettingsSubmit(e) {
+            e.preventDefault();
+            const newTitle = document.getElementById('settings-title-input').value.trim();
+            const newSubtitle = document.getElementById('settings-subtitle-input').value.trim();
+            const bgStart = document.getElementById('settings-bg-start').value;
+            const bgEnd = document.getElementById('settings-bg-end').value;
+
+            if (!newTitle) return;
+
+            updateTitleDisplays(newTitle, newSubtitle, bgStart, bgEnd);
+            localStorage.setItem(`settings_${APP_CONFIG.appId}`, JSON.stringify({ 
+                appName: newTitle, 
+                appSubtitle: newSubtitle,
+                headerBgStart: bgStart,
+                headerBgEnd: bgEnd
+            }));
+
+            if (isFirebaseActive && db) {
+                try {
+                    const settingsRef = db.collection('artifacts').doc(APP_CONFIG.appId).collection('public').doc('settings');
+                    await settingsRef.set({
+                        appName: newTitle,
+                        appSubtitle: newSubtitle,
+                        headerBgStart: bgStart,
+                        headerBgEnd: bgEnd,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                    showToast("サイト設定をクラウドに保存しました！");
+                } catch (err) {
+                    console.warn("Firestore settings update failed, saved locally:", err);
+                    showToast("設定を変更しました（ローカル保存）");
+                }
+            } else {
+                showToast("設定を変更しました（デモ）");
+            }
+        }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            const editId = document.getElementById('edit-id').value;
+            const title = document.getElementById('form-title-input').value.trim();
+            const category = document.getElementById('form-category-select').value;
+            const description = document.getElementById('form-desc-input').value.trim();
+            const fileUrl = document.getElementById('form-url-input').value.trim();
+
+            const data = { title, category, description, fileUrl, updatedAt: new Date().toISOString() };
+
+            if (isFirebaseActive && db) {
+                const ref = db.collection('artifacts').doc(APP_CONFIG.appId).collection('public').doc('data').collection('materials');
+                if (editId) {
+                    await ref.doc(editId).update(data);
+                    showToast("資料を更新しました！");
+                } else {
+                    data.createdAt = new Date().toISOString();
+                    await ref.add(data);
+                    showToast("新しい資料を登録しました！");
+                }
+            } else {
+                if (editId) {
+                    const idx = materials.findIndex(m => m.id === editId);
+                    if (idx !== -1) materials[idx] = { ...materials[idx], ...data };
+                } else {
+                    data.id = "demo-" + Date.now();
+                    data.createdAt = new Date().toISOString();
+                    materials.unshift(data);
+                }
+                localStorage.setItem(`materials_${APP_CONFIG.appId}`, JSON.stringify(materials));
+                renderMaterials();
+                showToast("保存しました（デモ）");
+            }
+
+            resetForm();
+        }
+
+        function requestDeleteMaterial(id) {
+            openConfirmModal("この資料を削除してもよろしいですか？", () => {
+                deleteMaterial(id);
+            });
+        }
+
+        async function deleteMaterial(id) {
+            if (isFirebaseActive && db) {
+                await db.collection('artifacts').doc(APP_CONFIG.appId).collection('public').doc('data').collection('materials').doc(id).delete();
+                showToast("資料を削除しました");
+            } else {
+                materials = materials.filter(m => m.id !== id);
+                localStorage.setItem(`materials_${APP_CONFIG.appId}`, JSON.stringify(materials));
+                renderMaterials();
+                showToast("削除しました（デモ）");
+            }
+        }
+
+        function editMaterial(id) {
+            const item = materials.find(m => m.id === id);
+            if (!item) return;
+
+            document.getElementById('edit-id').value = item.id;
+            document.getElementById('form-title-input').value = item.title;
+            document.getElementById('form-category-select').value = item.category;
+            document.getElementById('form-desc-input').value = item.description;
+            document.getElementById('form-url-input').value = item.fileUrl;
+
+            document.getElementById('form-title').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-400"></i> 資料の編集`;
+            document.getElementById('form-submit-btn').innerHTML = `<i class="fa-solid fa-check mr-1"></i>資料を保存する`;
+            document.getElementById('cancel-edit-btn').classList.remove('hidden');
+
+            document.getElementById('admin-panel').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            document.getElementById('material-form').reset();
+            document.getElementById('edit-id').value = '';
+            document.getElementById('form-title').innerHTML = `<i class="fa-solid fa-plus-circle text-amber-400"></i> 新しい資料を登録`;
+            document.getElementById('form-submit-btn').innerHTML = `<i class="fa-solid fa-plus mr-1"></i>資料を登録する`;
+            document.getElementById('cancel-edit-btn').classList.add('hidden');
+        }
+
+        function toggleAuthModal() {
+            if (isAdminLoggedIn) {
+                isAdminLoggedIn = false;
+                const icon = document.getElementById('auth-btn-icon');
+                if (icon) icon.className = "fa-solid fa-gear text-lg";
+                const btn = document.getElementById('auth-btn');
+                if (btn) {
+                    btn.title = "管理者ログイン";
+                    btn.classList.remove('bg-amber-400/30', 'border-amber-300');
+                }
+                updateAdminLayout(false);
+                showToast("ログアウトしました");
+            } else {
+                openAuthModal();
+            }
+        }
+
+        function openAuthModal() {
+            const modal = document.getElementById('auth-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                const passInput = document.getElementById('admin-pass-input');
+                if (passInput) {
+                    passInput.value = '';
+                    passInput.focus();
+                }
+            }
+        }
+
+        function closeAuthModal() {
+            const modal = document.getElementById('auth-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function getStoredAdminPassHash() {
+            return localStorage.getItem(`admin_pass_${APP_CONFIG.appId}`) || APP_CONFIG.adminPassHash;
+        }
+
+        async function loginAdmin() {
+            const pass = document.getElementById('admin-pass-input').value;
+            const inputHash = btoa(pass);
+
+            if (inputHash === getStoredAdminPassHash()) {
+                if (isFirebaseActive && firebase.auth()) {
+                    try {
+                        await firebase.auth().signInAnonymously();
+                    } catch (e) {
+                        console.warn("Firebase auth warning:", e);
+                    }
+                }
+
+                isAdminLoggedIn = true;
+                closeAuthModal();
+                
+                const icon = document.getElementById('auth-btn-icon');
+                if (icon) icon.className = "fa-solid fa-gear text-lg text-amber-300 animate-spin-slow";
+                const btn = document.getElementById('auth-btn');
+                if (btn) {
+                    btn.title = "管理者ログアウト";
+                    btn.classList.add('bg-amber-400/30', 'border-amber-300');
+                }
+                
+                updateAdminLayout(true);
+                showToast("管理者ログインに成功しました");
+            } else {
+                showToast("パスワードが正しくありません", "error");
+            }
+        }
+
+        function updateAdminLayout(showAdmin) {
+            const adminPanel = document.getElementById('admin-panel');
+            const materialsWrapper = document.getElementById('materials-wrapper');
+            const grid = document.getElementById('materials-grid');
+            const appLayout = document.getElementById('app-layout');
+
+            if (showAdmin) {
+                if (appLayout) appLayout.className = "flex flex-col lg:flex-row gap-6 transition-all duration-300 items-start";
+                materialsWrapper.className = "w-full lg:w-2/3 order-1";
+                adminPanel.className = "w-full lg:w-1/3 block space-y-4 order-2 sticky top-20";
+                grid.className = "grid grid-cols-1 md:grid-cols-2 gap-4";
+            } else {
+                if (appLayout) appLayout.className = "grid grid-cols-1 gap-6 transition-all duration-300";
+                materialsWrapper.className = "w-full order-1";
+                adminPanel.className = "hidden";
+                grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4";
+            }
+            renderMaterials();
+        }
+
+        function closeAdminPanel() {
+            isAdminLoggedIn = false;
+            const icon = document.getElementById('auth-btn-icon');
+            if (icon) icon.className = "fa-solid fa-gear text-lg";
+            const btn = document.getElementById('auth-btn');
+            if (btn) {
+                btn.title = "管理者ログイン";
+                btn.classList.remove('bg-amber-400/30', 'border-amber-300');
+            }
+            updateAdminLayout(false);
+            resetForm();
+        }
+
+        function setCategory(catId) {
+            activeCategory = catId;
+            renderCategoryFilters();
+            renderMaterials();
+        }
+
+        function updateBadge(status, text) {
+            document.getElementById('badge-text').textContent = text;
+            const dot = document.getElementById('badge-dot');
+            if (status === "cloud") {
+                dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+            } else {
+                dot.className = "w-2 h-2 rounded-full bg-amber-400 animate-pulse";
+            }
+        }
+
+        function openConfirmModal(msg, onConfirm) {
+            document.getElementById('confirm-modal-msg').textContent = msg;
+            pendingConfirmAction = onConfirm;
+            const modal = document.getElementById('confirm-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeConfirmModal(result) {
+            const modal = document.getElementById('confirm-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            if (result && typeof pendingConfirmAction === 'function') {
+                pendingConfirmAction();
+            }
+            pendingConfirmAction = null;
+        }
+
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = msg;
+            const icon = document.getElementById('toast-icon');
+            
+            if (type === 'error') {
+                icon.className = "fa-solid fa-circle-xmark text-rose-400 text-sm";
+            } else {
+                icon.className = "fa-solid fa-circle-check text-emerald-400 text-sm";
+            }
+
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-3');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-3');
+            }, 3000);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]);
+        }
+    </script>
+</body>
+</html>
