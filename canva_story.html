@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>70歳からの挑戦！華子と美智子のCanva奮闘記 | Digital Humanities & Story Journal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Journal Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        journal: {
+                            50: '#f4f7f6',
+                            100: '#e3eae7',
+                            800: '#1e3a34',
+                            900: '#142824',
+                        },
+                        accent: {
+                            teal: '#0d9488',
+                            rose: '#e11d48',
+                            amber: '#d97706',
+                            indigo: '#4f46e5',
+                            emerald: '#059669'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Noto Serif JP"', 'serif'],
+                        sans: ['"Noto Sans JP"', '"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.9;
+        }
+        .novel-text {
+            font-family: 'Noto Serif JP', Georgia, serif;
+            font-size: 1.075rem;
+            color: #2c3e50;
+        }
+        .novel-text p {
+            margin-bottom: 1.625rem;
+            text-align: justify;
+        }
+        .dialogue {
+            position: relative;
+            padding-left: 1rem;
+            border-left: 3px solid #0d9488;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+        .chapter-badge {
+            background: linear-gradient(135deg, #0d9488 0%, #0284c7 100%);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 antialiased selection:bg-teal-100 selection:text-teal-900">
+
+    <!-- Top Journal Header Bar / Metadata Header -->
+    <div class="border-b border-slate-200 bg-white/90 backdrop-blur sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between text-xs sm:text-sm text-slate-500 font-sans">
+            <div class="flex items-center space-x-3">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-bold bg-teal-100 text-teal-800 border border-teal-200">
+                    <i class="fa-solid fa-book-journal-whills mr-1.5"></i> Vol. 70, Article 1
+                </span>
+                <span class="hidden md:inline text-slate-400">|</span>
+                <span class="hidden md:inline font-medium text-slate-600">Journal of Senior Digital Empowerment & Narrative Design</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button onclick="window.print()" class="text-slate-500 hover:text-slate-800 transition flex items-center gap-1 font-semibold" title="印刷 / PDF保存">
+                    <i class="fa-solid fa-print"></i> <span>印刷 / PDF保存</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container Layout -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+
+        <!-- Title & Metadata Section -->
+        <header class="bg-white rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200/80 mb-10">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="text-xs font-bold tracking-wider uppercase px-3 py-1 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-100">
+                    SPECIAL CASE STUDY / ESSAY STORY
+                </span>
+                <span class="text-xs text-slate-400">Published: August 2026</span>
+            </div>
+
+            <h1 class="text-2xl sm:text-4xl lg:text-5xl font-black font-serif text-slate-900 leading-tight mb-6">
+                <br class="sm:hidden">華子と美智子のCanva奮闘記
+                <span class="block text-lg sm:text-2xl text-teal-600 font-sans font-medium mt-3">
+                    〜想いを届けるデザインの魔法〜
+                </span>
+            </h1>
+
+            <p class="text-slate-600 font-sans text-sm sm:text-base leading-relaxed mb-8 max-w-4xl">
+                Word・Excelの基本操作を修得した70歳のシニア層が、直感的なデザインツール「Canva」を通じて表現の歓びを見出し、思い出の復元や世代間コミュニケーションの架け橋を築くプロセスを描いたストーリーベースの学術的実践記録です。
+            </p>
+
+            <!-- Keywords Tag Cloud -->
+           
+        </header>
+
+        <!-- Character Profiles / Abstract Grid -->
+        <section class="mb-12">
+            <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-users text-teal-600"></i> 登場人物プロフィール
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- Hanako Profile -->
+                <div class="bg-gradient-to-br from-rose-50/60 to-white p-6 rounded-xl border border-rose-100 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-rose-500/10 rounded-bl-full pointer-events-none"></div>
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold text-lg font-serif shadow">
+                            華
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-lg">華子 <span class="text-xs text-rose-600 font-semibold font-sans">（70歳）</span></h3>
+                            <p class="text-xs text-slate-500">主人公 / PC教室歴3年</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed font-sans">
+                        3年前に最愛の夫・大介を亡くし一人暮らし。WordやExcelの基本操作は習得したものの無機質な仕上がりに不完全燃焼を抱いていた。旅の思い出や手作り和雑貨を美しく残したいと切望している。
+                    </p>
+                </div>
+
+                <!-- Michiko Profile -->
+                <div class="bg-gradient-to-br from-amber-50/60 to-white p-6 rounded-xl border border-amber-100 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-amber-500/10 rounded-bl-full pointer-events-none"></div>
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-lg font-serif shadow">
+                            美
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-lg">美智子 <span class="text-xs text-amber-600 font-semibold font-sans">（68歳）</span></h3>
+                            <p class="text-xs text-slate-500">華子の長年の友人</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed font-sans">
+                        明るくおしゃべりだが「デジタル化についていけない」と強いコンプレックスを持つ。離れて暮らす孫（あかりちゃん）や娘との世代の壁に寂しさを抱えている。
+                    </p>
+                </div>
+
+                <!-- Sato Profile -->
+                <div class="bg-gradient-to-br from-teal-50/60 to-white p-6 rounded-xl border border-teal-100 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-teal-500/10 rounded-bl-full pointer-events-none"></div>
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-lg font-serif shadow">
+                            佐
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-lg">佐藤先生 <span class="text-xs text-teal-600 font-semibold font-sans">（70歳）</span></h3>
+                            <p class="text-xs text-slate-500">地域PC教室の講師</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed font-sans">
+                        華子と同い年。定年後にCanvaと出会いデザインに目覚めた。「PCは心をつなぐ魔法のキャンバス」という実体験に基づき、同世代目線で温かく寄り添う指導が好評。
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Main Story Area (Single Column Layout for Focused Reading) -->
+        <article class="max-w-4xl mx-auto space-y-12 bg-white p-6 sm:p-12 rounded-2xl shadow-sm border border-slate-200/80">
+
+            <!-- 序章 -->
+            <section id="chap-0" class="scroll-mt-20">
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="chapter-badge text-white font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">Prologue</span>
+                    <h2 class="text-xl sm:text-2xl font-bold font-serif text-slate-900">序章：褪せない記憶と、冷たい画面</h2>
+                </div>
+                    
+                    <div class="novel-text">
+                        <p>小雨がしとしとと降り続く午後のカフェ。窓際のテーブルで、華子はスマートフォンの小さな画面を、まるで宝物に触れるかのように愛おしそうになぞっていた。</p>
+                        <p>画面に映っているのは、5年前に亡き夫・大介と訪れた京都・嵐山の風景。満開のしだれ桜の下で、カメラに向かって少し照れくさそうに微笑む大介の姿があった。</p>
+                        
+                        <div class="dialogue border-rose-400 bg-rose-50/40 p-3 rounded-r-lg text-slate-800 my-4 font-sans text-sm">
+                            「ねえ、華子さん……また大介さんの写真を見つめているの？」
+                        </div>
+                        
+                        <p>向かいに座る美智子が、心配と温もりの混ざった視線を投げかけた。</p>
+
+                        <div class="dialogue border-rose-400 bg-rose-50/40 p-3 rounded-r-lg text-slate-800 my-4 font-sans text-sm">
+                            「ええ……。Wordを使って、大介さんとの思い出を集めたアルバムを作ろうとしたのだけれど……なんだか、どうしても味気なくなってしまって」
+                        </div>
+
+                        <p>華子が鞄から取り出し、テーブルに広げたA4の印刷用紙。そこには、Wordの無機質な表の中に、ただ四角く切り取られた写真と、標準フォントの文字が冷たく並んでいるだけだった。</p>
+                        <p>「写真と文字を置くだけじゃ、あの時吹き抜けた春の風の匂いも、大介さんが『綺麗だね』って言ってくれた時の声の温もりも、ちっとも伝わってこないのよ。ただの報告文書みたいになってしまって……」</p>
+                        
+                        <div class="dialogue border-amber-400 bg-amber-50/40 p-3 rounded-r-lg text-slate-800 my-4 font-sans text-sm">
+                            「わかるわ、その気持ち……。私もね、先月孫の誕生日にカードを作って送ろうとしたの。でも、出来上がったのはなんだか昔の回覧板みたいな地味な紙切れで……。最近の若い人や子どもたちは、スマホでオシャレな画像や動画を見せ合っているでしょう？ 私たちみたいな老いぼれには、あんな心がときめくような素敵なデザインなんて、作れるわけがないのよね……」
+                        </div>
+
+                        <p>美智子の自虐的な微笑みに重ねられた小さな溜め息。ふたりの間に漂う諦めと寂しさを優しく振り払うように、ノートパソコンを手にした佐藤先生が歩み寄ってきた。</p>
+
+                        <div class="dialogue border-teal-500 bg-teal-50/40 p-3 rounded-r-lg text-slate-800 my-4 font-sans text-sm">
+                            「華子さん、美智子さん。自分たちで勝手に限界を決めてしまうのは、一番もったいないですよ」
+                        </div>
+
+                        <p>白髪交じりの髪を上品にまとめ、優しく目元を緩める佐藤先生。華子と同い年の70歳でありながら、その瞳は少年のように生き生きと輝いている。</p>
+                        <p>「私も70歳になってから始めたんです。でもね、私たちの胸の中にある溢れるような温かい想いは、道具の使い方ひとつで、プロのように目に見える形にできるんですよ」</p>
+                        <p>佐藤先生がノートパソコンを開き、明るい画面をふたりに向けた。</p>
+                        <p>「『Canva（キャンバ）』という名前を聞いたことはありますか？ 難しい専門知識も、特別な絵の才能もいりません。あなたの『伝えたい』という心を、そのまま美しく描き出せる魔法のキャンバスです。同じ70代の私にできたんですから、おふたりにできないわけがありません。さあ、一緒に挑戦してみましょう」</p>
+                    </div>
+                </section>
+
+                <hr class="border-slate-100">
+
+                <!-- 第1章 -->
+                <section id="chap-1" class="scroll-mt-20">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <span class="chapter-badge text-white font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">Chapter 1</span>
+                        <h2 class="text-xl sm:text-2xl font-bold font-serif text-slate-900">第1章：記憶に光を灯す魔法のキャンバス</h2>
+                    </div>
+
+                    <div class="novel-text">
+                        <p>「人間が外部から受け取る情報のうち、実に80%以上は視覚から入ってくると言われています」</p>
+                        <p>佐藤先生はふたりの目をじっと見つめ、優しくも力強い声で語りかけた。</p>
+                        <p>「どれほど素晴らしい思い出や愛する人へのメッセージがあっても、見た目が不格好だと、相手の心に届く前に通り過ぎてしまうんです。逆を言えば、デザインが整うだけで、言葉は劇的に人の心を動かす力を持ちます。YouTubeのサムネイルなら視線を釘付けにしてクリック率が2%から10%以上へ跳ね上がり、SNS投稿やチラシなら、一瞬で『信頼感』や『温かみ』を生み出すことができるんですよ」</p>
+                        <p>「でも佐藤先生、PhotoshopとかIllustratorという、高価で難しいプロ用のソフトを使わなきゃいけないんじゃないの？」華子が不安そうに尋ねる。</p>
+                        <p>「いいえ。私も最初はそう思って諦めかけていたんです。でもプロ用ソフトは何ヶ月も専門学校で学ぶ必要がありますが、Canvaは直感的なドラッグ＆ドロップ操作だけ。さらに最大の強みは、スマホとパソコンでデータが自動的に同期される『クラウド』という仕組みにあります」</p>
+                        <p>佐藤先生は、同じシニア世代の目線から、端末をスムーズに連携させて隙間時間を活用する理想的なワークフローを二人に教えた。</p>
+
+                        <!-- Workflow Card Box -->
+                        <div class="bg-gradient-to-r from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-100 my-6 font-sans">
+                            <h3 class="text-sm font-bold text-teal-900 mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-arrows-rotate text-teal-600"></i> 心をつなぐシームレスなワークフロー
+                            </h3>
+                            <ol class="space-y-2 text-xs sm:text-sm text-slate-700">
+                                <li class="flex items-start gap-2">
+                                    <span class="bg-teal-600 text-white font-bold rounded-full w-5 h-5 flex items-center justify-center shrink-0 text-xs mt-0.5">1</span>
+                                    <span><strong>散歩道や旅先（スマホ）:</strong> 散歩で見つけた季節の花や、古いアルバムをスマホで撮影し、そのままCanvaアプリにアップロードしておく。</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="bg-teal-600 text-white font-bold rounded-full w-5 h-5 flex items-center justify-center shrink-0 text-xs mt-0.5">2</span>
+                                    <span><strong>自宅の机（PC）:</strong> 大画面でキーボードとマウスを使い、亡き夫への言葉や友人へのメッセージを添えて、じっくりと配置や文字をデザインする。</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="bg-teal-600 text-white font-bold rounded-full w-5 h-5 flex items-center justify-center shrink-0 text-xs mt-0.5">3</span>
+                                    <span><strong>仕上がりの瞬間（スマホ）:</strong> 手元のスマホですぐに最終確認を行い、遠く離れた家族のLINEやSNSへ一瞬で届ける。</span>
+                                </li>
+                            </ol>
+                        </div>
+
+                        <p>わずか3分ほどで無料のアカウント登録を済ませた美智子は、画面の端に現れた「Canva Pro（有料版）」の文字に目を留めた。</p>
+
+                        <!-- Table 1: Plan Comparison -->
+                        <div class="my-8 overflow-x-auto font-sans">
+                            <table class="w-full text-xs sm:text-sm text-left border-collapse rounded-xl overflow-hidden shadow-sm border border-slate-200">
+                                <thead>
+                                    <tr class="bg-slate-800 text-white">
+                                        <th class="p-3">比較項目</th>
+                                        <th class="p-3">Canva 無料版</th>
+                                        <th class="p-3 bg-teal-700">Canva Pro（有料版：月額約1,180円〜）</th>
+                                        <th class="p-3">具体の価値・メリット</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-white">
+                                    <tr class="hover:bg-slate-50 transition">
+                                        <td class="p-3 font-bold text-slate-800">素材数</td>
+                                        <td class="p-3 text-slate-600">標準的な素材のみ</td>
+                                        <td class="p-3 font-semibold text-teal-800 bg-teal-50/50">1億点以上の写真・動画・グラフィック</td>
+                                        <td class="p-3 text-slate-600">「有料マークで使えない」ストレスから解放される。</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 transition">
+                                        <td class="p-3 font-bold text-slate-800">フォント数</td>
+                                        <td class="p-3 text-slate-600">限定的</td>
+                                        <td class="p-3 font-semibold text-teal-800 bg-teal-50/50">3,000種類以上（自社フォント追加可）</td>
+                                        <td class="p-3 text-slate-600">高級感ある明朝体から温かい手書き風まで自在。</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 transition">
+                                        <td class="p-3 font-bold text-slate-800">ストレージ</td>
+                                        <td class="p-3 text-slate-600">5GB</td>
+                                        <td class="p-3 font-semibold text-teal-800 bg-teal-50/50">1TB（大容量）</td>
+                                        <td class="p-3 text-slate-600">高画質な思い出の写真・動画を無制限保存。</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 transition">
+                                        <td class="p-3 font-bold text-slate-800">独自AI機能</td>
+                                        <td class="p-3 text-slate-600">ほぼ使用不可</td>
+                                        <td class="p-3 font-semibold text-teal-800 bg-teal-50/50">背景除去、マジック消しゴム、リサイズ等</td>
+                                        <td class="p-3 text-slate-600">高度な背景切り抜きや不要物除去がワンクリック。</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 transition">
+                                        <td class="p-3 font-bold text-slate-800">ブランド管理</td>
+                                        <td class="p-3 text-slate-600">なし</td>
+                                        <td class="p-3 font-semibold text-teal-800 bg-teal-50/50">ブランドキット（ロゴ・色・フォント）</td>
+                                        <td class="p-3 text-slate-600">お気に入りのテーマを一瞬で統一できる。</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <p>「月額約1,180円……ちょうど私がお友達と喫茶店でお喋りする1回分ね」美智子が呟いた。「これで孫に『おばあちゃん、すごい！』って感動してもらえるなら、私、Proの体験を試してみるわ！」</p>
+                        <p>佐藤先生は「素晴らしい決断です！」と嬉しそうに目を細めた。</p>
+                    </div>
+                </section>
+
+                <hr class="border-slate-100">
+
+                <!-- 第2章 -->
+                <section id="chap-2" class="scroll-mt-20">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <span class="chapter-badge text-white font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">Chapter 2</span>
+                        <h2 class="text-xl sm:text-2xl font-bold font-serif text-slate-900">第2章：空白のキャンバスに、想いの色を乗せて</h2>
+                    </div>
+
+                    <div class="novel-text">
+                        <p>「デザインを作るときに私たちがやりがちな失敗は、サイズを適当に決めて作り始めてしまうことです」と佐藤先生が自身の失敗談を交えて説く。</p>
+                        <p>「用途によって、画面の『黄金比率』は全く異なります。まずは正しいキャンバス（枠組み）を選ぶことから始めましょう」</p>
+
+                        <!-- Canvas Size Grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 font-sans">
+                            <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                                <span class="text-xs font-bold text-indigo-600 block mb-1">YouTubeサムネイル</span>
+                                <span class="font-mono text-base font-bold text-slate-800">1920 × 1080 px</span>
+                                <span class="text-xs text-slate-500 block mt-1">(アスペクト比 16:9 ／ 画面いっぱいに広がる横長)</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                                <span class="text-xs font-bold text-rose-600 block mb-1">Instagram 正方形</span>
+                                <span class="font-mono text-base font-bold text-slate-800">1080 × 1080 px</span>
+                                <span class="text-xs text-slate-500 block mt-1">(アスペクト比 1:1 ／ 標準フィード)</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                                <span class="text-xs font-bold text-amber-600 block mb-1">Instagram 縦長</span>
+                                <span class="font-mono text-base font-bold text-slate-800">1080 × 1350 px</span>
+                                <span class="text-xs text-slate-500 block mt-1">(アスペクト比 4:5 ／ スマホ画面占有の黄金比)</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                                <span class="text-xs font-bold text-emerald-600 block mb-1">A4資料・チラシ</span>
+                                <span class="font-mono text-base font-bold text-slate-800">210 × 297 mm</span>
+                                <span class="text-xs text-slate-500 block mt-1">(印刷・配布の標準サイズ)</span>
+                            </div>
+                        </div>
+
+                        <p>華子は、自身が来月主催する「地域のお手玉・手作り和雑貨のお茶会」の案内チラシを作ることに決めた。</p>
+                        <p>トップ画面の検索窓に「お茶会 チラシ」と打ち込む。 さらに「和風 温かみ」という言葉を追加し、右上の「フィルター（スライダーマーク）」を開いて、お茶のイメージに合う「抹茶色（緑系）」を選択した。</p>
+                        <p>検索ボタンを押した次の瞬間、華子の画面上に、息をのむほど洗練された和風テンプレートが数百種類も広がった。プロのデザイナーが作った完璧なレイアウトが、ずらりと並んでいる。</p>
+                        <p>「まあ……！ まるで私の頭の中にあった『落ち着いた温かいお茶会の風景』が、そのまま画面の上に現れたみたい……！」 華子の瞳に、小さな感動の光が灯った。ゼロから苦労して作る必要はなく、この完成された美しさを借りて自分らしく書き換えればいいのだと悟った瞬間だった。</p>
+                    </div>
+                </section>
+
+                <hr class="border-slate-100">
+
+                <!-- 第3章 -->
+                <section id="chap-3" class="scroll-mt-20">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <span class="chapter-badge text-white font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">Chapter 3</span>
+                        <h2 class="text-xl sm:text-2xl font-bold font-serif text-slate-900">第3章：言葉に宿るぬくもりと「フレーム」の絆</h2>
+                    </div>
+
+                    <div class="novel-text">
+                        <p>選んだテンプレートをもとに、華子は自分の言葉と写真を入れていく作業に入った。</p>
+                        
+                        <h3 class="text-lg font-bold font-sans text-slate-800 mt-6 mb-3 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-teal-500"></span> 1. 「フレーム」の中に咲く思い出の写真
+                        </h3>
+                        <p>サイドバーの「素材」から「フレーム」を選び、柔らかい丸型の枠をキャンバスの中央に配置する。そこに、華子が自分で撮影した「手作りの和柄お手玉」の写真をドラッグ＆ドロップした。</p>
+                        <p>カチッという小さな音とともに、四角かった写真が一瞬で可憐な丸型に切り抜かれ、背景のデザインと見事に調和した。</p>
+                        <p>「すごいわ、華子さん！ まるで高級な和菓子のカタログみたいじゃない！」美智子が身を乗り出して称賛する。</p>
+
+                        <h3 class="text-lg font-bold font-sans text-slate-800 mt-6 mb-3 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-teal-500"></span> 2. 想いを伝えるフォント（文字）の選択
+                        </h3>
+                        <p>「文字の形や書体は、言葉が持つ『声のトーン』そのものなんです」と佐藤先生が優しく語りかける。</p>
+                        <p>親しみやすさや読みやすさを伝えるなら『Noto Sans Japanese（源ノ角ゴシック）』。 歴史や品格、そして故人への深い感謝や情緒を表現するなら『筑紫明朝』。</p>
+                        <p>華子はタイトルを筑紫明朝に変え、上部ツールバーの「スペース」メニューを開いた。文字と文字の間隔（文字間隔）をほんの少し広げてあげる。すると、詰まっていた文字同士の間に心地よい風が吹き抜けたかのように、画面全体に静けさと高い品格が漂い始めた。</p>
+                        <p>さらに、和風表現に欠かせない「縦書きテキスト」ボタンを押すと、まるで京都の老舗旅館のお品書きのような美しい日本語のラインが立ち上がった。</p>
+                    </div>
+                </section>
+
+                <hr class="border-slate-100">
+
+                <!-- 第4章 -->
+                <section id="chap-4" class="scroll-mt-20">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <span class="chapter-badge text-white font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">Chapter 4</span>
+                        <h2 class="text-xl sm:text-2xl font-bold font-serif text-slate-900">第4章：時間を巻き戻す魔法 〜AIが起こした奇跡〜</h2>
+                    </div>
+
+                    <div class="novel-text">
+                        <p>「ここからが、私のようなシニア世代にこそ使ってほしい、Canva Proが誇る一番の『魔法』です」 佐藤先生が、華子のスマートフォンから取り込んだ「京都・嵐山の写真」を大画面に映し出した。</p>
+                        <p>しだれ桜の下で優しく微笑む夫・大介。しかし、その背景には大勢の観光客や、工事用の赤い三角コーン、乱雑な看板などが写り込んでしまっていた。</p>
+                        <p>「この時の写真、大介さんの表情はこれ以上ないくらい素敵なのだけど……周りがガヤガヤしていて、なんだか落ち着かない写真になってしまっていたの」華子が少し寂しげに目を伏せる。</p>
+                        <p>「大丈夫です。Canvaの最新AIを使えば、あなたの心の中に残っている一番綺麗な思い出の情景を復元できますよ」</p>
+
+                        <!-- AI Features Box Grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 font-sans">
+                            <div class="p-4 bg-gradient-to-br from-indigo-50 to-white border border-indigo-100 rounded-xl">
+                                <div class="text-indigo-700 font-bold text-sm mb-1"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> 背景除去</div>
+                                <div class="text-xs text-slate-600">ワンタップで人物だけを正確に切り抜き、不要な雑音を背景から一瞬で取り除く。</div>
+                            </div>
+                            <div class="p-4 bg-gradient-to-br from-rose-50 to-white border border-rose-100 rounded-xl">
+                                <div class="text-rose-700 font-bold text-sm mb-1"><i class="fa-solid fa-eraser mr-1"></i> マジック消しゴム</div>
+                                <div class="text-xs text-slate-600">通行人や赤いコーンをブラシで撫でるだけで、周囲の桜と自然に馴染ませて消去。</div>
+                            </div>
+                            <div class="p-4 bg-gradient-to-br from-teal-50 to-white border border-teal-100 rounded-xl">
+                                <div class="text-teal-700 font-bold text-sm mb-1"><i class="fa-solid fa-object-ungroup mr-1"></i> マジック切り抜き</div>
+                                <div class="text-xs text-slate-600">手前の人物と背景を分離し、人物の配置や大きさを微調整可能にする。</div>
+                            </div>
+                            <div class="p-4 bg-gradient-to-br from-amber-50 to-white border border-amber-100 rounded-xl">
+                                <div class="text-amber-700 font-bold text-sm mb-1"><i class="fa-solid fa-expand mr-1"></i> マジック拡張</div>
+                                <div class="text-xs text-slate-600">狭い写真の周囲をAIが想像して描き足し、ダイナミックで雄大な景観へ引き伸ばす。</div>
+                            </div>
+                        </div>
+
+                        <p>佐藤先生が「マジック消しゴム」を選択し、大介の背景に写る通行人たちと赤いコーンを、紫色のブラシで軽やかに撫でた。</p>
+                        <p>ほんの数秒の処理時間。</p>
+                        <p>「……あっ！」 美智子が短く息をのんだ。</p>
+                        <p>画面の中で、騒がしかった雑踏と人工物がすーっと透明に消え去り、そこには満開の桜の木々と、静寂の中にただ一人、優しく微笑んで佇む大介の姿だけが鮮明に残されていた。</p>
+                        
+                        <div class="dialogue border-rose-500 bg-rose-50/50 p-4 rounded-r-xl my-4 text-slate-900 font-serif text-base font-bold">
+                            「大介さん……」
+                        </div>
+
+                        <p>華子の目から、ぽろりと一筋の涙がこぼれ落ちた。</p>
+                        <p>混雑の騒音にかき消されていたあの日の暖かな風の音、夫が自分に向けてくれた言葉「華子、一緒に来られてよかったよ」という優しい声が、時を超えて華子の胸の奥底に鮮やかによみがえってきたのだ。</p>
+                        <p>「こんな……こんな風に、思い出を一番美しい姿で蘇らせることができるなんて……」 華子は震える指先で、液晶画面の中の夫の頬をそっと包み込むように撫でた。</p>
+                        <p>佐藤先生もまた、目をうるませながら静かに微笑んでいた。「私たちの年齢だからこそ、残したい大切な思い出がたくさんありますからね」</p>
+                    </div>
+                </section>
+
+                <hr class="border-slate-100">
+
+                <!-- 第5章 -->
+                <section id="chap-5" class="scroll-mt-20">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <span class="chapter-badge text-white font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">Chapter 5</span>
+                        <h2 class="text-xl sm:text-2xl font-bold font-serif text-slate-900">第5章：指先で紡ぐ確かな絆 〜レイヤーとショートカット〜</h2>
+                    </div>
+
+                    <div class="novel-text">
+                        <p>隣の席では、美智子もまた時間を忘れてパソコンに向かっていた。離れて暮らす小学生の孫・あかりちゃんへ贈る「お誕生日おめでとうカード」を夢中で作っているのだ。</p>
+                        <p>「美智子さん、手が震えても大丈夫。ショートカットキーを使えば、魔法使いのようにスイスイ作業できますよ」佐藤先生が隣で優しく見守る。</p>
+
+                        <!-- Table 2: Shortcuts -->
+                        <div class="my-6 overflow-x-auto font-sans">
+                            <table class="w-full text-xs sm:text-sm text-left border-collapse rounded-xl overflow-hidden shadow-sm border border-slate-200">
+                                <thead>
+                                    <tr class="bg-indigo-900 text-white">
+                                        <th class="p-3">機能</th>
+                                        <th class="p-3">Windows</th>
+                                        <th class="p-3">Mac</th>
+                                        <th class="p-3">魔法の活用法</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-white">
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-3 font-bold text-slate-800">複製</td>
+                                        <td class="p-3 font-mono text-indigo-700">Alt ＋ ドラッグ</td>
+                                        <td class="p-3 font-mono text-indigo-700">Option ＋ ドラッグ</td>
+                                        <td class="p-3 text-slate-600">可愛いいちごやハートのイラストを連続配置</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-3 font-bold text-slate-800">直線移動</td>
+                                        <td class="p-3 font-mono text-indigo-700">Shift ＋ ドラッグ</td>
+                                        <td class="p-3 font-mono text-indigo-700">Shift ＋ ドラッグ</td>
+                                        <td class="p-3 text-slate-600">手が少し震えても真っ直ぐ水平に整列</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-3 font-bold text-slate-800">複数選択</td>
+                                        <td class="p-3 font-mono text-indigo-700">Shift ＋ クリック</td>
+                                        <td class="p-3 font-mono text-indigo-700">Shift ＋ クリック</td>
+                                        <td class="p-3 text-slate-600">離れた文字やスタンプを一度に動かす</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-3 font-bold text-slate-800">グループ化</td>
+                                        <td class="p-3 font-mono text-indigo-700">Ctrl ＋ G</td>
+                                        <td class="p-3 font-mono text-indigo-700">Command ＋ G</td>
+                                        <td class="p-3 text-slate-600">写真と飾り枠をセットにして崩れ防止</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-3 font-bold text-slate-800 bg-rose-50/50">元に戻す</td>
+                                        <td class="p-3 font-mono text-rose-700 bg-rose-50/50">Ctrl ＋ Z</td>
+                                        <td class="p-3 font-mono text-rose-700 bg-rose-50/50">Command ＋ Z</td>
+                                        <td class="p-3 text-slate-600 bg-rose-50/50">間違えても大丈夫！失敗を恐れないお守り</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <p>重なり合うイラストや文字の順番に混乱したときは、右クリックから「レイヤーを表示」を開く。透明なシートが重なっているかのように配置された要素を、ドラッグ一つで上へ下へと移動させた。</p>
+                        <p>動かしたくない背景画像には、ツールバーの「南京錠（ロック）」アイコンを押して固定する。</p>
+                        <p>「『間違えても Ctrl ＋ Z を押せば元に戻せる』と思うと、失敗が怖くなくなるわね！」</p>
+                        <p>美智子の顔から「機器を壊したらどうしよう」という躊躇が消え、新しい世界を探検する少女のような好奇心が溢れ出していた。</p>
+                    </div>
+                </section>
+
+                <hr class="border-slate-100">
+
+                <!-- 第6章 -->
+                <section id="chap-6" class="scroll-mt-20">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <span class="chapter-badge text-white font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">Chapter 6</span>
+                        <h2 class="text-xl sm:text-2xl font-bold font-serif text-slate-900">第6章：世界でひとつの翼を持った言葉たち</h2>
+                    </div>
+
+                    <div class="novel-text">
+                        <p>「さあ、完成した心尽くしのデザインを、世界へと送り出しましょう」</p>
+                        <p>佐藤先生の指導のもと、ふたりは最後の重要ステップである「書き出し（ダウンロード）」の作業に入った。用途に応じたファイル形式選びが、作品の命運を分ける。</p>
+
+                        <!-- Format Guide Box -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 font-sans text-xs sm:text-sm">
+                            <div class="p-4 rounded-xl border border-teal-200 bg-teal-50/30">
+                                <span class="font-bold text-teal-800 text-sm block mb-1"><i class="fa-regular fa-image mr-1"></i> PNG形式</span>
+                                <p class="text-slate-600">文字の輪郭がくっきり美しく、背景透過も可能。（LINE送信、SNS投稿用）</p>
+                            </div>
+                            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                                <span class="font-bold text-slate-800 text-sm block mb-1"><i class="fa-regular fa-file-image mr-1"></i> JPG形式</span>
+                                <p class="text-slate-600">データ容量を軽やかに保つWebサイト用。</p>
+                            </div>
+                            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                                <span class="font-bold text-slate-800 text-sm block mb-1"><i class="fa-regular fa-file-pdf mr-1"></i> PDF（標準）</span>
+                                <p class="text-slate-600">画面上で読む電子冊子や案内状用。</p>
+                            </div>
+                            <div class="p-4 rounded-xl border border-indigo-200 bg-indigo-50/30">
+                                <span class="font-bold text-indigo-800 text-sm block mb-1"><i class="fa-solid fa-print mr-1"></i> PDF（印刷用）</span>
+                                <p class="text-slate-600">解像度300dpiの高画質。カラー設定を「CMYK」指定して印刷の色のズレを防ぐ。</p>
+                            </div>
+                        </div>
+
+                        <p>美智子は孫へのバースデーカードを鮮明な「PNG」形式で保存し、ブルブルと震える指でLINEの送信ボタンを押した。</p>
+                        <p>華子は「PDF（印刷用）」を選んで保存し、自宅のプリンターにセットした風合いのある和紙風の用紙へと印刷を実行した。</p>
+                    </div>
+                </section>
+
+                <hr class="border-slate-100">
+
+                <!-- 終章 -->
+                <section id="chap-7" class="scroll-mt-20">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <span class="chapter-badge bg-gradient-to-r from-rose-500 to-amber-500 text-white font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">Epilogue</span>
+                        <h2 class="text-xl sm:text-2xl font-bold font-serif text-slate-900">終章：七十路のキャンバスに咲く花</h2>
+                    </div>
+
+                    <div class="novel-text">
+                        <p>数日後のパソコン教室。引き戸が勢いよく開き、息を切らした美智子が駆け込んできた。</p>
+                        <p>「華子さん！ 佐藤先生！ 見て、これを見てちょうだい！！」</p>
+                        <p>美智子がスマートフォンの画面を掲げた。再生されたのは、遠く離れた街に住む孫のあかりちゃんからの動画メッセージだった。</p>
+                        
+                        <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-xl my-5 text-slate-800 font-sans text-sm sm:text-base leading-relaxed">
+                            『おばあちゃん！ 誕生日カードありがとう！ すっごく可愛くて綺麗で、学校のお友達みんなに見せちゃった！ おばあちゃんってデザイナーなの？ 本当にすごい！ 大好き！！』
+                        </div>
+
+                        <p>画面の中で弾けるように笑い、カードを大切そうに抱きしめる孫の姿。それを見つめながら、美智子の目から大きな涙粒がポロポロとこぼれ落ちた。</p>
+                        <p>「私ね……『歳をとって、もう若い人たちのデジタル世界にはついていけない』って勝手に諦めていたの。でも、違ったわ。道具の使い方さえわかれば、私の想いはちゃんと、あかりに届いたのよ……！」</p>
+                        <p>華子もまた、自分の手元にある完成した「お茶会案内状」を愛おしそうになでていた。</p>
+                        <p>地域で配った和紙仕立てのチラシは大反響を呼び、いつもは数人しか集まらないお茶会に、今回は定員を超える人々が集まることになったのだ。</p>
+                        <p>そして、華子のリビングの最も日当たりの良い場所には、AIで余計な雑踏が消され、綺麗に引き伸ばされてフレームに収められた大介の写真が飾られている。</p>
+                        <p>「大介さんにも見せたのよ。『華子、やるじゃないか』って、目を細めて驚いていると思うわ」</p>
+                        <p>華子は晴れやかな笑顔で空を見上げた。</p>
+                        <p>佐藤先生は静かにうなずき、ふたりの肩に優しく手を置いた。</p>
+                        <p>「年齢なんて、ただの数字です。想いを届ける情熱に、限界はありませんから」</p>
+                        <p>70歳。人生の円熟期を迎えた彼女たちは知った。</p>
+                        <p>Canvaは、単なる画像を編集するための「事務ツール」ではない。自分たちの胸の奥深くに閉じめられていた思い出や、愛する人への感謝の想いを、もう一度鮮やかに輝かせて届ける「心の架け橋」なのだと。</p>
+                        <p>同世代の仲間とともに一歩を踏み出したキャンバスには、これからも無限の可能性と、豊かな人生の色が描かれ続けていく。</p>
+                        
+                        <div class="text-right font-serif font-bold text-slate-500 text-lg mt-8 mb-2">
+                            （終わり）
+                        </div>
+                    </div>
+                </section>
+
+            </article>
+
+    </main>
+
+</body>
+</html>
