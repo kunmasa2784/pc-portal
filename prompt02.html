@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC研究会 AIプロンプト活用例集【全20選】</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        moss: {
+                            50: '#f4f7f4',
+                            100: '#e5ebe4',
+                            200: '#c8d7c6',
+                            300: '#a3be9f',
+                            400: '#7a9f75',
+                            500: '#588153',
+                            600: '#43663f',
+                            700: '#355132',
+                            800: '#2a4028',
+                            900: '#1f301e',
+                            950: '#101a10',
+                        },
+                        amberAccent: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f3f6f3;
+            color: #1a2619;
+        }
+        /* スクロールバーのカスタマイズ */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e5ebe4;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7a9f75;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #588153;
+        }
+        /* 文字サイズ制御用クラス */
+        .text-size-standard { font-size: 1rem; }
+        .text-size-large { font-size: 1.15rem; }
+        .text-size-xlarge { font-size: 1.3rem; }
+
+        .prompt-box {
+            background-color: #f7faf7;
+            border-left: 4px solid #43663f;
+        }
+        .hint-box {
+            background-color: #fffcf5;
+            border: 1px solid #fcd34d;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- ヘッダー -->
+    <header class="bg-moss-800 text-white shadow-md sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-moss-600 p-2 rounded-lg">
+                    <i class="fa-solid fa-seedling text-2xl text-moss-200"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg md:text-xl tracking-wide leading-tight">AIプロンプト活用例集<span class="text-moss-300 text-sm ml-2 font-normal hidden sm:inline">PC・スマホ研究会【決定版】</span></h1>
+                    <p class="text-xs text-moss-200 hidden md:block">暮らしに役立ち・楽しくなる 実践的20選＋応用ヒント付き</p>
+                </div>
+            </div>
+
+            <!-- コントロール：検索と文字サイズ -->
+            <div class="flex items-center gap-3 ml-auto">
+                <!-- 検索バー -->
+                <div class="relative">
+                    <input type="text" id="searchInput" placeholder="キーワード検索..." 
+                        class="bg-moss-900/60 text-white placeholder-moss-300 text-sm rounded-full pl-9 pr-4 py-1.5 focus:outline-none focus:ring-2 focus:ring-moss-300 w-36 sm:w-56 border border-moss-700">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-moss-300 text-xs"></i>
+                </div>
+
+                <!-- 文字サイズ変更 -->
+                <div class="hidden sm:flex items-center bg-moss-900/80 rounded-lg p-1 border border-moss-700 text-xs font-bold">
+                    <span class="text-moss-200 px-2">文字:</span>
+                    <button id="btnTextStd" onclick="setTextSize('standard')" class="px-2 py-1 rounded bg-moss-600 text-white transition">標準</button>
+                    <button id="btnTextLg" onclick="setTextSize('large')" class="px-2 py-1 rounded text-moss-200 hover:text-white transition">大</button>
+                    <button id="btnTextXl" onclick="setTextSize('xlarge')" class="px-2 py-1 rounded text-moss-200 hover:text-white transition">特大</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインレイアウト -->
+    <div class="flex-grow flex max-w-7xl w-full mx-auto relative">
+        
+        <!-- サイドパネル (カテゴリ選択ナビゲーション：常時表示) -->
+        <aside id="sidebar" class="bg-moss-900 text-moss-100 w-52 sm:w-64 md:w-72 flex-shrink-0 sticky top-14 h-[calc(100vh-3.5rem)] z-20 overflow-y-auto border-r border-moss-800">
+            <div class="p-4 border-b border-moss-800 flex justify-between items-center">
+                <h2 class="font-bold text-moss-200 text-sm tracking-wider uppercase flex items-center gap-2">
+                    <i class="fa-solid fa-list-ul text-moss-400"></i> カテゴリ一覧
+                </h2>
+            </div>
+
+            <nav class="p-3 space-y-1" id="categoryNav">
+                <!-- 動的にJavaScriptで追加されます -->
+            </nav>
+        </aside>
+
+        <!-- メインコンテンツ領域 -->
+        <main class="flex-grow p-4 md:p-6 lg:p-8 overflow-hidden" id="contentArea">
+            
+            <!-- ステータスバー / 現在の絞り込み表示 -->
+            <div class="mb-6 bg-white p-4 rounded-xl shadow-sm border border-moss-100 flex flex-wrap justify-between items-center gap-3">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-moss-600 inline-block"></span>
+                    <span id="currentCategoryTitle" class="font-bold text-moss-900 text-lg">すべてのプロンプト活用例</span>
+                    <span id="itemCountBadge" class="bg-moss-100 text-moss-800 text-xs font-bold px-2.5 py-1 rounded-full">20件表示</span>
+                </div>
+
+                <!-- モバイル用文字サイズ切り替え -->
+                <div class="flex sm:hidden items-center bg-moss-100 rounded-lg p-1 text-xs font-bold">
+                    <span class="text-moss-800 px-1">文字:</span>
+                    <button onclick="setTextSize('standard')" class="px-2 py-0.5 rounded bg-moss-600 text-white">標準</button>
+                    <button onclick="setTextSize('large')" class="px-2 py-0.5 rounded text-moss-800">大</button>
+                    <button onclick="setTextSize('xlarge')" class="px-2 py-0.5 rounded text-moss-800">特大</button>
+                </div>
+            </div>
+
+            <!-- プロンプトカード一覧コンテナ -->
+            <div id="promptsContainer" class="grid grid-cols-1 gap-6">
+                <!-- JavaScriptで動的生成されます -->
+            </div>
+
+            <!-- 該当なしメッセージ -->
+            <div id="noResults" class="hidden text-center py-16 bg-white rounded-xl border border-dashed border-moss-300">
+                <i class="fa-solid fa-magnifying-glass text-4xl text-moss-300 mb-3"></i>
+                <p class="text-moss-800 font-bold text-lg">該当するプロンプトが見つかりませんでした。</p>
+                <p class="text-moss-600 text-sm mt-1">別のキーワードやカテゴリを試してください。</p>
+                <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-moss-600 text-white text-sm font-bold rounded-lg hover:bg-moss-700 transition">
+                    すべての例を表示する
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- トースト通知 (コピー完了表示) -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-moss-900 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 z-50 border border-moss-600">
+        <div class="w-8 h-8 rounded-full bg-moss-500 flex items-center justify-center text-white">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <div>
+            <p class="font-bold text-sm">クリップボードにコピーしました！</p>
+            <p class="text-xs text-moss-200">ChatGPTやCopilotの画面に貼り付けてお使いください。</p>
+        </div>
+    </div>
+
+    <script>
+        // プロンプトデータ構造 (全20選 + 発展形ヒント付き)
+        const promptsData = [
+            {
+                id: 1,
+                catId: "health",
+                category: "1. 日々の健康と暮らしの安心",
+                title: "① 我が家の防災・緊急時マニュアル作成",
+                purpose: "自分や家族の状況に合わせた非常用持ち出し袋のリストや、緊急時メモの文面を作成します。",
+                prompt: "私は70代で、夫婦2人で生活しています。持病があり毎日薬を飲んでいます。我が家に合わせた『非常持ち出し袋のチェックリスト』と『避難時の注意点』を、見やすい表形式で作成してください。",
+                point: "「80代」「一人暮らし」「ペットがいる」など、自分の条件を1つ足すだけで結果が変わる面白さを体験してもらいます。",
+                hint: "作成された表に「避難所までの経路で気になる坂道がある」「家族の連絡先」など具体的な情報を自分で書き加え、印刷して冷蔵庫に貼っておくようアドバイスしましょう。"
+            },
+            {
+                id: 2,
+                catId: "health",
+                category: "1. 日々の健康と暮らしの安心",
+                title: "② 病院の受診前「症状整理メモ」作成",
+                purpose: "医師にうまく症状や質問を伝えられないとき、伝えたいポイントを箇条書きにまとめてもらいます。",
+                prompt: "明日病院に行きます。医師にうまく説明できるように、以下の症状をまとめた『受診用メモ』を作ってください。\n・いつから：3日前から\n・症状：膝が痛む、特に階段を降りるとき\n・聞きたいこと：散歩を続けても大丈夫か",
+                point: "「メモを印刷・メモ帳に控えて病院に持っていく」具体的な活用シーンをイメージさせます。（※AIは診断を行うものではない点も補足します）",
+                hint: "「医師から聞かれそうな質問（痛む時間帯、痛みの種類など）も3つ予想して付け加えて」とお願いすると、受診の心構えができます。"
+            },
+            {
+                id: 3,
+                catId: "health",
+                category: "1. 日々の健康と暮らしの安心",
+                title: "③ フィッシング詐欺・迷惑メールの見分け方演習",
+                purpose: "怪しいメールが届いた際、どのような点に注意して確認すべきかをAIに診断・解説してもらいます。",
+                prompt: "このようなメールが届いたのですが、詐欺メールの可能性はありますか？怪しいポイントと対応策を教えてください。\n『【重要】ご利用のクレジットカードが一時停止されました。24時間以内に以下のURLからログインして再設定を行ってください。 http://example-check.com』",
+                point: "実際の詐欺事例（教材サンプル）を使って、日本語の不自然さや緊急性を煽る文章をAIと一緒に確認し、被害予防に繋げます。",
+                hint: "文章をコピーしてAIに貼り付けるだけで見分けられる手軽さを体験してもらい、「怪しいと思ったらURLは絶対押さずにまずAIに聞く」習慣を提案できます。"
+            },
+            {
+                id: 4,
+                catId: "health",
+                category: "1. 日々の健康と暮らしの安心",
+                title: "④ 服薬・サプリメントの素朴な疑問整理",
+                purpose: "薬の飲み合わせや飲むタイミングについて、薬剤師や医師に相談するための「確認リスト」を作ります。",
+                prompt: "現在、高血圧の薬（毎朝）を飲んでいます。最近市販のビタミンサプリメントも飲み始めたいのですが、薬剤師さんに確認すべき質問内容を3つにまとめてください。",
+                point: "AIに直接判断させるのではなく「専門家に聞くための準備ツール」として使う視点を伝えます。",
+                hint: "「お薬手帳と一緒に pharmacist（薬剤師）に見せる用の短いメモ形式で」と指示すると、そのまま手帳に挟める文章にしてくれます。"
+            },
+            {
+                id: 5,
+                catId: "health",
+                category: "1. 日々の健康と暮らしの安心",
+                title: "⑤ 冠婚葬祭のマナー・お祝い・香典の相場確認",
+                purpose: "急な冠婚葬祭や地域のお付き合いで、表書きの書き方や金額の相場をすぐに確認します。",
+                prompt: "甥（おい）の結婚式に夫婦で出席する場合のご祝儀の相場と、のし袋（ご祝儀袋）の表書きの書き方、注意すべきマナーを教えてください。",
+                point: "マナー本を開くよりも早く、自分の立場に合わせた回答が得られる便利さを実感してもらいます。",
+                hint: "「関東地方の慣習に基づいた注意点も教えて」など、地域固有のマナーについて聞いてみるのも実用的です。"
+            },
+            {
+                id: 6,
+                catId: "organize",
+                category: "2. 身の回りの整理と日常の手続き",
+                title: "⑥ エンディングノート・契約/サブスク整理",
+                purpose: "何から書いていいか分からない整理項目や、デジタルサービス・定期購入の項目を洗い出してもらいます。",
+                prompt: "エンディングノートを作成したいと考えています。後から家族が困らないように整理しておくべき『口座・契約・デジタルサービス（スマホやサブスク）』の項目をリストアップしてください。",
+                point: "【重要】暗証番号や具体的な口座番号などの個人情報は絶対に入力しないセキュリティのルールを教える絶好の機会になります。",
+                hint: "「項目の横に、記入チェックボックス（ [ ] ）をつけて一覧表にして」と頼むと、印刷してすぐ書き込めるチェックシートが完成します。"
+            },
+            {
+                id: 7,
+                catId: "organize",
+                category: "2. 身の回りの整理と日常の手続き",
+                title: "⑦ 自治体への不具合・危険箇所通報（報告文の作成）",
+                purpose: "道路のへこみや街灯切れなどを自治体に連絡する際、伝わりやすく丁寧な文章を作ってもらいます。",
+                prompt: "近所の歩道に大きな段差があり、高齢者やベビーカーにつまずきそうで危険です。市役所の担当部署にメールやフォームで連絡するための、丁寧で分かりやすい報告文の例文を作ってください。",
+                point: "状況（「どこで」「何が危険か」）を短く入れるだけで丁寧な文章になる感動を体験してもらいます。",
+                hint: "「市役所のWEBフォーム用（短め）と、公式LINE用（さらに簡潔）の2パターンで作って」とバリエーションを求めるのも効果的です。"
+            },
+            {
+                id: 8,
+                catId: "organize",
+                category: "2. 身の回りの整理と日常の手続き",
+                title: "⑧ 家電の取扱説明書・困りごと相談",
+                purpose: "分厚い取扱説明書を読むのが大変なとき、ボタン操作やエラーの対処法をピンポイントで教わります。",
+                prompt: "テレビのリモコンの『字幕』ボタンを押しても字幕が出なくなりました。一般的な確認手順や、元に戻すためのチェックポイントを分かりやすく教えてください。",
+                point: "型番が分かれば「〇〇（型番）のタイマー設定方法」など、より具体的に聞ける技を伝授します。",
+                hint: "「機械が苦手な80代にも分かるように、ステップ1、ステップ2と順番に箇条書きで教えて」と付け加えるとより優しくなります。"
+            },
+            {
+                id: 9,
+                catId: "organize",
+                category: "2. 身の回りの整理と日常の手続き",
+                title: "⑨ ごみの分別・粗大ごみの処分方法調べ",
+                purpose: "捨て方が分かりにくい家具や電化製品の処分方法や、確認すべき自治体ルールをまとめます。",
+                prompt: "古い『電気毛布』や『スプレー缶』を捨てたいのですが、一般的な自治体でのゴミの分別の分類や、捨てるときの注意点（ガス抜きなど）を教えてください。",
+                point: "「お住まいの地域によってルールが異なるので最終確認が必要」という前提も含めて教えます。",
+                hint: "「自治体に電話で問い合わせる時にスムーズに伝える文面も作って」とお願いすると、電話の事前準備にも使えます。"
+            },
+            {
+                id: 10,
+                catId: "organize",
+                category: "2. 身の回りの整理と日常の手続き",
+                title: "⑩ スマホやPCの「むずかしい専門用語」をやさしく解説",
+                purpose: "「クラウド」「アップデート」「Wi-Fi」など、聞き慣れないIT用語を例え話で解説してもらいます。",
+                prompt: "スマホの画面に『ソフトウェアをアップデートしてください』と出ました。『アップデート』とはどういう意味ですか？小学生にも分かるように身近な例えを使って教えてください。",
+                point: "「分からない言葉があったらAIに『小学生にも分かるように』と聞けばいい」という、自学自習のコツを伝えます。",
+                hint: "「『身近な家事』や『車の整備』に例えて説明して」と自分の得意分野に例えさせると、より深く理解できます。"
+            },
+            {
+                id: 11,
+                catId: "life",
+                category: "3. おでかけ・お買い物と賢い生活",
+                title: "⑪ ネット通販・買い物の比較と相談",
+                purpose: "家電や生活用品を選ぶ際、高齢者目線での注意点や選び方のコツをAIにアドバイスしてもらいます。",
+                prompt: "シニアが使いやすい『軽量なコードレス掃除機』を探しています。購入時にチェックすべきポイント（重さ、ボタンの押しやすさなど）を3つに絞って教えてください。",
+                point: "ネット通販サイトを見る前にAIに相談することで、「失敗しない買い物術」として活用できます。",
+                hint: "「購入前のチェックリスト形式にして」と頼み、家電量販店で実物を見ながら確認するメモとして使えます。"
+            },
+            {
+                id: 12,
+                catId: "life",
+                category: "3. おでかけ・お買い物と賢い生活",
+                title: "⑫ 体力や予算に合わせた旅行・おでかけプラン作成",
+                purpose: "「歩きすぎない」「混雑を避ける」など、シニアのペースに合わせた無理のないおでかけ日程を作ります。",
+                prompt: "鎌倉へ日帰り旅行に行きたいです。70代の夫婦で、あまり階段や長距離を歩かずに楽しめる、のんびりとした半日観光コース（ランチ含む）を提案してください。",
+                point: "「あまり歩かない」といった個人条件に合わせた最適化ができる便利さを実感してもらいます。",
+                hint: "「途中で1時間ごとに休憩できるカフェの候補も盛り込んで」と頼むと、さらに安心な旅程が完成します。"
+            },
+            {
+                id: 13,
+                catId: "life",
+                category: "3. おでかけ・お買い物と賢い生活",
+                title: "⑬ 季節の野菜や冷蔵庫のあまりもの活用レシピ",
+                purpose: "毎日の献立づくりや、余った食材の使い切り方法をAIに提案してもらいます。",
+                prompt: "冷蔵庫に『大根、豚こま肉、豆腐』があります。70代向けに、塩分控えめで簡単に作れる夕食のおかずレシピを1つ教えてください。",
+                point: "「塩分控えめ」「やわらかめ」「フライパン1つで」など、調理上の好みを指定できる柔軟性を試してもらいます。",
+                hint: "「包丁をほとんど使わない調理手順にして」や「残り汁を翌朝のスープにアレンジする方法も教えて」など一粒で二度美味しい質問ができます。"
+            },
+            {
+                id: 14,
+                catId: "life",
+                category: "3. おでかけ・お買い物と賢い生活",
+                title: "⑭ 園芸・ガーデニング（お花や野菜の育て方・悩み解決）",
+                purpose: "育てている植物の元気がなくなったときや、季節ごとのお手入れ方法を相談します。",
+                prompt: "ベランダで育てている植木鉢のアジサイの葉っぱが黄色くなってきました。原因として考えられることと、今できるお手入れ方法を分かりやすく教えてください。",
+                point: "趣味のガーデニングとAIを結び付けることで、日常的な相談相手として定着しやすくなります。",
+                hint: "「年間のお世話カレンダー（水やり・肥料の時期）を表にして」と頼むと、園芸ノートとして保存できます。"
+            },
+            {
+                id: 15,
+                catId: "life",
+                category: "3. おでかけ・お買い物と賢い生活",
+                title: "⑮ 地域のイベント・サークル・習い事の探し方相談",
+                purpose: "新しい趣味や地域活動を始めたいとき、どんな探し方や選択肢があるかアイデアをもらいます。",
+                prompt: "定年後に地域で新しい友人を作りたいと考えています。70代から無理なく始められる地域のサークル活動やボランティアにはどのような種類がありますか？おすすめの探し方も教えてください。",
+                point: "生涯学習や社会参加の第一歩としてAIを活用する提案ができます。",
+                hint: "「人見知りの自分でも馴染みやすいサークルの特徴は？」など、自分の性格に関する悩みを添えて質問すると親身な回答が得られます。"
+            },
+            {
+                id: 16,
+                catId: "community",
+                category: "4. 家族・地域との絆と趣味の広がり",
+                title: "⑯ 季節の挨拶・お礼状・お祝いメッセージ作成",
+                purpose: "孫への入学祝いのメッセージや、地域の方へのお礼状など、丁寧で温かみのある文面を一緒に考えます。",
+                prompt: "高校に合格した孫（孫娘）に送る、心からのお祝いメッセージの文章を考えてください。応援している気持ちと、身体に気をつけてねというメッセージを入れたいです。",
+                point: "出てきた文章をそのまま使うのではなく、「自分らしい言葉に少し書き換える」共同作業の感覚を身につけてもらいます。",
+                hint: "「LINEで送るのにぴったりの絵文字入りの短文にして」と頼むと、若世代に送る時に喜ばれる文面になります。"
+            },
+            {
+                id: 17,
+                catId: "community",
+                category: "4. 家族・地域との絆と趣味の広がり",
+                title: "⑰ 同窓会・地域活動の案内状・連絡文作成",
+                purpose: "自治会や趣味のサークル、同窓会などの連絡係になった際、分かりやすい案内文を作成します。",
+                prompt: "グラウンドゴルフ同好会の『秋の親睦大会』の案内文を作成してください。日時（10月15日10時〜）、場所（中央公園）、参加費（500円）、締切（10月5日）を漏れなく見やすく配置してください。",
+                point: "案内文のレイアウト（箇条書きの配置など）をAIに任せることで、役員作業の手間を大幅に減らせます。",
+                hint: "「雨天中止の場合の連絡方法の文言も追加して」や「Wordにそのまま貼り付けられる配置にして」と指示するとさらに便利です。"
+            },
+            {
+                id: 18,
+                catId: "community",
+                category: "4. 家族・地域との絆と趣味の広がり",
+                title: "⑱ 昭和の思い出・地域歴史のデジタル記録（自分史づくり）",
+                purpose: "自分の昔の思い出や地域の様子を、綺麗な文章やエッセイ風にまとめて記録します。",
+                prompt: "昭和40年代の思い出について文章を書きたいです。以下のキーワードを使って、読みやすい短いエッセイ風の文章に整えてください。\nキーワード：【駄菓子屋、めんこ遊び、三輪車、夕焼け】",
+                point: "作成した文章をWordに貼り付けて写真を添え、印刷して「マイ自分史」を作成する実践講座へと展開できます。",
+                hint: "「私に昭和の思い出インタビューをしてほしいので、質問を1つずつ出してください」とAIをインタビュアーにする応用テクニックも大人気です。"
+            },
+            {
+                id: 19,
+                catId: "community",
+                category: "4. 家族・地域との絆と趣味の広がり",
+                title: "⑲ 趣味の川柳・俳句・文章のアドバイス（推敲）",
+                purpose: "自分で作った句や短歌をAIに見せて、別の表現方法や季語の確認などのアドバイスをもらいます。",
+                prompt: "趣味で川柳を作りました。『孫が来て 部屋がにぎやか 孫帰り』。この句の面白さを活かしつつ、さらに別の表現や情景が浮かぶ言い換えの案を2つ提示してください。",
+                point: "ゼロから作らせるのではなく、自分が作ったものを「一緒に磨き上げる壁打ち相手」として使う楽しさを伝えます。",
+                hint: "「季語が正しく使われているかチェックして」「クスッと笑えるようなユーモアあふれるアレンジにして」など観点を指定できます。"
+            },
+            {
+                id: 20,
+                catId: "community",
+                category: "4. 家族・地域との絆と趣味の広がり",
+                title: "⑳ 孫や若い世代との会話のきっかけ・トレンド質問",
+                purpose: "若い世代で流行している言葉や趣味についてAIに聞き、家族との会話のネタにします。",
+                prompt: "最近、中学生の孫が『推し活（おしかつ）』という言葉をよく使っています。シニアにも分かるように、どういう意味か簡単に教えてください。また、孫と会話するときに使える話題も教えてください。",
+                point: "「AIを聞き相手にして新しい知識を得る」という、生活の知的好奇心を満たす使い方を提案できます。",
+                hint: "「70代の祖父母から『〇〇って聞いたよ』と自然に切り出すときの第一声のセリフ案を考えて」と具体的に頼むと会話が弾みます。"
+            }
+        ];
+
+        // カテゴリ定義
+        const categories = [
+            { id: "all", name: "すべての活用例", icon: "fa-border-all", count: 20 },
+            { id: "health", name: "1. 健康と暮らしの安心", icon: "fa-heart-pulse", count: 5 },
+            { id: "organize", name: "2. 身の回り整理・手続き", icon: "fa-folder-open", count: 5 },
+            { id: "life", name: "3. おでかけ・買い物の知恵", icon: "fa-cart-shopping", count: 5 },
+            { id: "community", name: "4. 絆と趣味・昭和の記録", icon: "fa-comments", count: 5 }
+        ];
+
+        // 状態管理
+        let activeCategory = "all";
+        let searchQuery = "";
+        let expandedCategory = null; // 初期状態はすべて閉じた状態
+
+        // 初期化
+        window.onload = function() {
+            renderCategories();
+            renderPrompts();
+            setupEventListeners();
+        };
+
+        // カテゴリナビの描画（初期状態はすべて折りたたみ）
+        function renderCategories() {
+            const nav = document.getElementById("categoryNav");
+            nav.innerHTML = categories.map(cat => {
+                const isActive = cat.id === activeCategory;
+                const isExpanded = cat.id === expandedCategory;
+                const activeClass = isActive 
+                    ? "bg-moss-600 text-white font-bold shadow-md" 
+                    : "text-moss-200 hover:bg-moss-800 hover:text-white";
+                
+                // 該当カテゴリに属するプロンプト一覧を取得（"all"以外）
+                const categoryPrompts = cat.id === "all" 
+                    ? [] 
+                    : promptsData.filter(p => p.catId === cat.id);
+
+                const hasSubItems = cat.id !== "all" && categoryPrompts.length > 0;
+
+                return `
+                    <div class="mb-1">
+                        <button onclick="selectCategory('${cat.id}')" class="w-full text-left px-3 py-2.5 rounded-lg text-sm flex items-center justify-between transition ${activeClass}">
+                            <div class="flex items-center gap-2.5 truncate">
+                                <i class="fa-solid ${cat.icon} w-5 text-center text-moss-300"></i>
+                                <span class="truncate">${cat.name}</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-moss-800 text-white' : 'bg-moss-950/40 text-moss-300'} font-semibold">${cat.count}</span>
+                                ${hasSubItems ? `<i class="fa-solid fa-chevron-down text-[10px] text-moss-300 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}"></i>` : ''}
+                            </div>
+                        </button>
+
+                        <!-- カテゴリ傘下のプロンプト項目リスト（アコーディオン） -->
+                        ${hasSubItems ? `
+                            <div class="mt-1 ml-3 pl-3 border-l-2 border-moss-700/60 space-y-0.5 ${isExpanded ? 'block' : 'hidden'}">
+                                ${categoryPrompts.map(p => `
+                                    <button onclick="scrollToPrompt(${p.id})" class="w-full text-left px-2 py-1.5 rounded text-xs text-moss-300 hover:text-white hover:bg-moss-800/80 transition flex items-center justify-between group">
+                                        <span class="truncate group-hover:translate-x-0.5 transition-transform">${p.title}</span>
+                                        <i class="fa-solid fa-chevron-right text-[10px] opacity-0 group-hover:opacity-100 text-moss-400"></i>
+                                    </button>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // プロンプトカード一覧のレンダリング関数
+        function renderPrompts() {
+            const container = document.getElementById("promptsContainer");
+            const noResults = document.getElementById("noResults");
+            const currentCategoryTitle = document.getElementById("currentCategoryTitle");
+            const itemCountBadge = document.getElementById("itemCountBadge");
+
+            if (!container) return;
+
+            // 現在選択中のカテゴリタイトル表示の更新
+            const currentCatObj = categories.find(c => c.id === activeCategory);
+            if (currentCatObj && currentCategoryTitle) {
+                currentCategoryTitle.textContent = currentCatObj.name;
+            }
+
+            // フィルタリング処理（カテゴリ選択 & 検索キーワード）
+            const filtered = promptsData.filter(item => {
+                const matchCategory = (activeCategory === "all") || (item.catId === activeCategory);
+                const query = searchQuery.toLowerCase();
+                const matchSearch = query === "" || 
+                    item.title.toLowerCase().includes(query) ||
+                    item.purpose.toLowerCase().includes(query) ||
+                    item.prompt.toLowerCase().includes(query) ||
+                    item.point.toLowerCase().includes(query) ||
+                    item.hint.toLowerCase().includes(query);
+
+                return matchCategory && matchSearch;
+            });
+
+            // 件数バッジの更新
+            if (itemCountBadge) {
+                itemCountBadge.textContent = `${filtered.length}件表示`;
+            }
+
+            // 該当結果なしの制御
+            if (filtered.length === 0) {
+                container.innerHTML = "";
+                if (noResults) noResults.classList.remove("hidden");
+                return;
+            } else {
+                if (noResults) noResults.classList.add("hidden");
+            }
+
+            // プロンプトカード HTML の生成と挿入
+            container.innerHTML = filtered.map(item => `
+                <div id="prompt-card-${item.id}" class="bg-white rounded-2xl shadow-sm border border-moss-200/80 p-5 md:p-6 transition-all duration-300 hover:shadow-md">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <span class="bg-moss-100 text-moss-800 text-xs font-bold px-3 py-1 rounded-full border border-moss-200">
+                            ${escapeHtml(item.category)}
+                        </span>
+                        <button onclick="copyToClipboard(${item.id})" class="copy-btn-${item.id} bg-moss-600 hover:bg-moss-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-sm flex items-center gap-1.5 active:scale-95">
+                            <i class="fa-regular fa-copy"></i>
+                            <span>プロンプトをコピー</span>
+                        </button>
+                    </div>
+
+                    <h3 class="font-bold text-moss-900 text-lg md:text-xl mb-2 flex items-center gap-2">
+                        ${escapeHtml(item.title)}
+                    </h3>
+
+                    <p class="text-moss-700 text-sm mb-4 leading-relaxed">
+                        <strong class="text-moss-900 font-semibold">💡 目的:</strong> ${escapeHtml(item.purpose)}
+                    </p>
+
+                    <!-- プロンプト表示エリア -->
+                    <div class="prompt-box p-4 rounded-xl mb-4 relative group">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-bold text-moss-800 flex items-center gap-1">
+                                <i class="fa-solid fa-terminal text-moss-600"></i> AIへのプロンプト例（指示文）:
+                            </span>
+                            <button onclick="copyToClipboard(${item.id})" class="copy-btn-${item.id} text-moss-600 hover:text-moss-800 text-xs font-semibold flex items-center gap-1">
+                                <i class="fa-regular fa-copy"></i> コピー
+                            </button>
+                        </div>
+                        <pre class="whitespace-pre-wrap font-sans text-sm text-moss-900 leading-relaxed tracking-wide select-all">${escapeHtml(item.prompt)}</pre>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                        <!-- 指導ポイント -->
+                        <div class="bg-moss-50/70 p-3.5 rounded-xl border border-moss-200/60">
+                            <p class="font-bold text-moss-800 mb-1 flex items-center gap-1.5">
+                                <i class="fa-solid fa-graduation-cap text-moss-600"></i> ポイント:
+                            </p>
+                            <p class="text-moss-700 leading-relaxed">${escapeHtml(item.point)}</p>
+                        </div>
+
+                        <!-- 発展形ヒント -->
+                        <div class="hint-box p-3.5 rounded-xl">
+                            <p class="font-bold text-amberAccent-700 mb-1 flex items-center gap-1.5">
+                                <i class="fa-solid fa-lightbulb text-amberAccent-500"></i> 発展形・一工夫ヒント:
+                            </p>
+                            <p class="text-moss-800 leading-relaxed">${escapeHtml(item.hint)}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // サイドパネルから指定プロンプトへジャンプ
+        function scrollToPrompt(id) {
+            const item = promptsData.find(p => p.id === id);
+            if (!item) return;
+
+            // 検索ワードをリセットして全件表示対象にする
+            if (searchQuery !== "") {
+                searchQuery = "";
+                document.getElementById("searchInput").value = "";
+            }
+
+            // 対象カテゴリを選択状態かつ展開状態にする
+            activeCategory = item.catId;
+            expandedCategory = item.catId;
+            renderCategories();
+            renderPrompts();
+
+            // DOM描画後にスムーズスクロール＆ハイライト演出
+            setTimeout(() => {
+                const el = document.getElementById(`prompt-card-${id}`);
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // 一時的なアテンション（枠線強調）演出
+                    el.classList.add('ring-4', 'ring-amberAccent-500', 'border-amberAccent-500');
+                    setTimeout(() => {
+                        el.classList.remove('ring-4', 'ring-amberAccent-500', 'border-amberAccent-500');
+                    }, 2000);
+                }
+            }, 50);
+        }
+
+        // カテゴリ切り替え（トグル開閉対応）
+        function selectCategory(catId) {
+            activeCategory = catId;
+            if (catId === "all") {
+                expandedCategory = null; // すべて表示の時は展開しない
+            } else {
+                // 同じカテゴリを再度押した場合は閉じる、別の場合は展開
+                expandedCategory = (expandedCategory === catId) ? null : catId;
+            }
+            renderCategories();
+            renderPrompts();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // クリップボードコピー処理 (iFrame対応の安全なフォールバック付き)
+        function copyToClipboard(id) {
+            const promptObj = promptsData.find(p => p.id === id);
+            if (!promptObj) return;
+
+            const textToCopy = promptObj.prompt;
+            let success = false;
+
+            // 一時テキストエリアを使用した確実なコピー
+            const textArea = document.createElement("textarea");
+            textArea.value = textToCopy;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            textArea.style.top = "-9999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                success = document.execCommand('copy');
+            } catch (err) {
+                console.error('Copy command failed', err);
+            }
+            document.body.removeChild(textArea);
+
+            if (success) {
+                showToast();
+                // ボタン表示を一時的に変更
+                const btns = document.querySelectorAll(`.copy-btn-${id}`);
+                btns.forEach(btn => {
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = `<i class="fa-solid fa-check"></i> 完了！`;
+                    btn.classList.remove('bg-moss-600', 'hover:bg-moss-700');
+                    btn.classList.add('bg-amberAccent-600', 'hover:bg-amberAccent-700');
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                        btn.classList.remove('bg-amberAccent-600', 'hover:bg-amberAccent-700');
+                        btn.classList.add('bg-moss-600', 'hover:bg-moss-700');
+                    }, 2000);
+                });
+            }
+        }
+
+        // トースト通知表示
+        function showToast() {
+            const toast = document.getElementById("toast");
+            toast.classList.remove("translate-y-20", "opacity-0");
+            toast.classList.add("translate-y-0", "opacity-100");
+            setTimeout(() => {
+                toast.classList.remove("translate-y-0", "opacity-100");
+                toast.classList.add("translate-y-20", "opacity-0");
+            }, 3000);
+        }
+
+        // イベントリフォーマット用HTMLエスケープ
+        function escapeHtml(str) {
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // イベントリスナー設定
+        function setupEventListeners() {
+            // 検索入力
+            document.getElementById("searchInput").addEventListener("input", (e) => {
+                searchQuery = e.target.value.trim();
+                renderPrompts();
+            });
+        }
+
+        // フィルターリセット
+        function resetFilters() {
+            activeCategory = "all";
+            searchQuery = "";
+            document.getElementById("searchInput").value = "";
+            renderCategories();
+            renderPrompts();
+        }
+
+        // 文字サイズ切り替え機能
+        function setTextSize(size) {
+            const content = document.getElementById("contentArea");
+            content.classList.remove("text-size-standard", "text-size-large", "text-size-xlarge");
+            
+            if (size === 'large') {
+                content.classList.add("text-size-large");
+            } else if (size === 'xlarge') {
+                content.classList.add("text-size-xlarge");
+            } else {
+                content.classList.add("text-size-standard");
+            }
+
+            // ボタンアクティブ状態更新
+            ['Std', 'Lg', 'Xl'].forEach(type => {
+                const btn = document.getElementById(`btnText${type}`);
+                if (btn) {
+                    if ((type === 'Std' && size === 'standard') || 
+                        (type === 'Lg' && size === 'large') || 
+                        (type === 'Xl' && size === 'xlarge')) {
+                        btn.className = "px-2 py-1 rounded bg-moss-600 text-white transition font-bold";
+                    } else {
+                        btn.className = "px-2 py-1 rounded text-moss-200 hover:text-white transition";
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
