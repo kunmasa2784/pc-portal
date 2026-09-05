@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvaパソコン講座 第3回 受講生用テキスト</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Noto Sans JP -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans JP"', 'sans-serif'],
+          },
+          colors: {
+            canva: {
+              teal: '#00c4cc',
+              purple: '#7d2ae8',
+              navy: '#1e293b',
+              accent: '#f59e0b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* 印刷用スタイル設定 */
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        font-size: 11pt;
+        color: #000;
+        background: #fff;
+      }
+      .page-break {
+        page-break-before: always;
+      }
+      .card-box {
+        border: 1px solid #ccc !important;
+        box-shadow: none !important;
+      }
+    }
+    
+    /* ルビ表示切り替え */
+    body.hide-ruby rt {
+      display: none;
+    }
+    
+    /* 文字サイズ切り替え設定 */
+    body.text-standard { font-size: 16px; }
+    body.text-large { font-size: 19px; }
+    body.text-xlarge { font-size: 22px; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans text-standard antialiased min-h-screen flex flex-col selection:bg-teal-100 selection:text-teal-900">
+
+  <!-- 上部固定アクセシビリティバー（操作補助ツール） -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm no-print">
+    <div class="max-w-4xl mx-auto px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center space-x-2">
+        <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-teal-600 text-white font-bold text-lg">C</span>
+        <span class="font-bold text-slate-800 text-base md:text-lg">Canva講座 第3回</span>
+      </div>
+
+      <!-- 操作ボタン群 -->
+      <div class="flex items-center flex-wrap gap-2 text-sm">
+        <!-- 文字サイズ変更 -->
+        <div class="inline-flex rounded-lg bg-slate-100 p-1 border border-slate-200" role="group" aria-label="文字サイズ変更">
+          <button id="btn-size-standard" onclick="setFontSize('standard')" class="px-2.5 py-1 text-xs font-semibold rounded bg-white shadow-sm text-slate-800 transition">標準</button>
+          <button id="btn-size-large" onclick="setFontSize('large')" class="px-2.5 py-1 text-xs font-semibold rounded text-slate-600 hover:text-slate-900 transition">大</button>
+          <button id="btn-size-xlarge" onclick="setFontSize('xlarge')" class="px-2.5 py-1 text-xs font-semibold rounded text-slate-600 hover:text-slate-900 transition">特大</button>
+        </div>
+
+        <!-- ルビ切り替え -->
+        <button onclick="toggleRuby()" id="btn-ruby" class="px-3 py-1 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition flex items-center gap-1">
+          <span>ふりがな:</span>
+          <span id="ruby-status" class="text-teal-600 font-bold">ON</span>
+        </button>
+
+        <!-- 印刷ボタン -->
+        <button onclick="window.print()" class="px-3 py-1 text-xs font-semibold rounded-lg bg-slate-800 text-white hover:bg-slate-700 transition flex items-center gap-1 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+          <span>印刷する</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- メインコンテンツ -->
+  <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-6 md:py-10 space-y-10">
+
+    <!-- 表紙・ヒーローセクション -->
+    <section class="bg-gradient-to-br from-teal-50 via-indigo-50 to-purple-50 rounded-3xl p-6 md:p-10 border border-teal-100 shadow-sm relative overflow-hidden">
+      <div class="relative z-10">
+        <span class="inline-block px-3 py-1 text-xs font-bold text-teal-800 bg-teal-100 rounded-full mb-3 tracking-wide">
+          パソコン実践講座
+        </span>
+        <h1 class="text-2xl md:text-4xl font-black text-slate-900 tracking-tight leading-snug mb-3">
+          Canva講座 【第3回】
+        </h1>
+        <p class="text-base md:text-xl font-medium text-slate-700 leading-relaxed">
+          〜学んだ技を組み合わせて、自分だけの作品を完成させよう！〜
+        </p>
+
+        <!-- 本日のゴール -->
+        <div class="mt-6 bg-white/90 backdrop-blur rounded-2xl p-5 border border-teal-200/70 shadow-sm">
+          <h2 class="text-base font-bold text-teal-900 flex items-center gap-2 mb-3">
+            <svg class="w-5 h-5 text-teal-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+            本日の達成目標（ゴール）
+          </h2>
+          <ul class="space-y-2 text-slate-700 font-medium">
+            <li class="flex items-start gap-2">
+              <span class="text-teal-600 font-bold">1.</span>
+              <span>「文字・写真・図形」を組み合わせて、ハガキやお知らせチラシを1つ完成させる</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-teal-600 font-bold">2.</span>
+              <span>作った作品をパソコンに保存（ダウンロード）し、紙に印刷する</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 目次ナビゲーション（クイックジャンプ） -->
+    <nav class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm no-print">
+      <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">本日の学習項目</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm font-semibold">
+        <a href="#section-1" class="flex items-center p-2 rounded-xl text-slate-700 hover:bg-teal-50 hover:text-teal-700 transition">
+          <span class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs mr-2 text-slate-600">1</span>
+          前回の復習ポイント（おさらい）
+        </a>
+        <a href="#section-2" class="flex items-center p-2 rounded-xl text-slate-700 hover:bg-teal-50 hover:text-teal-700 transition">
+          <span class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs mr-2 text-slate-600">2</span>
+          今日覚える 3つの新しい技
+        </a>
+        <a href="#section-3" class="flex items-center p-2 rounded-xl text-slate-700 hover:bg-teal-50 hover:text-teal-700 transition">
+          <span class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs mr-2 text-slate-600">3</span>
+          本日の制作手順（実践ワーク）
+        </a>
+        <a href="#section-4" class="flex items-center p-2 rounded-xl text-slate-700 hover:bg-teal-50 hover:text-teal-700 transition">
+          <span class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs mr-2 text-slate-600">4</span>
+          パソコンへの保存と印刷の手順
+        </a>
+        <a href="#section-5" class="flex items-center p-2 rounded-xl text-slate-700 hover:bg-teal-50 hover:text-teal-700 transition">
+          <span class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs mr-2 text-slate-600">5</span>
+          よくある「困った！」と解決法
+        </a>
+      </div>
+    </nav>
+
+    <!-- 第1章：おさらい -->
+    <section id="section-1" class="scroll-mt-20">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="flex items-center justify-center w-8 h-8 rounded-xl bg-teal-600 text-white font-black text-sm">1</span>
+        <h2 class="text-xl md:text-2xl font-bold text-slate-900">
+          <ruby>前<rt>ぜん</rt>回<rt>かい</rt></ruby>の<ruby>復<rt>ふく</rt>習<rt>しゅう</rt></ruby>ポイント（おさらい）
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- 復習1 -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+            </div>
+            <h3 class="font-bold text-slate-900 text-lg mb-2">① 文字の打ち替え</h3>
+            <p class="text-slate-600 leading-relaxed text-sm">
+              変えたい文字を <strong>「カチカチッ（2回続けてクリック）」</strong> すると青くなります。<br>
+              キーボードの <strong>「BackSpace」</strong> で消して新しく入力します。
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 text-xs font-semibold text-teal-700 bg-teal-50 px-2.5 py-1.5 rounded-lg">
+            合言葉：素早くカチカチッ！
+          </div>
+        </div>
+
+        <!-- 復習2 -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            </div>
+            <h3 class="font-bold text-slate-900 text-lg mb-2">② 写真の入れ替え</h3>
+            <p class="text-slate-600 leading-relaxed text-sm">
+              左メニューの「写真」や「アップロード」から選びます。<br>
+              枠の上へ <strong>マウスの左ボタンを押したままスーッと引っ張って</strong>、枠の中で指を離します。
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 text-xs font-semibold text-amber-800 bg-amber-50 px-2.5 py-1.5 rounded-lg">
+            合言葉：枠の中で指をパッと離す
+          </div>
+        </div>
+
+        <!-- 復習3 -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-3">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg>
+            </div>
+            <h3 class="font-bold text-slate-900 text-lg mb-2">③ 失敗したときの魔法</h3>
+            <p class="text-slate-600 leading-relaxed text-sm">
+              変なところを押してしまっても焦る必要はありません。<br>
+              画面左上にある <strong>「左向きの矢印（元に戻す）」</strong> を押せば1回前の状態に戻ります。
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 text-xs font-semibold text-purple-800 bg-purple-50 px-2.5 py-1.5 rounded-lg">
+            合言葉：困ったら左矢印！
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 第2章：3つの新技 -->
+    <section id="section-2" class="scroll-mt-20">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="flex items-center justify-center w-8 h-8 rounded-xl bg-teal-600 text-white font-black text-sm">2</span>
+        <h2 class="text-xl md:text-2xl font-bold text-slate-900">
+          <ruby>今<rt>きょう</rt>日<rt></rt></ruby><ruby>覚<rt>おぼ</rt></ruby>える 3つの<ruby>新<rt>あたら</rt></ruby>しい<ruby>技<rt>わざ</rt></ruby>（ステップアップ）
+        </h2>
+      </div>
+
+      <div class="space-y-4">
+        <!-- 技1 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-2.5 py-1 text-xs font-bold bg-indigo-100 text-indigo-800 rounded-md">技 ①</span>
+            <h3 class="text-lg md:text-xl font-bold text-slate-900">
+              <ruby>重<rt>かさ</rt></ruby>なり<ruby>順<rt>じゅん</rt></ruby>の<ruby>変<rt>へん</rt>更<rt>こう</rt></ruby>（隠れた文字を手前に出す）
+            </h3>
+          </div>
+          <p class="text-slate-600 text-sm mb-4">
+            「写真を入れたら、せっかく書いた文字が後ろに隠れて見えなくなってしまった！」というときに使います。
+          </p>
+
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 space-y-2 text-sm">
+            <div class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold shrink-0">1</span>
+              <span>後ろに隠れてしまった部品（または手前にある写真）を<strong>1回クリック</strong>します。</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold shrink-0">2</span>
+              <span>画面上の白い帯メニューにある <strong>「配置」</strong> をクリックします。</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold shrink-0">3</span>
+              <span><strong>「前面へ」</strong> または <strong>「最前面へ」</strong> を選ぶと、手前にひょっこり出てきます！</span>
+            </div>
+          </div>
+          <p class="mt-2 text-xs text-slate-500">※写真を一番後ろに送りたいときは、逆に「背面へ」を選びます。</p>
+        </div>
+
+        <!-- 技2 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-2.5 py-1 text-xs font-bold bg-indigo-100 text-indigo-800 rounded-md">技 ②</span>
+            <h3 class="text-lg md:text-xl font-bold text-slate-900">
+              <ruby>位<rt>い</rt>置<rt>ち</rt></ruby>の<ruby>整<rt>せい</rt>列<rt>れつ</rt></ruby>（真ん中にきれいに揃える）
+            </h3>
+          </div>
+          <p class="text-slate-600 text-sm mb-4">
+            手で動かすと微妙に左右にズレてしまうタイトルやイラストを、ワンタッチで用紙のど真ん中に配置します。
+          </p>
+
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 space-y-2 text-sm">
+            <div class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold shrink-0">1</span>
+              <span>きれいに揃えたい文字や図形をクリックします。</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold shrink-0">2</span>
+              <span>画面上の <strong>「配置」</strong> をクリックします。</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold shrink-0">3</span>
+              <span><strong>「中央揃え」</strong> をクリックすると、一瞬で用紙の真ん中にピタッと揃います。</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 技3 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-2.5 py-1 text-xs font-bold bg-indigo-100 text-indigo-800 rounded-md">技 ③</span>
+            <h3 class="text-lg md:text-xl font-bold text-slate-900">
+              グループ<ruby>化<rt>か</rt></ruby>（バラバラにならず一緒に動かす）
+            </h3>
+          </div>
+          <p class="text-slate-600 text-sm mb-4">
+            「文字」と「飾り枠」を一緒に動かしたいのに、別々に動いて位置が崩れてしまうのを防ぎます。
+          </p>
+
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 space-y-2 text-sm">
+            <div class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold shrink-0">1</span>
+              <span>キーボード左下にある <strong>「Shift（シフト）キー」</strong> を指で押したままにします。</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold shrink-0">2</span>
+              <span>一緒に動かしたい部品を順番にマウスでクリックします（両方が青い枠で囲まれます）。</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold shrink-0">3</span>
+              <span>画面に出てくる <strong>「グループ化」</strong> を押すと、1つの塊になって一緒に移動できます！</span>
+            </div>
+          </div>
+          <p class="mt-2 text-xs text-slate-500">※元に戻したいときは、同じ場所にある「グループ解除」を押せば元通りになります。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 第3章：制作手順 -->
+    <section id="section-3" class="scroll-mt-20">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="flex items-center justify-center w-8 h-8 rounded-xl bg-teal-600 text-white font-black text-sm">3</span>
+        <h2 class="text-xl md:text-2xl font-bold text-slate-900">
+          <ruby>本<rt>ほん</rt>日<rt>じつ</rt></ruby>の<ruby>制<rt>せい</rt>作<rt>さく</rt>手<rt>て</rt>順<rt>じゅん</rt></ruby>（実践ワーク）
+        </h2>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+        <p class="text-slate-600 mb-6 text-sm">
+          チェックを入れながら、1つずつ落ち着いて進めていきましょう。
+        </p>
+
+        <!-- ステップ形式タイムライン -->
+        <div class="space-y-4">
+          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+            <input type="checkbox" class="mt-1 w-5 h-5 rounded border-slate-300 text-teal-600 focus:ring-teal-500">
+            <div>
+              <strong class="text-slate-900 block font-bold">【手順1】テンプレートを1つ選ぶ</strong>
+              <span class="text-slate-600 text-xs md:text-sm">好みの季節のデザインやお便り用の下地をクリックして開きます。</span>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+            <input type="checkbox" class="mt-1 w-5 h-5 rounded border-slate-300 text-teal-600 focus:ring-teal-500">
+            <div>
+              <strong class="text-slate-900 block font-bold">【手順2】メインの大きな文字（タイトル）を打ち替える</strong>
+              <span class="text-slate-600 text-xs md:text-sm">「秋のお便り」「〇〇サークル発表会」など、自分の言葉に変更します。</span>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+            <input type="checkbox" class="mt-1 w-5 h-5 rounded border-slate-300 text-teal-600 focus:ring-teal-500">
+            <div>
+              <strong class="text-slate-900 block font-bold">【手順3】写真を自分の好きなものに入れ替える</strong>
+              <span class="text-slate-600 text-xs md:text-sm">用意した写真や、Canva内の素敵な写真素材を枠の中へドラッグします。</span>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+            <input type="checkbox" class="mt-1 w-5 h-5 rounded border-slate-300 text-teal-600 focus:ring-teal-500">
+            <div>
+              <strong class="text-slate-900 block font-bold">【手順4】メッセージや日時などの細かい文字を入力する</strong>
+              <span class="text-slate-600 text-xs md:text-sm">伝えたい文章や開催場所などを打ち込みます。</span>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+            <input type="checkbox" class="mt-1 w-5 h-5 rounded border-slate-300 text-teal-600 focus:ring-teal-500">
+            <div>
+              <strong class="text-slate-900 block font-bold">【手順5】全体のバランスを整える（3つの技を活用）</strong>
+              <span class="text-slate-600 text-xs md:text-sm">位置の中央揃えや、重なり順の調整を行って美しく仕上げます。</span>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+            <input type="checkbox" class="mt-1 w-5 h-5 rounded border-slate-300 text-teal-600 focus:ring-teal-500">
+            <div>
+              <strong class="text-slate-900 block font-bold">【手順6】スタッフや講師に見せて確認してもらう</strong>
+              <span class="text-slate-600 text-xs md:text-sm">印刷に進む前に、画面をスタッフに見せてチェックを受けましょう！</span>
+            </div>
+          </label>
+        </div>
+
+        <!-- 王冠マークの注意喚起 -->
+        <div class="mt-6 bg-amber-50 border-2 border-amber-300 rounded-xl p-4 flex items-start gap-3">
+          <div class="text-2xl shrink-0">👑</div>
+          <div>
+            <h4 class="font-bold text-amber-950 text-sm md:text-base">超重要！「王冠マーク（有料素材）」に注意</h4>
+            <p class="text-amber-900 text-xs md:text-sm mt-1 leading-relaxed">
+              素材の右下に <strong>小さな王冠の絵（Pro）</strong> がついているものは有料です。使うと保存時に「料金の支払い画面」が出てしまいます。必ず <strong>王冠のない無料素材</strong> を選んでくださいね。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 第4章：保存と印刷（最重要） -->
+    <section id="section-4" class="scroll-mt-20">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="flex items-center justify-center w-8 h-8 rounded-xl bg-teal-600 text-white font-black text-sm">4</span>
+        <h2 class="text-xl md:text-2xl font-bold text-slate-900">
+          <ruby>超<rt>ちょう</rt>重<rt>じゅう</rt>要<rt>よう</rt></ruby>！パソコンへの<ruby>保<rt>ほ</rt>存<rt>ぞん</rt></ruby>と<ruby>印<rt>いん</rt>刷<rt>さつ</rt></ruby>の<ruby>手<rt>て</rt>順<rt>じゅん</rt></ruby>
+        </h2>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
+
+        <!-- ステップ 1〜3 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+            <span class="text-xs font-bold text-teal-700 bg-teal-100 px-2 py-0.5 rounded">ステップ 1</span>
+            <h4 class="font-bold text-slate-900 mt-2 mb-1">「共有」を押す</h4>
+            <p class="text-xs text-slate-600">
+              画面の一番右上にある紫や白の <strong>「共有」</strong> ボタンを1回押し、出てきたメニューの <strong>「ダウンロード」</strong> を押します。
+            </p>
+          </div>
+
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+            <span class="text-xs font-bold text-teal-700 bg-teal-100 px-2 py-0.5 rounded">ステップ 2</span>
+            <h4 class="font-bold text-slate-900 mt-2 mb-1">「PDF（印刷）」を選ぶ</h4>
+            <p class="text-xs text-slate-600">
+              「ファイルの種類」を押して、一覧から <strong>「PDF（印刷）」</strong> を選びます。<br>
+              ※スマホに送るなら「PNG」でもOKです。
+            </p>
+          </div>
+
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+            <span class="text-xs font-bold text-teal-700 bg-teal-100 px-2 py-0.5 rounded">ステップ 3</span>
+            <h4 class="font-bold text-slate-900 mt-2 mb-1">「ダウンロード」を押す</h4>
+            <p class="text-xs text-slate-600">
+              紫色のボタンを押すと保存が始まります。画面端に「保存されました」と出たらパソコンへの保存完了です！
+            </p>
+          </div>
+        </div>
+
+        <!-- ステップ 4：迷子防止（Windowsでの見つけ方） -->
+        <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-5">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-xs font-bold text-white bg-indigo-600 px-2.5 py-0.5 rounded-full">ステップ 4</span>
+            <h4 class="font-bold text-indigo-950 text-base md:text-lg">保存したファイルを見つける（迷子防止）</h4>
+          </div>
+          <p class="text-xs md:text-sm text-indigo-900 mb-4 leading-relaxed">
+            ダウンロードしたファイルは、パソコンの中の「ダウンロード」という部屋に自動で入っています。
+          </p>
+
+          <div class="bg-white p-4 rounded-xl border border-indigo-100 flex flex-col md:flex-row items-center gap-4 text-sm">
+            <div class="flex items-center gap-2 font-mono text-sm bg-slate-100 px-3 py-2 rounded-lg border border-slate-300 shrink-0">
+              <span>🪟 窓マーク</span>
+              <span>＋</span>
+              <span>「E」のキー</span>
+            </div>
+            <div class="text-slate-700 text-xs md:text-sm">
+              キーボードの <strong>窓マーク（Windows）を押しながら「E」</strong> を押すと、黄色いフォルダ画面が開きます。<br>
+              左側のメニューにある <strong>「ダウンロード」</strong> をクリックすると、一番上に先ほどの作品があります！
+            </div>
+          </div>
+        </div>
+
+        <!-- ステップ 5：印刷 -->
+        <div class="bg-teal-50 border border-teal-200 rounded-2xl p-5">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-xs font-bold text-white bg-teal-700 px-2.5 py-0.5 rounded-full">ステップ 5</span>
+            <h4 class="font-bold text-teal-950 text-base md:text-lg">プリンターで印刷する</h4>
+          </div>
+          <ol class="space-y-2 text-xs md:text-sm text-teal-900 list-decimal list-inside leading-relaxed">
+            <li>見つかった作品のファイルを <strong>「カチカチッ（ダブルクリック）」</strong> して開きます。</li>
+            <li>画面の上か右のほうにある <strong>「プリンターのマーク 🖨️」</strong> を押します。</li>
+            <li>用紙のサイズ（ハガキ、またはA4）が合っているか確認し、青い <strong>「印刷」</strong> ボタンを押します！</li>
+          </ol>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 第5章：困ったときの解決法（Q&A） -->
+    <section id="section-5" class="scroll-mt-20">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="flex items-center justify-center w-8 h-8 rounded-xl bg-teal-600 text-white font-black text-sm">5</span>
+        <h2 class="text-xl md:text-2xl font-bold text-slate-900">
+          よくある「<ruby>困<rt>こま</rt></ruby>った！」と<ruby>解<rt>かい</rt>決<rt>けつ</rt>法<rt>ほう</rt></ruby>
+        </h2>
+      </div>
+
+      <div class="space-y-3">
+        <!-- Q1 -->
+        <details class="group bg-white rounded-2xl border border-slate-200 p-4 transition [&_summary::-webkit-details-marker]:hidden" open>
+          <summary class="flex items-center justify-between cursor-pointer font-bold text-slate-900 text-sm md:text-base">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs shrink-0">？</span>
+              <span>ダウンロードを押したら「購入」やお金の画面が出てしまう</span>
+            </div>
+            <span class="ml-2 text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <div class="mt-3 pt-3 border-t border-slate-100 text-slate-600 text-xs md:text-sm leading-relaxed">
+            <strong>原因：</strong> 画面のどこかに <strong>王冠マーク（👑）の素材</strong> が紛れ込んでいます。<br>
+            <strong>直し方：</strong> 画面上のイラストや写真を1つずつクリックしてみて、有料素材を見つけたらキーボードの「Delete」で消し、無料の素材に取り替えましょう。
+          </div>
+        </details>
+
+        <!-- Q2 -->
+        <details class="group bg-white rounded-2xl border border-slate-200 p-4 transition [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between cursor-pointer font-bold text-slate-900 text-sm md:text-base">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs shrink-0">？</span>
+              <span>文字をダブルクリックしても青く選択されない</span>
+            </div>
+            <span class="ml-2 text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <div class="mt-3 pt-3 border-t border-slate-100 text-slate-600 text-xs md:text-sm leading-relaxed">
+            <strong>原因：</strong> 2回押すスピードが少しゆっくりになっている可能性があります。<br>
+            <strong>直し方：</strong> トントンとテンポよく押すか、文字を1回クリックしたあとにキーボードの「Enter（決定）」キーを押してみてください。
+          </div>
+        </details>
+
+        <!-- Q3 -->
+        <details class="group bg-white rounded-2xl border border-slate-200 p-4 transition [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between cursor-pointer font-bold text-slate-900 text-sm md:text-base">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs shrink-0">？</span>
+              <span>写真が枠に入らず、変な場所にはみ出してしまった</span>
+            </div>
+            <span class="ml-2 text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <div class="mt-3 pt-3 border-t border-slate-100 text-slate-600 text-xs md:text-sm leading-relaxed">
+            <strong>直し方：</strong> まず左上の <strong>「左向き矢印（元に戻す）」</strong> を1回押してやり直します。写真の真ん中をしっかりつかんで、枠の真ん中に重なるまでゆっくり運んでから指を離してください。
+          </div>
+        </details>
+
+        <!-- Q4 -->
+        <details class="group bg-white rounded-2xl border border-slate-200 p-4 transition [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between cursor-pointer font-bold text-slate-900 text-sm md:text-base">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs shrink-0">？</span>
+              <span>保存したファイルがどこかへ消えてしまった</span>
+            </div>
+            <span class="ml-2 text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <div class="mt-3 pt-3 border-t border-slate-100 text-slate-600 text-xs md:text-sm leading-relaxed">
+            <strong>安心してください：</strong> ファイルは消えていません！パソコンの「ダウンロード」という場所に必ず保管されています。見つからないときは、いつでも遠慮なく手を挙げてスタッフをお呼びください。
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- メモ欄（印刷時にも役立つ手書き用エリア） -->
+    <section class="bg-white rounded-2xl p-6 border-2 border-dashed border-slate-300">
+      <h3 class="font-bold text-slate-900 text-base mb-4 flex items-center gap-2">
+        <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+        本日のメモ・覚え書き
+      </h3>
+      <div class="space-y-4 text-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+          <span class="font-semibold text-slate-700 sm:w-44 shrink-0">Canvaログインメール：</span>
+          <div class="flex-grow border-b border-slate-300 pb-1 h-6"></div>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+          <span class="font-semibold text-slate-700 sm:w-44 shrink-0">本日作った作品名：</span>
+          <div class="flex-grow border-b border-slate-300 pb-1 h-6"></div>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-start gap-2">
+          <span class="font-semibold text-slate-700 sm:w-44 shrink-0 pt-1">自由メモ（質問など）：</span>
+          <div class="flex-grow h-20 border border-slate-200 rounded-lg p-2 bg-slate-50"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- フッター -->
+  <footer class="mt-auto border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500 no-print">
+    <div class="max-w-4xl mx-auto px-4">
+      <p class="font-medium text-slate-600">受講お疲れ様でした！ぜひご自宅でもご家族やお友達に見せてあげてくださいね。</p>
+      <p class="mt-1 text-slate-400">© 2026 シニア向けパソコン講座運営事務局</p>
+    </div>
+  </footer>
+
+  <!-- 操作用スクリプト -->
+  <script>
+    // 文字サイズの切り替え
+    function setFontSize(size) {
+      const body = document.body;
+      const btnStandard = document.getElementById('btn-size-standard');
+      const btnLarge = document.getElementById('btn-size-large');
+      const btnXLarge = document.getElementById('btn-size-xlarge');
+
+      body.classList.remove('text-standard', 'text-large', 'text-xlarge');
+      [btnStandard, btnLarge, btnXLarge].forEach(b => {
+        b.className = 'px-2.5 py-1 text-xs font-semibold rounded text-slate-600 hover:text-slate-900 transition';
+      });
+
+      if (size === 'standard') {
+        body.classList.add('text-standard');
+        btnStandard.className = 'px-2.5 py-1 text-xs font-semibold rounded bg-white shadow-sm text-slate-800 transition';
+      } else if (size === 'large') {
+        body.classList.add('text-large');
+        btnLarge.className = 'px-2.5 py-1 text-xs font-semibold rounded bg-white shadow-sm text-slate-800 transition';
+      } else if (size === 'xlarge') {
+        body.classList.add('text-xlarge');
+        btnXLarge.className = 'px-2.5 py-1 text-xs font-semibold rounded bg-white shadow-sm text-slate-800 transition';
+      }
+    }
+
+    // ふりがな（ルビ）のON/OFF切り替え
+    function toggleRuby() {
+      const body = document.body;
+      const statusText = document.getElementById('ruby-status');
+      if (body.classList.contains('hide-ruby')) {
+        body.classList.remove('hide-ruby');
+        statusText.textContent = 'ON';
+        statusText.className = 'text-teal-600 font-bold';
+      } else {
+        body.classList.add('hide-ruby');
+        statusText.textContent = 'OFF';
+        statusText.className = 'text-slate-400 font-bold';
+      }
+    }
+  </script>
+</body>
+</html>
